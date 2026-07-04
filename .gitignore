@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Env files (never commit secrets)
+.env
+.env.local
+.env.*.local
+
+# Backend build output
+techtribe-backend/dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Prisma
+techtribe-backend/prisma/migrations/.migrate_lock

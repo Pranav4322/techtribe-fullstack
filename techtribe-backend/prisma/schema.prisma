@@ -1,0 +1,618 @@
+// ==========================================================
+// TechTribe — Prisma Schema
+// PostgreSQL data model for the entire platform
+// ==========================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ----------------------------------------------------------
+// ENUMS
+// ----------------------------------------------------------
+
+enum Role {
+  USER
+  MODERATOR
+  ADMIN
+}
+
+enum ContentType {
+  NEWS
+  COMMUNITY_POST
+  LANGUAGE
+  TUTORIAL
+  CHALLENGE
+  NOTE
+  ROADMAP
+}
+
+enum NotificationType {
+  COMMENT
+  REPLY
+  LIKE
+  FOLLOW
+  MENTION
+  SYSTEM
+  CHALLENGE_SOLVED
+  ROADMAP_MILESTONE
+  ADMIN_ANNOUNCEMENT
+}
+
+enum DifficultyLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum ChallengeDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum SubmissionStatus {
+  PENDING
+  ACCEPTED
+  WRONG_ANSWER
+  REVIEWED
+}
+
+enum ReportStatus {
+  OPEN
+  REVIEWING
+  RESOLVED
+  DISMISSED
+}
+
+// ----------------------------------------------------------
+// USERS & AUTH
+// ----------------------------------------------------------
+
+model User {
+  id                String    @id @default(uuid())
+  email             String    @unique
+  username          String    @unique
+  passwordHash      String
+  displayName       String
+  avatarUrl         String?
+  bio               String?   @db.VarChar(280)
+  location          String?
+  websiteUrl        String?
+  githubUrl         String?
+  twitterUrl        String?
+  role              Role      @default(USER)
+  isEmailVerified   Boolean   @default(false)
+  isActive          Boolean   @default(true)
+  isBanned          Boolean   @default(false)
+  bannedReason      String?
+  xp                Int       @default(0)
+  level             Int       @default(1)
+  streakCount       Int       @default(0)
+  lastActiveAt      DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Relations
+  refreshTokens       RefreshToken[]
+  emailVerifications  EmailVerificationToken[]
+  passwordResets      PasswordResetToken[]
+  posts               CommunityPost[]
+  comments            Comment[]
+  likes               Like[]
+  bookmarks           Bookmark[]
+  notes               Note[]
+  notebooks           Notebook[]
+  notifications       Notification[]        @relation("NotificationRecipient")
+  triggeredNotifications Notification[]      @relation("NotificationActor")
+  challengeSubmissions ChallengeSubmission[]
+  mcqAttempts         McqAttempt[]
+  roadmapProgress     UserRoadmapProgress[]
+  followers           Follow[]               @relation("Following")
+  following           Follow[]               @relation("Follower")
+  aiUsageLogs         AiUsageLog[]
+  reportsFiled        Report[]               @relation("ReportedBy")
+  reportsAgainst      Report[]               @relation("ReportedUser")
+  auditLogs           AuditLog[]
+  savedNewsInteractions NewsInteraction[]
+
+  @@index([email])
+  @@index([username])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userAgent String?
+  ipAddress String?
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model EmailVerificationToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+}
+
+model Follow {
+  id          String   @id @default(uuid())
+  followerId  String
+  follower    User     @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  followingId String
+  following   User     @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId])
+  @@index([followingId])
+}
+
+// ----------------------------------------------------------
+// LANGUAGES / TUTORIALS
+// ----------------------------------------------------------
+
+model Language {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  version     String?
+  icon        String?
+  color       String?
+  description String   @db.Text
+  uses        String?  @db.Text
+  tags        String[]
+  sections    LanguageSection[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+}
+
+model LanguageSection {
+  id         String   @id @default(uuid())
+  languageId String
+  language   Language @relation(fields: [languageId], references: [id], onDelete: Cascade)
+  key        String   // install | hello | variables | control | functions | oop | errors ...
+  title      String
+  codeHtml   String   @db.Text
+  order      Int      @default(0)
+
+  @@unique([languageId, key])
+}
+
+// ----------------------------------------------------------
+// NEWS (aggregated + cached from Dev.to / Hacker News)
+// ----------------------------------------------------------
+
+model NewsArticle {
+  id                    String    @id @default(uuid())
+  externalId            String    @unique // e.g. "devto-12345" or "hn-98765"
+  source                String    // "devto" | "hackernews"
+  category              String    // ai | dev | sec | cloud | web | startups
+  title                 String
+  description           String    @db.Text
+  url                   String
+  imageUrl              String?
+  publishedAt           DateTime
+  tagList               String[]
+  readingTimeMinutes    Int       @default(3)
+  externalReactionCount Int       @default(0)
+  externalCommentCount  Int       @default(0)
+  fetchedAt             DateTime  @default(now())
+
+  likes       Like[]
+  bookmarks   Bookmark[]
+  comments    Comment[]
+  interactions NewsInteraction[]
+
+  @@index([category, publishedAt])
+  @@index([source])
+}
+
+// Tracks per-user like/view state on a news article (separate from generic Like for fast lookups)
+model NewsInteraction {
+  id        String      @id @default(uuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  articleId String
+  article   NewsArticle @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  viewedAt  DateTime    @default(now())
+
+  @@unique([userId, articleId])
+}
+
+// ----------------------------------------------------------
+// COMMUNITY (posts + comments + likes)
+// ----------------------------------------------------------
+
+model CommunityPost {
+  id          String   @id @default(uuid())
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  title       String
+  body        String   @db.Text
+  tags        String[]
+  isPinned    Boolean  @default(false)
+  isLocked    Boolean  @default(false)
+  viewCount   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  comments    Comment[]
+  likes       Like[]
+  bookmarks   Bookmark[]
+  reports     Report[]
+
+  @@index([authorId])
+  @@index([createdAt])
+}
+
+model Comment {
+  id              String   @id @default(uuid())
+  authorId        String
+  author          User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  postId          String?
+  post            CommunityPost? @relation(fields: [postId], references: [id], onDelete: Cascade)
+  newsArticleId   String?
+  newsArticle     NewsArticle? @relation(fields: [newsArticleId], references: [id], onDelete: Cascade)
+  parentCommentId String?
+  parentComment   Comment? @relation("CommentReplies", fields: [parentCommentId], references: [id], onDelete: Cascade)
+  replies         Comment[] @relation("CommentReplies")
+  body            String   @db.Text
+  isEdited        Boolean  @default(false)
+  isDeleted       Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  likes Like[]
+  reports Report[]
+
+  @@index([postId])
+  @@index([newsArticleId])
+  @@index([parentCommentId])
+}
+
+// Generic polymorphic like — one row per user per target
+model Like {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId          String?
+  post            CommunityPost? @relation(fields: [postId], references: [id], onDelete: Cascade)
+  commentId       String?
+  comment         Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  newsArticleId   String?
+  newsArticle     NewsArticle? @relation(fields: [newsArticleId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+
+  @@unique([userId, postId])
+  @@unique([userId, commentId])
+  @@unique([userId, newsArticleId])
+}
+
+// Generic polymorphic bookmark
+model Bookmark {
+  id            String       @id @default(uuid())
+  userId        String
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contentType   ContentType
+  postId        String?
+  post          CommunityPost? @relation(fields: [postId], references: [id], onDelete: Cascade)
+  newsArticleId String?
+  newsArticle   NewsArticle? @relation(fields: [newsArticleId], references: [id], onDelete: Cascade)
+  challengeId   String?
+  challenge     Challenge?   @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  roadmapId     String?
+  roadmap       Roadmap?     @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  createdAt     DateTime     @default(now())
+
+  @@unique([userId, postId])
+  @@unique([userId, newsArticleId])
+  @@unique([userId, challengeId])
+  @@unique([userId, roadmapId])
+  @@index([userId, contentType])
+}
+
+// ----------------------------------------------------------
+// MCQ PRACTICE
+// ----------------------------------------------------------
+
+model McqCategory {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  description String?
+  icon        String?
+  questions   McqQuestion[]
+  attempts    McqAttempt[]
+}
+
+model McqQuestion {
+  id          String          @id @default(uuid())
+  categoryId  String
+  category    McqCategory     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  question    String          @db.Text
+  options     String[]
+  correctIndex Int
+  explanation String?         @db.Text
+  difficulty  DifficultyLevel @default(BEGINNER)
+  source      String          @default("editorial") // "editorial" | "ai_generated"
+  createdAt   DateTime        @default(now())
+
+  attemptAnswers McqAttemptAnswer[]
+
+  @@index([categoryId, difficulty])
+}
+
+model McqAttempt {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId  String?
+  category    McqCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  difficulty  DifficultyLevel?
+  score       Int      @default(0)
+  totalCount  Int      @default(0)
+  startedAt   DateTime @default(now())
+  completedAt DateTime?
+
+  answers McqAttemptAnswer[]
+
+  @@index([userId])
+}
+
+model McqAttemptAnswer {
+  id            String      @id @default(uuid())
+  attemptId     String
+  attempt       McqAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId    String
+  question      McqQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  selectedIndex Int
+  isCorrect     Boolean
+  answeredAt    DateTime    @default(now())
+
+  @@unique([attemptId, questionId])
+}
+
+// ----------------------------------------------------------
+// CODING CHALLENGES
+// ----------------------------------------------------------
+
+model Challenge {
+  id            String              @id @default(uuid())
+  slug          String              @unique
+  title         String
+  description   String              @db.Text
+  difficulty    ChallengeDifficulty
+  languageTags  String[]
+  starterCode   String?             @db.Text
+  constraints   String?             @db.Text
+  isPublished   Boolean             @default(true)
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  testCases   ChallengeTestCase[]
+  submissions ChallengeSubmission[]
+  bookmarks   Bookmark[]
+
+  @@index([difficulty])
+}
+
+model ChallengeTestCase {
+  id          String    @id @default(uuid())
+  challengeId String
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  input       String    @db.Text
+  expectedOutput String @db.Text
+  isHidden    Boolean   @default(false)
+  order       Int       @default(0)
+}
+
+model ChallengeSubmission {
+  id            String            @id @default(uuid())
+  userId        String
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challengeId   String
+  challenge     Challenge         @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  code          String            @db.Text
+  language      String
+  status        SubmissionStatus  @default(PENDING)
+  aiFeedback    String?           @db.Text
+  passedTests   Int               @default(0)
+  totalTests    Int               @default(0)
+  submittedAt   DateTime          @default(now())
+
+  @@index([userId, challengeId])
+}
+
+// ----------------------------------------------------------
+// NOTES
+// ----------------------------------------------------------
+
+model Notebook {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  color     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  notes Note[]
+
+  @@index([userId])
+}
+
+model Note {
+  id         String    @id @default(uuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  notebookId String?
+  notebook   Notebook? @relation(fields: [notebookId], references: [id], onDelete: SetNull)
+  title      String
+  content    String    @db.Text
+  tags       String[]
+  isPinned   Boolean   @default(false)
+  isArchived Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([notebookId])
+}
+
+// ----------------------------------------------------------
+// ROADMAPS
+// ----------------------------------------------------------
+
+model Roadmap {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  title       String
+  goal        String
+  level       DifficultyLevel @default(BEGINNER)
+  description String   @db.Text
+  isTemplate  Boolean  @default(true) // true = editorial/AI template, false = fully custom user roadmap
+  createdById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  milestones  RoadmapMilestone[]
+  progress    UserRoadmapProgress[]
+  bookmarks   Bookmark[]
+}
+
+model RoadmapMilestone {
+  id          String   @id @default(uuid())
+  roadmapId   String
+  roadmap     Roadmap  @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  order       Int
+  title       String   // e.g. "Month 1"
+  content     String   @db.Text
+  resources   String[]
+  projectIdea String?  @db.Text
+
+  progressEntries UserMilestoneProgress[]
+}
+
+model UserRoadmapProgress {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roadmapId   String
+  roadmap     Roadmap  @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  startedAt   DateTime @default(now())
+  completedAt DateTime?
+
+  milestoneProgress UserMilestoneProgress[]
+
+  @@unique([userId, roadmapId])
+}
+
+model UserMilestoneProgress {
+  id            String               @id @default(uuid())
+  userProgressId String
+  userProgress  UserRoadmapProgress  @relation(fields: [userProgressId], references: [id], onDelete: Cascade)
+  milestoneId   String
+  milestone     RoadmapMilestone     @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
+  isComplete    Boolean              @default(false)
+  completedAt   DateTime?
+
+  @@unique([userProgressId, milestoneId])
+}
+
+// ----------------------------------------------------------
+// NOTIFICATIONS
+// ----------------------------------------------------------
+
+model Notification {
+  id          String           @id @default(uuid())
+  recipientId String
+  recipient   User             @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  actorId     String?
+  actor       User?            @relation("NotificationActor", fields: [actorId], references: [id], onDelete: SetNull)
+  type        NotificationType
+  message     String
+  link        String?
+  isRead      Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+
+  @@index([recipientId, isRead])
+}
+
+// ----------------------------------------------------------
+// AI USAGE (rate limiting / auditing of AI proxy calls)
+// ----------------------------------------------------------
+
+model AiUsageLog {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  feature    String   // quiz | summary | path | review | quickask
+  inputChars Int
+  outputChars Int
+  createdAt  DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+// ----------------------------------------------------------
+// MODERATION / ADMIN
+// ----------------------------------------------------------
+
+model Report {
+  id              String       @id @default(uuid())
+  reporterId      String
+  reporter        User         @relation("ReportedBy", fields: [reporterId], references: [id], onDelete: Cascade)
+  reportedUserId  String?
+  reportedUser    User?        @relation("ReportedUser", fields: [reportedUserId], references: [id], onDelete: Cascade)
+  postId          String?
+  post            CommunityPost? @relation(fields: [postId], references: [id], onDelete: Cascade)
+  commentId       String?
+  comment         Comment?     @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  reason          String
+  details         String?      @db.Text
+  status          ReportStatus @default(OPEN)
+  resolvedNote    String?
+  createdAt       DateTime     @default(now())
+  resolvedAt      DateTime?
+
+  @@index([status])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  actorId    String
+  actor      User     @relation(fields: [actorId], references: [id], onDelete: Cascade)
+  action     String   // e.g. "USER_BANNED", "POST_DELETED"
+  targetType String
+  targetId   String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([actorId, createdAt])
+}

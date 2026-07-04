@@ -1,0 +1,2132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechTribe — Learn. Build. Discuss.</title>
+<meta name="description" content="TechTribe — Your all-in-one hub for programming docs, AI & tech news, developer community, and real AI-powered learning tools.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 38 42'><defs><linearGradient id='b' x1='0' y1='0' x2='1' y2='0'><stop offset='0%25' stop-color='%23a855f7'/><stop offset='100%25' stop-color='%237c3aed'/></linearGradient><linearGradient id='s1' x1='0' y1='0' x2='0' y2='1'><stop offset='0%25' stop-color='%231e1b4b'/><stop offset='100%25' stop-color='%23312e81'/></linearGradient><linearGradient id='s2' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%234338ca'/><stop offset='100%25' stop-color='%236d28d9'/></linearGradient></defs><polygon points='2,4 36,4 34,11 4,11' fill='url(%23b)'/><polygon points='14,11 20,11 20,36 13,42 12,36' fill='url(%23s1)'/><polygon points='20,11 24,11 24,34 20,36' fill='url(%23s2)' opacity='.85'/><polygon points='20,28 24,34 20,36' fill='%231e1b4b' opacity='.4'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+:root {
+  --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--bg4:#30363d;
+  --border:#30363d;--border2:#444c56;
+  --text:#e6edf3;--text2:#8b949e;--text3:#656d76;
+  --accent:#58a6ff;--accent2:#1f6feb;--accent-glow:rgba(88,166,255,0.15);
+  --green:#3fb950;--orange:#f78166;--purple:#bc8cff;
+  --yellow:#d29922;--teal:#39d353;
+  --radius:8px;--radius-lg:12px;
+  --font:'Inter',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --nav-h:60px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+button{font-family:var(--font);cursor:pointer}
+input,select,textarea{font-family:var(--font)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+
+.navbar{position:sticky;top:0;z-index:200;background:rgba(13,17,23,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;gap:.75rem;height:var(--nav-h)}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;color:var(--text);white-space:nowrap;cursor:pointer;text-decoration:none}
+.nav-logo:hover{text-decoration:none}
+.tt-logo{width:28px;height:32px;flex-shrink:0;overflow:visible}
+.tt-wordmark{font-size:17px;font-weight:700;letter-spacing:-.4px;color:var(--text)}
+.tt-wordmark em{font-style:normal;color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:.15rem;margin-left:.5rem}
+.nav-links a{color:var(--text2);font-size:13.5px;padding:6px 10px;border-radius:var(--radius);transition:color .2s,background .2s;white-space:nowrap}
+.nav-links a:hover{color:var(--text);background:var(--bg3);text-decoration:none}
+.nav-links a.active{color:var(--text);background:var(--bg3)}
+.nav-spacer{flex:1}
+.nav-search{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:6px 12px;width:210px;transition:border-color .2s,width .3s}
+.nav-search:focus-within{border-color:var(--accent);width:260px}
+.nav-search i{color:var(--text3);font-size:16px;flex-shrink:0}
+.nav-search input{background:none;border:none;outline:none;color:var(--text);font-size:13px;width:100%}
+.nav-search input::placeholder{color:var(--text3)}
+.nav-btn{background:var(--accent2);color:#fff;border:none;border-radius:var(--radius);padding:7px 14px;font-size:13px;font-weight:500;transition:opacity .2s;white-space:nowrap}
+.nav-btn:hover{opacity:.85}
+.hamburger{display:none;background:none;border:none;color:var(--text);font-size:22px;padding:4px;flex-shrink:0}
+.mobile-menu{display:none;position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;z-index:190;background:var(--bg);padding:1rem 1.25rem;overflow-y:auto;flex-direction:column;gap:.25rem;border-top:1px solid var(--border)}
+.mobile-menu.open{display:flex}
+.mobile-menu a{color:var(--text2);padding:11px 14px;border-radius:var(--radius);font-size:15px;display:flex;align-items:center;gap:10px}
+.mobile-menu a:hover{background:var(--bg3);color:var(--text);text-decoration:none}
+.mobile-menu a i{font-size:18px}
+.mobile-search{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;margin-bottom:.75rem}
+.mobile-search i{color:var(--text3)}
+.mobile-search input{background:none;border:none;outline:none;color:var(--text);font-size:14px;width:100%}
+
+.page{display:none;min-height:calc(100vh - var(--nav-h))}
+.page.active{display:block}
+.container{max-width:1200px;margin:0 auto;padding:0 1.5rem}
+
+.hero{padding:4rem 1.5rem 3rem;max-width:860px;margin:0 auto;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--text2);margin-bottom:1.25rem}
+.hero-badge span{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:clamp(2rem,5vw,3.4rem);font-weight:700;line-height:1.15;margin-bottom:1.1rem}
+.hero h1 em{color:var(--accent);font-style:normal}
+.hero p{color:var(--text2);font-size:17px;line-height:1.7;margin-bottom:1.75rem;max-width:600px;margin-left:auto;margin-right:auto}
+.hero-btns{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center}
+
+.btn-primary{background:var(--accent2);color:#fff;border:none;border-radius:var(--radius);padding:10px 20px;font-size:14px;font-weight:500;transition:opacity .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn-primary:hover{opacity:.85}
+.btn-secondary{background:none;color:var(--text);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 20px;font-size:14px;font-weight:500;transition:background .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn-secondary:hover{background:var(--bg3)}
+
+.section{padding:2.5rem 0}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.5rem}
+.section-title{font-size:18px;font-weight:600;display:flex;align-items:center;gap:8px}
+.section-title i{color:var(--accent);font-size:20px}
+.section-link{font-size:13px;color:var(--accent);display:flex;align-items:center;gap:4px}
+.section-link:hover{text-decoration:none;opacity:.8}
+
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;transition:border-color .2s,transform .2s}
+.card:hover{border-color:var(--border2)}
+.card-hover:hover{transform:translateY(-2px)}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+.card-grid-4{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+
+.lang-icon{width:44px;height:44px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:.75rem;font-weight:700;flex-shrink:0}
+.lang-name{font-size:16px;font-weight:600;margin-bottom:4px}
+.lang-desc{font-size:13px;color:var(--text2);margin-bottom:.75rem;line-height:1.5}
+.tag{display:inline-flex;align-items:center;gap:4px;background:var(--bg3);color:var(--text2);font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid var(--border)}
+.tag-list{display:flex;flex-wrap:wrap;gap:4px}
+
+.news-card{display:flex;flex-direction:column;gap:.5rem}
+.news-cat{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.news-title{font-size:15px;font-weight:600;line-height:1.4;color:var(--text)}
+.news-title:hover{color:var(--accent);text-decoration:none}
+.news-meta{display:flex;align-items:center;gap:1rem;font-size:12px;color:var(--text3);flex-wrap:wrap}
+.news-summary{font-size:13px;color:var(--text2);line-height:1.6}
+.news-actions{display:flex;align-items:center;gap:.5rem;margin-top:.5rem;flex-wrap:wrap}
+.icon-btn{background:none;border:1px solid transparent;border-radius:var(--radius);padding:5px 8px;color:var(--text3);font-size:12px;display:inline-flex;align-items:center;gap:4px;transition:all .2s;cursor:pointer}
+.icon-btn:hover{color:var(--text);background:var(--bg3);border-color:var(--border)}
+.icon-btn.liked{color:var(--orange)}
+.icon-btn i{font-size:15px}
+
+.post-card{display:flex;gap:.75rem}
+.post-votes{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:40px}
+.vote-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:14px;transition:all .2s;cursor:pointer}
+.vote-btn:hover,.vote-btn.active{color:var(--accent);border-color:var(--accent);background:var(--accent-glow)}
+.vote-count{font-size:13px;font-weight:600;color:var(--text2)}
+.post-content{flex:1;min-width:0}
+.post-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px;cursor:pointer}
+.post-title:hover{color:var(--accent)}
+.post-meta{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.avatar{width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.community-badge{font-size:11px;color:var(--accent);background:var(--accent-glow);padding:2px 8px;border-radius:20px;border:1px solid rgba(88,166,255,.3)}
+
+.code-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin:1rem 0}
+.code-header{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid var(--border);background:var(--bg4)}
+.code-lang{font-size:12px;color:var(--text3);font-family:var(--mono)}
+.copy-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:11px;color:var(--text3);transition:all .2s;cursor:pointer}
+.copy-btn:hover{color:var(--text);border-color:var(--border2)}
+.copy-btn.copied{color:var(--green);border-color:var(--green)}
+pre{padding:1rem 1.25rem;overflow-x:auto;font-size:13px;line-height:1.7}
+code{font-family:var(--mono);color:var(--text)}
+.kw{color:#ff7b72}.fn{color:#d2a8ff}.str{color:#a5d6ff}
+.cm{color:#8b949e;font-style:italic}.nc{color:#79c0ff}
+
+.lang-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - var(--nav-h))}
+.lang-sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:1.5rem 0;position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));overflow-y:auto}
+.lang-sidebar-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);padding:.5rem 1rem}
+.lang-sidebar a{display:block;padding:7px 1rem;font-size:13px;color:var(--text2);transition:color .2s,background .2s}
+.lang-sidebar a:hover{color:var(--text);background:var(--bg3);text-decoration:none}
+.lang-sidebar a.active{color:var(--accent);background:var(--accent-glow);border-left:2px solid var(--accent);padding-left:calc(1rem - 2px)}
+.lang-main{padding:2rem;max-width:860px}
+.lang-main h1{font-size:2rem;font-weight:700;margin-bottom:.5rem}
+.lang-main h2{font-size:1.2rem;font-weight:600;margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.lang-main p{color:var(--text2);line-height:1.8;margin-bottom:1rem}
+.lang-main ul{color:var(--text2);line-height:1.8;margin:.5rem 0 1rem 1.5rem}
+.lang-main li{margin-bottom:4px}
+.inline-code{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-family:var(--mono);font-size:13px;color:var(--text)}
+
+.news-layout{display:grid;grid-template-columns:190px 1fr 270px;gap:2rem}
+.filter-group{margin-bottom:1.5rem}
+.filter-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:.75rem}
+.filter-item{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13px;color:var(--text2);cursor:pointer;transition:color .2s}
+.filter-item:hover{color:var(--text)}
+.filter-item input{accent-color:var(--accent)}
+.filter-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+.ai-card{background:linear-gradient(135deg,var(--bg2) 0%,var(--bg3) 100%);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;position:relative;overflow:hidden;transition:border-color .2s,transform .2s}
+.ai-card:hover{border-color:rgba(88,166,255,.4);transform:translateY(-2px)}
+.ai-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent2),var(--purple))}
+.ai-icon{width:44px;height:44px;background:var(--accent-glow);border:1px solid rgba(88,166,255,.3);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--accent);margin-bottom:1rem}
+.ai-title{font-size:16px;font-weight:600;margin-bottom:.5rem}
+.ai-desc{font-size:13px;color:var(--text2);line-height:1.6}
+
+.ai-response{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-top:1rem;font-size:13.5px;line-height:1.8;color:var(--text2)}
+.ai-response strong{color:var(--text)}
+.ai-response code{background:var(--bg4);padding:1px 6px;border-radius:4px;font-family:var(--mono);font-size:12px;color:var(--accent)}
+.ai-response ul{margin:.5rem 0 .5rem 1.25rem}
+.ai-response li{margin-bottom:4px}
+.ai-loading{display:flex;align-items:center;gap:10px;color:var(--text3);font-size:13px;padding:1rem}
+.ai-dots span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);animation:bounce 1.2s infinite;margin:0 2px}
+.ai-dots span:nth-child(2){animation-delay:.2s}
+.ai-dots span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+
+.dash-layout{display:grid;grid-template-columns:240px 1fr;gap:2rem}
+.user-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;margin-bottom:1rem}
+.user-avatar{width:72px;height:72px;border-radius:50%;background:var(--accent2);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;margin:0 auto .75rem;color:#fff}
+.user-name{font-size:16px;font-weight:600}
+.user-handle{font-size:13px;color:var(--text2)}
+.user-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:1rem}
+.user-stat{text-align:center}
+.user-stat .n{font-size:18px;font-weight:700;color:var(--accent)}
+.user-stat .l{font-size:11px;color:var(--text3)}
+.dash-nav a{display:flex;align-items:center;gap:8px;padding:8px 10px;font-size:14px;color:var(--text2);border-radius:var(--radius);transition:all .2s;margin-bottom:2px}
+.dash-nav a:hover{color:var(--text);background:var(--bg3);text-decoration:none}
+.dash-nav a.active{color:var(--accent);background:var(--accent-glow)}
+.progress-bar{background:var(--bg3);border-radius:4px;height:6px;overflow:hidden;margin-top:4px}
+.progress-bar-fill{height:100%;border-radius:4px;background:var(--accent2);transition:width .5s}
+.badge-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-green{background:rgba(63,185,80,.15);color:var(--green);border:1px solid rgba(63,185,80,.3)}
+.badge-blue{background:var(--accent-glow);color:var(--accent);border:1px solid rgba(88,166,255,.3)}
+.badge-purple{background:rgba(188,140,255,.15);color:var(--purple);border:1px solid rgba(188,140,255,.3)}
+.badge-orange{background:rgba(247,129,102,.15);color:var(--orange);border:1px solid rgba(247,129,102,.3)}
+
+.xp-bar-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem}
+.xp-bar-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
+.xp-bar{height:10px;background:var(--bg3);border-radius:5px;overflow:hidden}
+.xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--purple));border-radius:5px;transition:width .5s}
+
+.trending-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border)}
+.trending-item:last-child{border-bottom:none}
+.trending-num{font-size:22px;font-weight:700;color:var(--bg4);min-width:28px}
+.trending-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.4;cursor:pointer}
+.trending-title:hover{color:var(--accent)}
+.trending-meta{font-size:11px;color:var(--text3);margin-top:2px}
+
+.search-bar{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:1.5rem;transition:border-color .2s}
+.search-bar:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.search-bar i{font-size:20px;color:var(--text3)}
+.search-bar input{background:none;border:none;outline:none;color:var(--text);font-size:16px;flex:1}
+.search-bar input::placeholder{color:var(--text3)}
+.search-filters{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.filter-chip{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:13px;color:var(--text2);cursor:pointer;transition:all .2s}
+.filter-chip:hover,.filter-chip.active{background:var(--accent-glow);border-color:rgba(88,166,255,.5);color:var(--accent)}
+
+.newsletter{background:linear-gradient(135deg,#0d1b2e 0%,#0d1117 100%);border:1px solid rgba(88,166,255,.2);border-radius:var(--radius-lg);padding:1.5rem;text-align:center}
+.newsletter h3{font-size:18px;font-weight:700;margin-bottom:.5rem}
+.newsletter p{color:var(--text2);font-size:13px;margin-bottom:1rem}
+.nl-form{display:flex;gap:.5rem}
+.nl-form input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;font-size:13px;color:var(--text);outline:none;transition:border-color .2s;min-width:0}
+.nl-form input:focus{border-color:var(--accent)}
+.nl-form button{background:var(--accent2);border:none;border-radius:var(--radius);padding:9px 16px;color:#fff;font-size:13px;font-weight:500;white-space:nowrap;cursor:pointer}
+.nl-form button:hover{opacity:.85}
+
+.tabs{display:flex;gap:.25rem;border-bottom:1px solid var(--border);margin-bottom:1.5rem;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{background:none;border:none;border-bottom:2px solid transparent;padding:8px 14px;font-size:14px;color:var(--text2);cursor:pointer;transition:all .2s;margin-bottom:-1px;white-space:nowrap}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+.notice{background:var(--accent-glow);border:1px solid rgba(88,166,255,.3);border-radius:var(--radius);padding:10px 14px;font-size:13px;color:var(--text2);display:flex;gap:8px;align-items:flex-start}
+.notice i{flex-shrink:0;margin-top:2px}
+.notice-warn{background:rgba(210,153,34,.12);border-color:rgba(210,153,34,.3)}
+.notice-success{background:rgba(63,185,80,.12);border-color:rgba(63,185,80,.3)}
+.notice-error{background:rgba(247,129,102,.12);border-color:rgba(247,129,102,.3)}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:1.5rem;max-width:480px;width:100%;max-height:90vh;overflow-y:auto}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
+.modal-title{font-size:17px;font-weight:600}
+
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem 1.5rem 1.5rem;margin-top:3rem}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2rem}
+.footer-col h4{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:.75rem}
+.footer-col a{display:block;font-size:13px;color:var(--text2);margin-bottom:6px}
+.footer-col a:hover{color:var(--text);text-decoration:none}
+.footer-bottom{max-width:1200px;margin:1.5rem auto 0;border-top:1px solid var(--border);padding-top:1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;font-size:12px;color:var(--text3)}
+
+.flex{display:flex}.items-center{align-items:center}
+.gap-2{gap:.5rem}.gap-3{gap:.75rem}
+.mt-2{margin-top:.5rem}.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}
+.text-sm{font-size:13px}.text-xs{font-size:11px}
+.text-muted{color:var(--text2)}.text-accent{color:var(--accent)}
+.text-green{color:var(--green)}.text-orange{color:var(--orange)}.text-purple{color:var(--purple)}
+.fw-600{font-weight:600}
+.divider{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
+.two-col{display:grid;grid-template-columns:1fr 320px;gap:2rem;align-items:start}
+.form-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;color:var(--text);font-size:14px;outline:none;transition:border-color .2s}
+.form-input:focus{border-color:var(--accent)}
+.form-label{font-size:13px;color:var(--text2);display:block;margin-bottom:6px}
+.form-group{margin-bottom:1rem}
+textarea.form-input{resize:vertical;font-family:var(--font)}
+textarea.mono-f{font-family:var(--mono);font-size:13px}
+
+@media(max-width:1100px){.news-layout{grid-template-columns:1fr 260px}}
+@media(max-width:900px){
+  .news-layout{grid-template-columns:1fr}
+  .lang-layout{grid-template-columns:1fr}
+  .lang-sidebar{display:none}
+  .dash-layout{grid-template-columns:1fr}
+  .nav-links,.nav-search{display:none}
+  .hamburger{display:flex}
+  .two-col{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .container{padding:0 1rem}
+  .hero{padding:2rem 1rem 1.5rem}
+  .hero h1{font-size:1.85rem}
+  .card-grid,.card-grid-4{grid-template-columns:1fr}
+  .nl-form{flex-direction:column}
+  .post-card{flex-direction:column;gap:.5rem}
+  .post-votes{flex-direction:row;align-items:center}
+  .hero-btns{justify-content:center}
+  footer{padding:2rem 1rem 1rem}
+  .lang-main{padding:1.25rem}
+}
+@media(max-width:420px){.navbar{padding:0 1rem}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-logo" onclick="showPage('home')">
+    <div style="width:36px;height:36px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 0 1.5px rgba(168,85,247,0.25)">
+      <svg style="width:20px;height:24px" viewBox="0 0 38 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="TechTribe logo">
+        <defs>
+          <linearGradient id="ttbar" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#a855f7"/>
+            <stop offset="100%" stop-color="#7c3aed"/>
+          </linearGradient>
+          <linearGradient id="ttstem1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1e1b4b"/>
+            <stop offset="100%" stop-color="#312e81"/>
+          </linearGradient>
+          <linearGradient id="ttstem2" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#4338ca"/>
+            <stop offset="100%" stop-color="#6d28d9"/>
+          </linearGradient>
+        </defs>
+        <polygon points="2,4 36,4 34,11 4,11" fill="url(#ttbar)"/>
+        <polygon points="14,11 20,11 20,36 13,42 12,36" fill="url(#ttstem1)"/>
+        <polygon points="20,11 24,11 24,34 20,36" fill="url(#ttstem2)" opacity=".85"/>
+        <polygon points="20,28 24,34 20,36" fill="#1e1b4b" opacity=".4"/>
+      </svg>
+    </div>
+    <span class="tt-wordmark">Tech<em>Tribe</em></span>
+  </div>
+  <div class="nav-links">
+    <a href="#" class="active" onclick="showPage('home',this);return false">Home</a>
+    <a href="#" onclick="showPage('languages',this);return false">Languages</a>
+    <a href="#" onclick="showPage('news',this);return false">News</a>
+    <a href="#" onclick="showPage('community',this);return false">Community</a>
+    <a href="#" onclick="showPage('ai',this);return false">AI Tools</a>
+    <a href="#" onclick="showPage('dashboard',this);return false">Dashboard</a>
+  </div>
+  <div class="nav-spacer"></div>
+  <div class="nav-search"><i class="ti ti-search"></i><input type="text" placeholder="Search..." id="globalSearch" onkeyup="handleSearch(event)" aria-label="Search TechTribe"></div>
+  <button class="nav-btn" id="navAuthBtn" onclick="openModal('auth-modal')">Sign In</button>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div style="display:flex;align-items:center;gap:10px;padding:4px 0 12px;border-bottom:1px solid var(--border);margin-bottom:4px">
+    <div style="width:36px;height:36px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 0 1.5px rgba(168,85,247,0.25)">
+      <svg width="20" height="24" viewBox="0 0 38 42" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="ttbarm" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#a855f7"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient>
+          <linearGradient id="tts1m" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e1b4b"/><stop offset="100%" stop-color="#312e81"/></linearGradient>
+          <linearGradient id="tts2m" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4338ca"/><stop offset="100%" stop-color="#6d28d9"/></linearGradient>
+        </defs>
+        <polygon points="2,4 36,4 34,11 4,11" fill="url(#ttbarm)"/>
+        <polygon points="14,11 20,11 20,36 13,42 12,36" fill="url(#tts1m)"/>
+        <polygon points="20,11 24,11 24,34 20,36" fill="url(#tts2m)" opacity=".85"/>
+        <polygon points="20,28 24,34 20,36" fill="#1e1b4b" opacity=".4"/>
+      </svg>
+    </div>
+    <span style="font-size:17px;font-weight:700;color:var(--text);letter-spacing:-.4px">Tech<span style="color:var(--accent)">Tribe</span></span>
+  </div>
+  <div class="mobile-search"><i class="ti ti-search"></i><input type="text" placeholder="Search TechTribe..." id="mobileSearch" onkeyup="handleMobileSearch(event)"></div>
+  <a href="#" onclick="showPage('home');toggleMenu();return false"><i class="ti ti-home"></i> Home</a>
+  <a href="#" onclick="showPage('languages');toggleMenu();return false"><i class="ti ti-code"></i> Languages</a>
+  <a href="#" onclick="showPage('news');toggleMenu();return false"><i class="ti ti-news"></i> News</a>
+  <a href="#" onclick="showPage('community');toggleMenu();return false"><i class="ti ti-users"></i> Community</a>
+  <a href="#" onclick="showPage('ai');toggleMenu();return false"><i class="ti ti-robot"></i> AI Tools</a>
+  <a href="#" onclick="showPage('dashboard');toggleMenu();return false"><i class="ti ti-user"></i> Dashboard</a>
+  <div class="divider"></div>
+  <a href="#" id="mobileAuthLink" onclick="openModal('auth-modal');toggleMenu();return false"><i class="ti ti-login"></i> Sign In / Sign Up</a>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Welcome to TechTribe</div><button class="icon-btn" onclick="closeModal('auth-modal')"><i class="ti ti-x"></i></button></div>
+    <div class="tabs" style="margin-bottom:1.5rem">
+      <button class="tab-btn active" onclick="switchModalTab(this,'signin')">Sign In</button>
+      <button class="tab-btn" onclick="switchModalTab(this,'signup')">Create Account</button>
+    </div>
+    <div id="modal-signin" class="tab-panel active">
+      <div class="form-group"><label class="form-label">Email or Username</label><input type="text" id="signinEmail" class="form-input" placeholder="you@example.com"></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" id="signinPassword" class="form-input" placeholder="••••••••"></div>
+      <button class="btn-primary" id="signinSubmitBtn" style="width:100%;justify-content:center;margin-top:.5rem" onclick="doSignIn()"><i class="ti ti-login"></i> Sign In</button>
+      <p class="text-muted text-sm" style="text-align:center;margin-top:1rem">No account? <a href="#" onclick="switchModalTabByName('signup');return false">Create one free</a></p>
+    </div>
+    <div id="modal-signup" class="tab-panel">
+      <div class="form-group"><label class="form-label">Display Name</label><input type="text" id="signupName" class="form-input" placeholder="Your Name"></div>
+      <div class="form-group"><label class="form-label">Username</label><input type="text" id="signupUsername" class="form-input" placeholder="username"></div>
+      <div class="form-group"><label class="form-label">Email</label><input type="email" id="signupEmail" class="form-input" placeholder="you@example.com"></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" id="signupPassword" class="form-input" placeholder="At least 8 characters, upper/lower/digit/symbol"></div>
+      <button class="btn-primary" id="signupSubmitBtn" style="width:100%;justify-content:center;margin-top:.5rem" onclick="doSignUp()"><i class="ti ti-user-plus"></i> Create Account Free</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HOME PAGE ==================== -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-badge"><span></span> Live &amp; updated daily</div>
+    <h1>Learn. Build. <em>Discuss.</em></h1>
+    <p>Your all-in-one hub for programming documentation, AI &amp; tech news, and a thriving developer community — powered by real AI tools.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="showPage('languages')"><i class="ti ti-code"></i> Explore Languages</button>
+      <button class="btn-secondary" onclick="showPage('community')"><i class="ti ti-users"></i> Join Community</button>
+      <button class="btn-secondary" onclick="showPage('ai')"><i class="ti ti-sparkles"></i> Try AI Tools</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <section class="section">
+      <div class="section-header">
+        <div class="section-title"><i class="ti ti-code"></i> Popular Languages</div>
+        <a href="#" class="section-link" onclick="showPage('languages');return false">View all <i class="ti ti-arrow-right"></i></a>
+      </div>
+      <div class="card-grid-4">
+        <div class="card card-hover" onclick="openLang('python')" style="cursor:pointer">
+          <div class="lang-icon" style="background:rgba(255,215,0,.12);color:#ffd700">Py</div>
+          <div class="lang-name">Python</div><div class="lang-desc">Versatile, readable. Perfect for AI/ML, web, and automation.</div>
+          <div class="tag-list"><span class="tag">Beginner</span><span class="tag">AI/ML</span><span class="tag">v3.12</span></div>
+        </div>
+        <div class="card card-hover" onclick="openLang('javascript')" style="cursor:pointer">
+          <div class="lang-icon" style="background:rgba(247,220,0,.12);color:#f7dc00">JS</div>
+          <div class="lang-name">JavaScript</div><div class="lang-desc">The language of the web. Powers front-end and back-end apps.</div>
+          <div class="tag-list"><span class="tag">Web</span><span class="tag">Node.js</span><span class="tag">ES2024</span></div>
+        </div>
+        <div class="card card-hover" onclick="openLang('rust')" style="cursor:pointer">
+          <div class="lang-icon" style="background:rgba(247,129,102,.12);color:var(--orange)">Rs</div>
+          <div class="lang-name">Rust</div><div class="lang-desc">Systems programming with memory safety and blazing performance.</div>
+          <div class="tag-list"><span class="tag">Systems</span><span class="tag">Performance</span><span class="tag">v1.78</span></div>
+        </div>
+        <div class="card card-hover" onclick="openLang('typescript')" style="cursor:pointer">
+          <div class="lang-icon" style="background:rgba(88,166,255,.12);color:var(--accent)">TS</div>
+          <div class="lang-name">TypeScript</div><div class="lang-desc">JavaScript with static typing — safer, scalable code.</div>
+          <div class="tag-list"><span class="tag">Web</span><span class="tag">Typed</span><span class="tag">v5.4</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="two-col" id="home-two-col">
+      <div>
+        <section class="section">
+          <div class="section-header">
+            <div class="section-title"><i class="ti ti-news"></i> Latest News</div>
+            <a href="#" class="section-link" onclick="showPage('news');return false">All news <i class="ti ti-arrow-right"></i></a>
+          </div>
+          <div id="home-news-preview" style="display:flex;flex-direction:column;gap:1rem">
+            <div class="card news-card">
+              <div style="display:flex;gap:.5rem;align-items:center"><span class="news-cat" style="color:var(--purple)">🤖 AI</span><span class="news-meta"><i class="ti ti-clock"></i> 3 min</span></div>
+              <a href="#" class="news-title" onclick="return false">Claude 4 Sets New Benchmark in Reasoning and Code Generation</a>
+              <div class="news-summary">Anthropic's latest model demonstrates significant improvements across mathematical reasoning and multi-step code generation, outperforming previous versions by a substantial margin.</div>
+              <div class="news-actions">
+                <button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> 142</button>
+                <button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i></button>
+                <button class="icon-btn" onclick="shareItem(this)"><i class="ti ti-share"></i></button>
+              </div>
+            </div>
+            <div class="card news-card">
+              <div style="display:flex;gap:.5rem;align-items:center"><span class="news-cat" style="color:var(--accent)">💻 Dev</span><span class="news-meta"><i class="ti ti-clock"></i> 5 min</span></div>
+              <a href="#" class="news-title" onclick="return false">Rust Named Most Admired Language for the 9th Year in a Row</a>
+              <div class="news-summary">Stack Overflow's annual developer survey reveals Rust continues to dominate developer satisfaction, with 83% of users saying they'd choose it again.</div>
+              <div class="news-actions">
+                <button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> 98</button>
+                <button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i></button>
+                <button class="icon-btn" onclick="shareItem(this)"><i class="ti ti-share"></i></button>
+              </div>
+            </div>
+            <div class="card news-card">
+              <div style="display:flex;gap:.5rem;align-items:center"><span class="news-cat" style="color:var(--green)">🚀 Startups</span><span class="news-meta"><i class="ti ti-clock"></i> 2 min</span></div>
+              <a href="#" class="news-title" onclick="return false">Y Combinator W24 Batch: 70% of Startups Using AI in Core Product</a>
+              <div class="news-summary">This season's batch reveals a record number of AI-native startups building tooling to help developers ship faster using large language models.</div>
+              <div class="news-actions">
+                <button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> 67</button>
+                <button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i></button>
+                <button class="icon-btn" onclick="shareItem(this)"><i class="ti ti-share"></i></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-header">
+            <div class="section-title"><i class="ti ti-messages"></i> Hot Discussions</div>
+            <a href="#" class="section-link" onclick="showPage('community');return false">Community <i class="ti ti-arrow-right"></i></a>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:.75rem">
+            <div class="card post-card">
+              <div class="post-votes"><button class="vote-btn" onclick="vote(this,1)"><i class="ti ti-chevron-up"></i></button><span class="vote-count">248</span><button class="vote-btn" onclick="vote(this,-1)"><i class="ti ti-chevron-down"></i></button></div>
+              <div class="post-content">
+                <div class="post-title">How do I efficiently handle 10 million database records in Python without running out of memory?</div>
+                <div class="post-meta"><span class="community-badge">r/Python</span><span><div class="avatar" style="background:rgba(88,166,255,.2);color:var(--accent)">RK</div> ravi_k</span><span><i class="ti ti-message-circle"></i> 47</span><span>2h ago</span></div>
+              </div>
+            </div>
+            <div class="card post-card">
+              <div class="post-votes"><button class="vote-btn" onclick="vote(this,1)"><i class="ti ti-chevron-up"></i></button><span class="vote-count">189</span><button class="vote-btn" onclick="vote(this,-1)"><i class="ti ti-chevron-down"></i></button></div>
+              <div class="post-content">
+                <div class="post-title">Just shipped my first open source CLI tool in Rust — here's what I learned</div>
+                <div class="post-meta"><span class="community-badge">r/OpenSource</span><span><div class="avatar" style="background:rgba(247,129,102,.2);color:var(--orange)">AM</div> a_mehta</span><span><i class="ti ti-message-circle"></i> 31</span><span>5h ago</span></div>
+              </div>
+            </div>
+            <div class="card post-card">
+              <div class="post-votes"><button class="vote-btn" onclick="vote(this,1)"><i class="ti ti-chevron-up"></i></button><span class="vote-count">134</span><button class="vote-btn" onclick="vote(this,-1)"><i class="ti ti-chevron-down"></i></button></div>
+              <div class="post-content">
+                <div class="post-title">Is React still the best choice for new projects in 2025, or should I look at alternatives?</div>
+                <div class="post-meta"><span class="community-badge">r/WebDev</span><span><div class="avatar" style="background:rgba(63,185,80,.2);color:var(--green)">SJ</div> sara_j</span><span><i class="ti ti-message-circle"></i> 89</span><span>Yesterday</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Sidebar -->
+      <div>
+        <div class="card mb-4">
+          <div class="section-title" style="font-size:15px;margin-bottom:1rem"><i class="ti ti-trending-up"></i> Trending Today</div>
+          <div class="trending-item"><div class="trending-num">01</div><div><div class="trending-title" onclick="showPage('news')">GPT-5 Technical Report Released</div><div class="trending-meta">AI · 4.2k views</div></div></div>
+          <div class="trending-item"><div class="trending-num">02</div><div><div class="trending-title" onclick="openLang('python')">Python 3.13 Release Notes</div><div class="trending-meta">Python · 3.1k views</div></div></div>
+          <div class="trending-item"><div class="trending-num">03</div><div><div class="trending-title" onclick="showPage('news')">GitHub Copilot Goes Free</div><div class="trending-meta">Dev Tools · 2.9k views</div></div></div>
+          <div class="trending-item"><div class="trending-num">04</div><div><div class="trending-title" onclick="openLang('javascript')">Deno 2.0 Production Ready</div><div class="trending-meta">JavaScript · 2.1k views</div></div></div>
+        </div>
+
+        <div class="newsletter">
+          <h3>📬 Weekly Digest</h3>
+          <p>Top 10 AI &amp; dev stories every Monday morning.</p>
+          <div class="nl-form"><input type="email" placeholder="your@email.com" id="nlEmail"><button onclick="subscribe()">Subscribe</button></div>
+          <div id="nl-success" style="display:none;color:var(--green);font-size:13px;margin-top:.5rem"><i class="ti ti-check"></i> You're in!</div>
+        </div>
+
+        <div class="card" style="margin-top:1rem">
+          <div class="section-title" style="font-size:15px;margin-bottom:1rem"><i class="ti ti-flame"></i> Your Streak</div>
+          <div style="text-align:center;padding:.5rem 0">
+            <div style="font-size:3rem">🔥</div>
+            <div style="font-size:2rem;font-weight:700;color:var(--orange)">7</div>
+            <div class="text-muted text-sm">day streak</div>
+          </div>
+          <div style="background:var(--bg3);border-radius:var(--radius);padding:.75rem;margin-top:.75rem">
+            <div class="xp-bar-label"><span class="text-sm text-muted">Level 5</span><span class="text-sm text-accent">1240 / 2000 XP</span></div>
+            <div class="xp-bar"><div class="xp-bar-fill" style="width:62%"></div></div>
+          </div>
+        </div>
+
+        <!-- Quick AI Ask -->
+        <div class="card" style="margin-top:1rem;background:linear-gradient(135deg,#0d1b2e,var(--bg2));border-color:rgba(88,166,255,.2)">
+          <div class="section-title" style="font-size:14px;margin-bottom:.75rem"><i class="ti ti-sparkles" style="color:var(--purple)"></i> Quick AI Ask</div>
+          <input type="text" class="form-input" placeholder="Ask any coding question..." id="quickAskInput" onkeyup="if(event.key==='Enter')quickAsk()" style="font-size:13px">
+          <button class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem;font-size:13px" onclick="quickAsk()"><i class="ti ti-robot"></i> Ask AI</button>
+          <p style="font-size:11px;color:var(--text3);margin-top:.5rem;text-align:center">⬇ Download file &amp; open locally to use AI</p>
+          <div id="quickAskResult"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:.75rem">
+          <svg width="18" height="22" viewBox="0 0 38 42" fill="none" style="flex-shrink:0" aria-hidden="true">
+            <defs>
+              <linearGradient id="ftbar" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#a855f7"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient>
+              <linearGradient id="fts1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e1b4b"/><stop offset="100%" stop-color="#312e81"/></linearGradient>
+              <linearGradient id="fts2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4338ca"/><stop offset="100%" stop-color="#6d28d9"/></linearGradient>
+            </defs>
+            <polygon points="2,4 36,4 34,11 4,11" fill="url(#ftbar)"/>
+            <polygon points="14,11 20,11 20,36 13,42 12,36" fill="url(#fts1)"/>
+            <polygon points="20,11 24,11 24,34 20,36" fill="url(#fts2)" opacity=".85"/>
+            <polygon points="20,28 24,34 20,36" fill="#1e1b4b" opacity=".4"/>
+          </svg>
+          <span style="font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.3px">Tech<span style="color:var(--accent)">Tribe</span></span>
+        </div>
+        <a href="#">About Us</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Press</a>
+      </div>
+      <div class="footer-col"><h4>Learn</h4><a href="#" onclick="showPage('languages');return false">All Languages</a><a href="#">Tutorials</a><a href="#">Cheat Sheets</a><a href="#">Interview Prep</a></div>
+      <div class="footer-col"><h4>Community</h4><a href="#" onclick="showPage('community');return false">Discussions</a><a href="#">Projects</a><a href="#">Jobs Board</a><a href="#">Events</a></div>
+      <div class="footer-col"><h4>AI Tools</h4><a href="#" onclick="showPage('ai');return false">Code Explainer</a><a href="#" onclick="showPage('ai');return false">Quiz Generator</a><a href="#" onclick="showPage('ai');return false">Error Debugger</a><a href="#" onclick="showPage('ai');return false">Path Builder</a></div>
+      <div class="footer-col"><h4>Support</h4><a href="#">Help Center</a><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 TechTribe. Built for developers, by developers.</span>
+      <div style="display:flex;gap:1rem">
+        <a href="#" style="color:var(--text3)" aria-label="Twitter"><i class="ti ti-brand-twitter"></i></a>
+        <a href="#" style="color:var(--text3)" aria-label="GitHub"><i class="ti ti-brand-github"></i></a>
+        <a href="#" style="color:var(--text3)" aria-label="Discord"><i class="ti ti-brand-discord"></i></a>
+        <a href="#" style="color:var(--text3)" aria-label="LinkedIn"><i class="ti ti-brand-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+</div>
+<!-- ==================== LANGUAGES PAGE ==================== -->
+<div id="page-languages" class="page">
+  <div id="lang-list">
+    <div class="container" style="padding-top:2rem;padding-bottom:3rem">
+      <div class="section-header"><div class="section-title"><i class="ti ti-code"></i> Programming Languages</div></div>
+      <div class="notice mb-4"><i class="ti ti-info-circle"></i> Click any language to open full documentation with code examples and exercises.</div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem">
+        <button class="filter-chip active" onclick="filterLangs(this,'all')">All</button>
+        <button class="filter-chip" onclick="filterLangs(this,'beginner')">Beginner</button>
+        <button class="filter-chip" onclick="filterLangs(this,'web')">Web</button>
+        <button class="filter-chip" onclick="filterLangs(this,'systems')">Systems</button>
+        <button class="filter-chip" onclick="filterLangs(this,'mobile')">Mobile</button>
+        <button class="filter-chip" onclick="filterLangs(this,'data')">Data / AI</button>
+      </div>
+      <div class="card-grid" id="langGrid">
+        <div class="card card-hover" onclick="openLang('python')" style="cursor:pointer" data-cats="beginner,data,web"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem"><div class="lang-icon" style="background:rgba(255,215,0,.12);color:#ffd700;margin-bottom:0">Py</div><div><div class="lang-name">Python</div><div style="font-size:11px;color:var(--text3)">v3.12</div></div></div><div class="lang-desc">Simple syntax. Perfect for beginners, AI/ML, and web development.</div><div class="tag-list"><span class="tag">Beginner</span><span class="tag">AI/ML</span><span class="tag" style="background:rgba(63,185,80,.1);color:var(--green);border-color:rgba(63,185,80,.3)">🔥 Trending</span></div></div>
+        <div class="card card-hover" onclick="openLang('javascript')" style="cursor:pointer" data-cats="web,beginner"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem"><div class="lang-icon" style="background:rgba(247,220,0,.12);color:#f7dc00;margin-bottom:0">JS</div><div><div class="lang-name">JavaScript</div><div style="font-size:11px;color:var(--text3)">ES2024</div></div></div><div class="lang-desc">Language of the web — run in browsers, servers, and everywhere.</div><div class="tag-list"><span class="tag">Web</span><span class="tag">Full Stack</span><span class="tag">Node.js</span></div></div>
+        <div class="card card-hover" onclick="openLang('typescript')" style="cursor:pointer" data-cats="web"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem"><div class="lang-icon" style="background:rgba(88,166,255,.12);color:var(--accent);margin-bottom:0">TS</div><div><div class="lang-name">TypeScript</div><div style="font-size:11px;color:var(--text3)">v5.4</div></div></div><div class="lang-desc">JavaScript with type safety. Reduces runtime bugs and improves tooling.</div><div class="tag-list"><span class="tag">Typed</span><span class="tag">Web</span><span class="tag">Angular</span></div></div>
+        <div class="card card-hover" onclick="openLang('rust')" style="cursor:pointer" data-cats="systems"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem"><div class="lang-icon" style="background:rgba(247,129,102,.12);color:var(--orange);margin-bottom:0">Rs</div><div><div class="lang-name">Rust</div><div style="font-size:11px;color:var(--text3)">v1.78</div></div></div><div class="lang-desc">Systems-level performance with compile-time memory safety guarantees.</div><div class="tag-list"><span class="tag">Advanced</span><span class="tag">Systems</span><span class="tag">WebAssembly</span></div></div>
+        <div class="card card-hover" onclick="openLang('java')" style="cursor:pointer" data-cats="web,systems"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem"><div class="lang-icon" style="background:rgba(247,129,102,.08);color:#ff8c42;margin-bottom:0">Jv</div><div><div class="lang-name">Java</div><div style="font-size:11px;color:var(--text3)">v21 LTS</div></div></div><div class="lang-desc">Write once, run anywhere. Enterprise-grade OOP language.</div><div class="tag-list"><span class="tag">Enterprise</span><span class="tag">OOP</span><span class="tag">Backend</span></div></div>
+        <div class="card card-hover" onclick="openLang('go')" style="cursor:pointer" data-cats="web,systems"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem"><div class="lang-icon" style="background:rgba(57,211,83,.12);color:var(--teal);margin-bottom:0">Go</div><div><div class="lang-name">Go</div><div style="font-size:11px;color:var(--text3)">v1.22</div></div></div><div class="lang-desc">Simple, fast, built for concurrency. Google's language of choice.</div><div class="tag-list"><span class="tag">Backend</span><span class="tag">Cloud</span><span class="tag">Concurrency</span></div></div>
+        <div class="card card-hover" onclick="openLang('swift')" style="cursor:pointer" data-cats="mobile"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem"><div class="lang-icon" style="background:rgba(247,129,102,.1);color:#ff6b35;margin-bottom:0">Sw</div><div><div class="lang-name">Swift</div><div style="font-size:11px;color:var(--text3)">v5.10</div></div></div><div class="lang-desc">Apple's modern, safe, fast language for iOS and macOS.</div><div class="tag-list"><span class="tag">iOS</span><span class="tag">macOS</span><span class="tag">SwiftUI</span></div></div>
+        <div class="card card-hover" onclick="openLang('kotlin')" style="cursor:pointer" data-cats="mobile"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem"><div class="lang-icon" style="background:rgba(188,140,255,.12);color:var(--purple);margin-bottom:0">Kt</div><div><div class="lang-name">Kotlin</div><div style="font-size:11px;color:var(--text3)">v2.0</div></div></div><div class="lang-desc">Modern, expressive language for Android and multi-platform development.</div><div class="tag-list"><span class="tag">Android</span><span class="tag">JVM</span><span class="tag">Multiplatform</span></div></div>
+        <div class="card card-hover" onclick="openLang('cpp')" style="cursor:pointer" data-cats="systems"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem"><div class="lang-icon" style="background:rgba(88,166,255,.1);color:#5e9fff;margin-bottom:0;font-size:14px">C++</div><div><div class="lang-name">C++</div><div style="font-size:11px;color:var(--text3)">C++23</div></div></div><div class="lang-desc">High-performance language for systems, games, and embedded software.</div><div class="tag-list"><span class="tag">Advanced</span><span class="tag">Games</span><span class="tag">Systems</span></div></div>
+        <div class="card card-hover" onclick="openLang('sql')" style="cursor:pointer" data-cats="data,beginner"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem"><div class="lang-icon" style="background:rgba(210,153,34,.12);color:var(--yellow);margin-bottom:0;font-size:13px">SQL</div><div><div class="lang-name">SQL</div><div style="font-size:11px;color:var(--text3)">Standard</div></div></div><div class="lang-desc">Universal language for querying and managing relational databases.</div><div class="tag-list"><span class="tag">Databases</span><span class="tag">Data</span><span class="tag">Essential</span></div></div>
+        <div class="card card-hover" onclick="openLang('ruby')" style="cursor:pointer" data-cats="web,beginner"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem"><div class="lang-icon" style="background:rgba(247,129,102,.12);color:#e74c3c;margin-bottom:0">Rb</div><div><div class="lang-name">Ruby</div><div style="font-size:11px;color:var(--text3)">v3.3</div></div></div><div class="lang-desc">Developer happiness focused. Famous for Ruby on Rails.</div><div class="tag-list"><span class="tag">Web</span><span class="tag">Rails</span><span class="tag">Scripting</span></div></div>
+        <div class="card card-hover" onclick="openLang('dart')" style="cursor:pointer" data-cats="mobile,web"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem"><div class="lang-icon" style="background:rgba(0,188,212,.1);color:#00BCD4;margin-bottom:0">Dt</div><div><div class="lang-name">Dart</div><div style="font-size:11px;color:var(--text3)">v3.3</div></div></div><div class="lang-desc">Google's language for cross-platform apps with Flutter.</div><div class="tag-list"><span class="tag">Flutter</span><span class="tag">Mobile</span><span class="tag">Web</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div id="lang-detail" style="display:none">
+    <div class="lang-layout">
+      <nav class="lang-sidebar" id="langSidebar">
+        <div class="lang-sidebar-title">Contents</div>
+        <a href="#" class="active" onclick="return false">Introduction</a>
+        <a href="#" onclick="return false">Installation</a>
+        <a href="#" onclick="return false">Hello World</a>
+        <a href="#" onclick="return false">Variables</a>
+        <a href="#" onclick="return false">Data Types</a>
+        <a href="#" onclick="return false">Control Flow</a>
+        <a href="#" onclick="return false">Functions</a>
+        <a href="#" onclick="return false">Classes &amp; OOP</a>
+        <a href="#" onclick="return false">Error Handling</a>
+        <div class="lang-sidebar-title" style="margin-top:1rem">Advanced</div>
+        <a href="#" onclick="return false">Advanced Topics</a>
+        <a href="#" onclick="return false">Interview Questions</a>
+        <a href="#" onclick="return false">Cheat Sheet</a>
+      </nav>
+      <div class="lang-main" id="langMain"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== NEWS PAGE ==================== -->
+<div id="page-news" class="page">
+  <div class="container" style="padding-top:2rem;padding-bottom:3rem">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchNewsTab(this,'news-all')">All</button>
+      <button class="tab-btn" onclick="switchNewsTab(this,'news-ai')">🤖 AI</button>
+      <button class="tab-btn" onclick="switchNewsTab(this,'news-dev')">💻 Programming</button>
+      <button class="tab-btn" onclick="switchNewsTab(this,'news-sec')">🔐 Security</button>
+      <button class="tab-btn" onclick="switchNewsTab(this,'news-cloud')">☁️ Cloud</button>
+      <button class="tab-btn" onclick="switchNewsTab(this,'news-web')">🌐 Web</button>
+      <button class="tab-btn" onclick="switchNewsTab(this,'news-startups')">🚀 Startups</button>
+    </div>
+    <div id="newsStatusBar" style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:1rem;font-size:12px;color:var(--text3);flex-wrap:wrap">
+      <span id="newsLastUpdated"><i class="ti ti-refresh"></i> Loading latest news…</span>
+      <button class="icon-btn" onclick="refreshNewsData(true)"><i class="ti ti-refresh"></i> Refresh now</button>
+    </div>
+    <div class="news-layout">
+      <div id="newsFilterSidebar" style="padding-top:.5rem">
+        <div class="filter-group"><div class="filter-title">Date</div><div class="filter-item"><input type="radio" name="date" checked> Today</div><div class="filter-item"><input type="radio" name="date"> This week</div><div class="filter-item"><input type="radio" name="date"> This month</div></div>
+        <div class="filter-group"><div class="filter-title">Category</div><div class="filter-item"><div class="filter-dot" style="background:var(--purple)"></div>AI<input type="checkbox" checked style="margin-left:auto"></div><div class="filter-item"><div class="filter-dot" style="background:var(--accent)"></div>Programming<input type="checkbox" checked style="margin-left:auto"></div><div class="filter-item"><div class="filter-dot" style="background:var(--orange)"></div>Security<input type="checkbox" style="margin-left:auto"></div><div class="filter-item"><div class="filter-dot" style="background:var(--green)"></div>Cloud<input type="checkbox" style="margin-left:auto"></div></div>
+      </div>
+      <div>
+        <div id="news-all" class="tab-panel active" style="display:flex;flex-direction:column;gap:1rem">
+          <div class="card news-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem"><span class="news-cat" style="color:var(--purple)">🤖 Artificial Intelligence</span><div class="news-meta"><i class="ti ti-clock"></i> 4 min &nbsp;<i class="ti ti-calendar"></i> Today</div></div><a href="#" class="news-title" onclick="return false">OpenAI Releases o3-mini: Smaller Model, Comparable Reasoning</a><div class="news-summary">The new model targets cost-sensitive use cases while maintaining near-parity with o3 on most reasoning benchmarks. Available via API starting today.</div><div class="tag-list mb-4"><span class="tag">OpenAI</span><span class="tag">LLM</span><span class="tag">API</span></div><div class="news-actions"><button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> 312</button><button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i> Save</button><button class="icon-btn" onclick="shareItem(this)"><i class="ti ti-share"></i> Share</button><button class="icon-btn"><i class="ti ti-message-circle"></i> 54</button></div></div>
+          <div class="card news-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem"><span class="news-cat" style="color:var(--accent)">💻 Programming</span><div class="news-meta"><i class="ti ti-clock"></i> 6 min &nbsp;<i class="ti ti-calendar"></i> Yesterday</div></div><a href="#" class="news-title" onclick="return false">Node.js 22 LTS: What's New and Why You Should Upgrade</a><div class="news-summary">Node 22 enters LTS status with native test runner improvements, ESM support enhancements, and a V8 engine upgrade bringing up to 30% performance gains.</div><div class="tag-list mb-4"><span class="tag">Node.js</span><span class="tag">JavaScript</span><span class="tag">LTS</span></div><div class="news-actions"><button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> 201</button><button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i> Save</button><button class="icon-btn" onclick="shareItem(this)"><i class="ti ti-share"></i> Share</button><button class="icon-btn"><i class="ti ti-message-circle"></i> 29</button></div></div>
+          <div class="card news-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem"><span class="news-cat" style="color:var(--orange)">🔐 Security</span><div class="news-meta"><i class="ti ti-clock"></i> 3 min &nbsp;<i class="ti ti-calendar"></i> 2 days ago</div></div><a href="#" class="news-title" onclick="return false">Critical CVE in Popular npm Package Affects 2 Million Projects</a><div class="news-summary">A vulnerability in a widely-used JSON parsing library allows arbitrary code execution through specially crafted payloads. Patch immediately.</div><div class="tag-list mb-4"><span class="tag">npm</span><span class="tag">CVE</span><span class="tag">Security</span></div><div class="news-actions"><button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> 455</button><button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i> Save</button><button class="icon-btn" onclick="shareItem(this)"><i class="ti ti-share"></i> Share</button><button class="icon-btn"><i class="ti ti-message-circle"></i> 112</button></div></div>
+          <div class="card news-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem"><span class="news-cat" style="color:var(--green)">☁️ Cloud</span><div class="news-meta"><i class="ti ti-clock"></i> 5 min &nbsp;<i class="ti ti-calendar"></i> 3 days ago</div></div><a href="#" class="news-title" onclick="return false">AWS Cuts Lambda Pricing by 20% as Competition with Vercel Heats Up</a><div class="news-summary">Amazon announces a significant price reduction for Lambda invocations and compute time, responding to growing pressure from edge-computing platforms.</div><div class="tag-list mb-4"><span class="tag">AWS</span><span class="tag">Serverless</span><span class="tag">Cloud</span></div><div class="news-actions"><button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> 178</button><button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i> Save</button><button class="icon-btn" onclick="shareItem(this)"><i class="ti ti-share"></i> Share</button><button class="icon-btn"><i class="ti ti-message-circle"></i> 43</button></div></div>
+        </div>
+        <div id="news-ai" class="tab-panel"><div class="notice"><i class="ti ti-robot"></i> Showing AI news only.</div></div>
+        <div id="news-dev" class="tab-panel"><div class="notice"><i class="ti ti-code"></i> Showing Programming news only.</div></div>
+        <div id="news-sec" class="tab-panel"><div class="notice"><i class="ti ti-shield"></i> Showing Security news only.</div></div>
+        <div id="news-cloud" class="tab-panel"><div class="notice"><i class="ti ti-cloud"></i> Showing Cloud news only.</div></div>
+        <div id="news-web" class="tab-panel"><div class="notice"><i class="ti ti-world"></i> Showing Web news only.</div></div>
+        <div id="news-startups" class="tab-panel"><div class="notice"><i class="ti ti-rocket"></i> Showing Startup news only.</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="card"><div class="section-title" style="font-size:14px;margin-bottom:1rem"><i class="ti ti-fire"></i> Top This Week</div><div class="trending-item"><div class="trending-num">01</div><div><div class="trending-title">TypeScript 5.5 Removes 40% of Boilerplate</div><div class="trending-meta">12k views</div></div></div><div class="trending-item"><div class="trending-num">02</div><div><div class="trending-title">Gemini 2.0 Ultra Benchmarks</div><div class="trending-meta">9.8k views</div></div></div><div class="trending-item"><div class="trending-num">03</div><div><div class="trending-title">Linux 6.9 Kernel Performance</div><div class="trending-meta">7.2k views</div></div></div><div class="trending-item"><div class="trending-num">04</div><div><div class="trending-title">Bun 2.0 Replaces npm?</div><div class="trending-meta">5.4k views</div></div></div></div>
+        <div class="newsletter"><h3>📬 Daily Digest</h3><p>Top 5 stories in your inbox every morning.</p><div class="nl-form" style="flex-direction:column"><input type="email" placeholder="your@email.com"><button onclick="this.textContent='✓ Subscribed!';this.style.background='var(--green)'">Subscribe Free</button></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== COMMUNITY PAGE ==================== -->
+<div id="page-community" class="page">
+  <div class="container" style="padding-top:2rem;padding-bottom:3rem">
+    <div style="display:grid;grid-template-columns:1fr 280px;gap:2rem;align-items:start" id="communityGrid">
+      <div>
+        <div style="display:flex;gap:.75rem;margin-bottom:1.5rem;flex-wrap:wrap;align-items:center">
+          <button class="btn-primary" onclick="openNewPost()"><i class="ti ti-plus"></i> New Post</button>
+          <button class="filter-chip active" onclick="sortPosts(this,'hot')">🔥 Hot</button>
+          <button class="filter-chip" onclick="sortPosts(this,'new')">✨ New</button>
+          <button class="filter-chip" onclick="sortPosts(this,'top')">🏆 Top</button>
+          <button class="filter-chip" onclick="sortPosts(this,'rising')">📈 Rising</button>
+        </div>
+        <div id="newPostForm" style="display:none" class="card mb-4">
+          <div style="font-size:15px;font-weight:600;margin-bottom:1rem"><i class="ti ti-pencil" style="color:var(--accent)"></i> Create a Post</div>
+          <div class="form-group"><input type="text" id="postTitle" class="form-input" placeholder="Post title..."></div>
+          <div class="form-group"><select id="postCommunity" class="form-input"><option value="">Choose community...</option><option>r/Python</option><option>r/JavaScript</option><option>r/AI</option><option>r/WebDevelopment</option><option>r/CareerAdvice</option><option>r/OpenSource</option><option>r/General</option></select></div>
+          <div class="form-group"><textarea id="postBody" rows="4" class="form-input" placeholder="Share your question, project, or idea..."></textarea></div>
+          <div style="display:flex;gap:.5rem;justify-content:flex-end"><button class="btn-secondary" onclick="closeNewPost()">Cancel</button><button class="btn-primary" onclick="submitPost()"><i class="ti ti-send"></i> Post</button></div>
+        </div>
+        <div id="postList" style="display:flex;flex-direction:column;gap:.75rem">
+          <div class="text-muted text-sm" style="padding:1rem;text-align:center">Loading posts…</div>
+        </div>
+        <div style="text-align:center;margin-top:1.5rem"><button class="btn-secondary" id="loadMorePostsBtn" style="display:none" onclick="loadMoreCommunityPosts()"><i class="ti ti-refresh"></i> Load More</button></div>
+      </div>
+      <div>
+        <div class="card mb-4">
+          <div style="font-size:15px;font-weight:600;margin-bottom:1rem"><i class="ti ti-building-community" style="color:var(--accent)"></i> Communities</div>
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius)"><span>r/Python</span><span class="text-muted text-xs">12.4k</span></div>
+            <div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius)"><span>r/JavaScript</span><span class="text-muted text-xs">10.1k</span></div>
+            <div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius)"><span>r/AI</span><span class="text-muted text-xs">9.8k</span></div>
+            <div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius)"><span>r/WebDevelopment</span><span class="text-muted text-xs">8.2k</span></div>
+            <div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius)"><span>r/CareerAdvice</span><span class="text-muted text-xs">7.5k</span></div>
+            <div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius)"><span>r/OpenSource</span><span class="text-muted text-xs">5.9k</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-size:15px;font-weight:600;margin-bottom:1rem"><i class="ti ti-trophy" style="color:var(--yellow)"></i> Top Contributors</div>
+          <div style="display:flex;flex-direction:column;gap:.75rem">
+            <div style="display:flex;align-items:center;gap:10px"><div class="avatar" style="width:32px;height:32px;font-size:13px;background:rgba(255,215,0,.2);color:#ffd700">VN</div><div style="flex:1"><div style="font-size:13px;font-weight:500">vikram_n</div><div style="font-size:11px;color:var(--text3)">4,820 XP</div></div><span class="badge-pill badge-green">Expert</span></div>
+            <div style="display:flex;align-items:center;gap:10px"><div class="avatar" style="width:32px;height:32px;font-size:13px;background:rgba(88,166,255,.2);color:var(--accent)">PD</div><div style="flex:1"><div style="font-size:13px;font-weight:500">priya_d</div><div style="font-size:11px;color:var(--text3)">3,610 XP</div></div><span class="badge-pill badge-blue">Pro</span></div>
+            <div style="display:flex;align-items:center;gap:10px"><div class="avatar" style="width:32px;height:32px;font-size:13px;background:rgba(63,185,80,.2);color:var(--green)">MS</div><div style="flex:1"><div style="font-size:13px;font-weight:500">mansi_s</div><div style="font-size:11px;color:var(--text3)">2,990 XP</div></div><span class="badge-pill badge-purple">Builder</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== AI TOOLS PAGE ==================== -->
+<div id="page-ai" class="page">
+  <div class="container" style="padding-top:2rem;padding-bottom:3rem">
+    <div class="section-header"><div class="section-title"><i class="ti ti-robot"></i> AI-Powered Developer Tools</div></div>
+    <p class="text-muted" style="max-width:640px;margin-bottom:1rem">Real AI tools powered by Claude — code explanation, quizzes, debugging, learning paths, and more.</p>
+    <div class="notice notice-warn" style="margin-bottom:2rem;gap:12px">
+      <i class="ti ti-download" style="font-size:20px;color:var(--yellow);margin-top:0;flex-shrink:0"></i>
+      <div>
+        <strong style="color:var(--text)">Download required for AI features</strong><br>
+        <span style="font-size:12px">These tools make live API calls — they work when you <strong>download the file</strong> and open it in your browser (Chrome, Firefox, Edge). They cannot run inside the Claude.ai preview due to browser security restrictions.</span>
+      </div>
+    </div>
+    <div class="card-grid" style="margin-bottom:2rem">
+      <div class="ai-card" style="cursor:pointer" onclick="openAIPanel('code')"><div class="ai-icon"><i class="ti ti-code"></i></div><div class="ai-title">Code Explainer</div><div class="ai-desc">Paste any code snippet and get a clear, line-by-line explanation in plain English. Supports 30+ languages.</div><button class="btn-secondary" style="margin-top:1rem;font-size:13px"><i class="ti ti-arrow-right"></i> Try it</button></div>
+      <div class="ai-card" style="cursor:pointer" onclick="openAIPanel('debug')"><div class="ai-icon"><i class="ti ti-bug"></i></div><div class="ai-title">Error Debugger</div><div class="ai-desc">Paste your error or stack trace. Get the cause explained and a step-by-step fix with code examples.</div><button class="btn-secondary" style="margin-top:1rem;font-size:13px"><i class="ti ti-arrow-right"></i> Try it</button></div>
+      <div class="ai-card" style="cursor:pointer" onclick="openAIPanel('quiz')"><div class="ai-icon"><i class="ti ti-help"></i></div><div class="ai-title">Quiz Generator</div><div class="ai-desc">Get AI-generated multiple-choice quizzes for any language at any difficulty level. Instant feedback included.</div><button class="btn-secondary" style="margin-top:1rem;font-size:13px"><i class="ti ti-arrow-right"></i> Try it</button></div>
+      <div class="ai-card" style="cursor:pointer" onclick="openAIPanel('summary')"><div class="ai-icon"><i class="ti ti-article"></i></div><div class="ai-title">Article Summarizer</div><div class="ai-desc">Paste any article text and get a structured summary with TL;DR, key points, and developer impact.</div><button class="btn-secondary" style="margin-top:1rem;font-size:13px"><i class="ti ti-arrow-right"></i> Try it</button></div>
+      <div class="ai-card" style="cursor:pointer" onclick="openAIPanel('path')"><div class="ai-icon"><i class="ti ti-map"></i></div><div class="ai-title">Learning Path Builder</div><div class="ai-desc">Tell us your goal and current level. Get a personalized 6-month roadmap with milestones and projects.</div><button class="btn-secondary" style="margin-top:1rem;font-size:13px"><i class="ti ti-arrow-right"></i> Try it</button></div>
+      <div class="ai-card" style="cursor:pointer" onclick="openAIPanel('review')"><div class="ai-icon"><i class="ti ti-checklist"></i></div><div class="ai-title">Code Reviewer</div><div class="ai-desc">Submit your code for a senior-level review covering readability, performance, security, and best practices.</div><button class="btn-secondary" style="margin-top:1rem;font-size:13px"><i class="ti ti-arrow-right"></i> Try it</button></div>
+    </div>
+    <div id="aiPanel" style="display:none" class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+        <div style="font-size:16px;font-weight:600;display:flex;align-items:center;gap:8px"><i class="ti ti-sparkles" style="color:var(--purple)"></i><span id="aiPanelTitle">AI Tool</span></div>
+        <button class="icon-btn" onclick="closeAIPanel()"><i class="ti ti-x"></i></button>
+      </div>
+      <div id="aiPanelContent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DASHBOARD PAGE ==================== -->
+<div id="page-dashboard" class="page">
+  <div class="container" style="padding-top:2rem;padding-bottom:3rem">
+    <div class="dash-layout">
+      <div>
+        <div class="user-card"><div class="user-avatar">RK</div><div class="user-name">Rahul Kumar</div><div class="user-handle">@rahul_k · Joined Dec 2023</div><div class="user-stats"><div class="user-stat"><div class="n">142</div><div class="l">Posts</div></div><div class="user-stat"><div class="n">1.2k</div><div class="l">Points</div></div><div class="user-stat"><div class="n">7</div><div class="l">Streak</div></div></div></div>
+        <nav class="dash-nav">
+          <a href="#" class="active" onclick="switchDash(this,'overview');return false"><i class="ti ti-layout-dashboard"></i> Overview</a>
+          <a href="#" onclick="switchDash(this,'progress');return false"><i class="ti ti-chart-line"></i> Progress</a>
+          <a href="#" onclick="switchDash(this,'saved');return false"><i class="ti ti-bookmarks"></i> Saved</a>
+          <a href="#" onclick="switchDash(this,'activity');return false"><i class="ti ti-history"></i> Activity</a>
+          <a href="#" onclick="switchDash(this,'badges');return false"><i class="ti ti-medal"></i> Badges</a>
+          <a href="#" onclick="switchDash(this,'settings');return false"><i class="ti ti-settings"></i> Settings</a>
+        </nav>
+      </div>
+      <div id="dashContent">
+        <div id="dash-overview" class="tab-panel active">
+          <div class="section-title" style="margin-bottom:1.5rem">Overview</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem;margin-bottom:1.5rem">
+            <div class="card" style="text-align:center"><div id="statStreak" style="font-size:2rem;font-weight:700;color:var(--orange)">🔥 —</div><div class="text-muted text-sm">Day Streak</div></div>
+            <div class="card" style="text-align:center"><div id="statXP" style="font-size:2rem;font-weight:700;color:var(--accent)">—</div><div class="text-muted text-sm">XP Total</div></div>
+            <div class="card" style="text-align:center"><div id="statPosts" style="font-size:2rem;font-weight:700;color:var(--green)">—</div><div class="text-muted text-sm">Posts</div></div>
+            <div class="card" style="text-align:center"><div id="statBookmarks" style="font-size:2rem;font-weight:700;color:var(--purple)">—</div><div class="text-muted text-sm">Saved Items</div></div>
+          </div>
+          <div class="xp-bar-wrap" style="margin-bottom:1.5rem"><div id="statLevelLabel" style="font-size:15px;font-weight:600;margin-bottom:.75rem">Level —</div><div class="xp-bar-label"><span id="statXPLabel" class="text-muted text-sm">— XP</span><span class="text-sm text-accent">&nbsp;</span></div><div class="xp-bar" style="height:12px"><div id="statXPBarFill" class="xp-bar-fill" style="width:0%"></div></div></div>
+          <div class="card"><div style="font-size:15px;font-weight:600;margin-bottom:1rem">Recent Activity</div><div style="display:flex;flex-direction:column;gap:.75rem"><div style="display:flex;gap:10px;align-items:flex-start"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);margin-top:6px;flex-shrink:0"></div><div><div class="text-sm">Completed Python — Functions chapter</div><div class="text-xs text-muted">2h ago · +50 XP</div></div></div><div style="display:flex;gap:10px;align-items:flex-start"><div style="width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:6px;flex-shrink:0"></div><div><div class="text-sm">Posted in r/Python — received 48 upvotes</div><div class="text-xs text-muted">Yesterday · +25 XP</div></div></div><div style="display:flex;gap:10px;align-items:flex-start"><div style="width:8px;height:8px;border-radius:50%;background:var(--purple);margin-top:6px;flex-shrink:0"></div><div><div class="text-sm">Earned "7-Day Streak" badge 🔥</div><div class="text-xs text-muted">Today · +100 XP</div></div></div></div></div>
+        </div>
+        <div id="dash-progress" class="tab-panel">
+          <div class="section-title" style="margin-bottom:1.5rem">Learning Progress</div>
+          <div style="display:flex;flex-direction:column;gap:1rem">
+            <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem"><div style="font-size:15px;font-weight:600">🐍 Python</div><span class="badge-pill badge-green">In Progress</span></div><div style="display:flex;flex-direction:column;gap:.5rem"><div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span class="text-muted">Introduction</span><span class="text-green">✓ Done</span></div><div class="progress-bar"><div class="progress-bar-fill" style="width:100%"></div></div></div><div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span class="text-muted">Variables &amp; Types</span><span class="text-green">✓ Done</span></div><div class="progress-bar"><div class="progress-bar-fill" style="width:100%"></div></div></div><div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span class="text-muted">Functions</span><span class="text-accent">In progress</span></div><div class="progress-bar"><div class="progress-bar-fill" style="width:65%"></div></div></div><div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span class="text-muted">Classes &amp; OOP</span><span class="text-muted">Not started</span></div><div class="progress-bar"><div class="progress-bar-fill" style="width:0%"></div></div></div></div><div class="text-muted text-sm" style="margin-top:.75rem">Overall: 45% complete</div></div>
+            <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem"><div style="font-size:15px;font-weight:600">🟨 JavaScript</div><span class="badge-pill badge-blue">Started</span></div><div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span class="text-muted">Introduction</span><span class="text-green">✓ Done</span></div><div class="progress-bar"><div class="progress-bar-fill" style="width:100%"></div></div></div><div class="text-muted text-sm" style="margin-top:.75rem">Overall: 15% complete</div></div>
+            <button class="btn-secondary" onclick="showPage('languages')"><i class="ti ti-plus"></i> Start a new language</button>
+          </div>
+        </div>
+        <div id="dash-saved" class="tab-panel">
+          <div class="section-title" style="margin-bottom:1.5rem">Saved Items</div>
+          <div id="dashSavedList" style="display:flex;flex-direction:column;gap:.75rem">
+            <div class="text-muted text-sm">Loading…</div>
+          </div>
+        </div>
+        <div id="dash-activity" class="tab-panel">
+          <div class="section-title" style="margin-bottom:1.5rem">Activity History</div>
+          <div class="notice mb-4"><i class="ti ti-info-circle"></i> Showing last 30 days of activity.</div>
+          <div style="display:flex;flex-direction:column;gap:.5rem">
+            <div class="card text-sm" style="display:flex;justify-content:space-between;align-items:center"><span>Completed Python Functions quiz — 9/10</span><span class="text-accent text-xs">+50 XP</span></div>
+            <div class="card text-sm" style="display:flex;justify-content:space-between;align-items:center"><span>Replied to "async/await" thread in r/JavaScript</span><span class="text-accent text-xs">+10 XP</span></div>
+            <div class="card text-sm" style="display:flex;justify-content:space-between;align-items:center"><span>Read 5 news articles</span><span class="text-muted text-xs">Yesterday</span></div>
+          </div>
+        </div>
+        <div id="dash-badges" class="tab-panel">
+          <div class="section-title" style="margin-bottom:1.5rem">Your Badges</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem">
+            <div class="card" style="text-align:center"><div style="font-size:2.5rem;margin-bottom:.5rem">🔥</div><div style="font-size:14px;font-weight:600">Week Warrior</div><div class="text-muted text-xs" style="margin-top:4px">7-day streak</div><div class="badge-pill badge-green" style="margin:.5rem auto 0;justify-content:center">Earned</div></div>
+            <div class="card" style="text-align:center"><div style="font-size:2.5rem;margin-bottom:.5rem">🐍</div><div style="font-size:14px;font-weight:600">Python Learner</div><div class="text-muted text-xs" style="margin-top:4px">Completed intro</div><div class="badge-pill badge-green" style="margin:.5rem auto 0;justify-content:center">Earned</div></div>
+            <div class="card" style="text-align:center"><div style="font-size:2.5rem;margin-bottom:.5rem">💬</div><div style="font-size:14px;font-weight:600">Contributor</div><div class="text-muted text-xs" style="margin-top:4px">10 posts</div><div class="badge-pill badge-blue" style="margin:.5rem auto 0;justify-content:center">Earned</div></div>
+            <div class="card" style="text-align:center;opacity:.55"><div style="font-size:2.5rem;margin-bottom:.5rem">🏆</div><div style="font-size:14px;font-weight:600">Top 100</div><div class="text-muted text-xs" style="margin-top:4px">Reach leaderboard</div><div class="badge-pill badge-orange" style="margin:.5rem auto 0;justify-content:center">Locked</div></div>
+            <div class="card" style="text-align:center;opacity:.55"><div style="font-size:2.5rem;margin-bottom:.5rem">📖</div><div style="font-size:14px;font-weight:600">Bookworm</div><div class="text-muted text-xs" style="margin-top:4px">Save 50 articles</div><div class="badge-pill badge-orange" style="margin:.5rem auto 0;justify-content:center">Locked</div></div>
+          </div>
+        </div>
+        <div id="dash-settings" class="tab-panel">
+          <div class="section-title" style="margin-bottom:1.5rem">Settings</div>
+          <div class="card" style="max-width:520px">
+            <div style="font-size:15px;font-weight:600;margin-bottom:1.25rem">Profile</div>
+            <div class="form-group"><label class="form-label">Display Name</label><input type="text" value="Rahul Kumar" class="form-input"></div>
+            <div class="form-group"><label class="form-label">Username</label><input type="text" value="@rahul_k" class="form-input"></div>
+            <div class="form-group"><label class="form-label">Email</label><input type="email" value="rahul@example.com" class="form-input"></div>
+            <div class="form-group"><label class="form-label">Bio</label><textarea class="form-input" rows="3">Full-stack developer learning AI/ML.</textarea></div>
+            <div class="divider"></div>
+            <div style="font-size:15px;font-weight:600;margin-bottom:1.25rem">Preferences</div>
+            <div class="form-group"><label class="form-label">Weekly Digest</label><select class="form-input"><option>Every Monday</option><option>Every Friday</option><option>Off</option></select></div>
+            <button class="btn-primary" onclick="this.textContent='✓ Saved!';setTimeout(()=>this.textContent='Save Changes',2000)" style="margin-top:.5rem">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SEARCH PAGE ==================== -->
+<div id="page-search" class="page">
+  <div class="container" style="padding-top:2rem;padding-bottom:3rem">
+    <div class="search-bar"><i class="ti ti-search"></i><input type="text" id="searchInput" placeholder="Search TechTribe — languages, news, posts, AI tools..." oninput="runSearch(this.value)" aria-label="Search"><button class="icon-btn" onclick="clearSearch()"><i class="ti ti-x"></i></button></div>
+    <div class="search-filters">
+      <div class="filter-chip active" onclick="filterSearch(this,'all')">All</div>
+      <div class="filter-chip" onclick="filterSearch(this,'language')">Languages</div>
+      <div class="filter-chip" onclick="filterSearch(this,'news')">News</div>
+      <div class="filter-chip" onclick="filterSearch(this,'post')">Community</div>
+      <div class="filter-chip" onclick="filterSearch(this,'ai')">AI Tools</div>
+    </div>
+    <div id="searchResults"></div>
+  </div>
+</div>
+<script>
+// =============================================
+// API CONFIGURATION
+// =============================================
+// In local dev the backend runs on :4000. In production we assume the
+// frontend is served behind a reverse proxy / Vercel rewrite that forwards
+// "/api/v1/*" to the TechTribe backend, so a relative path is used.
+// Override by setting window.TECHTRIBE_API_BASE before this script runs.
+const API_BASE = window.TECHTRIBE_API_BASE || (
+  ['localhost', '127.0.0.1'].includes(window.location.hostname)
+    ? 'http://localhost:4000/api/v1'
+    : '/api/v1'
+);
+
+// =============================================
+// AUTH STATE
+// =============================================
+let authState = { user: null, accessToken: null };
+
+function loadAuthFromStorage() {
+  try {
+    const raw = localStorage.getItem('tt_auth');
+    authState = raw ? JSON.parse(raw) : { user: null, accessToken: null };
+  } catch (e) { authState = { user: null, accessToken: null }; }
+}
+function saveAuthToStorage() { localStorage.setItem('tt_auth', JSON.stringify(authState)); }
+function clearAuth() {
+  authState = { user: null, accessToken: null };
+  localStorage.removeItem('tt_auth');
+  updateAuthUI();
+}
+
+/** Core fetch wrapper: attaches JWT, retries once on 401 via refresh cookie. */
+async function apiFetch(path, options = {}) {
+  const opts = {
+    method: options.method || 'GET',
+    headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+    credentials: 'include'
+  };
+  if (options.body !== undefined) opts.body = JSON.stringify(options.body);
+  if (authState.accessToken) opts.headers.Authorization = `Bearer ${authState.accessToken}`;
+
+  let res;
+  try {
+    res = await fetch(`${API_BASE}${path}`, opts);
+  } catch (networkErr) {
+    throw new Error('Could not reach the TechTribe API. Is the backend running?');
+  }
+
+  if (res.status === 401 && authState.accessToken && !options._retried) {
+    const refreshed = await tryRefreshToken();
+    if (refreshed) return apiFetch(path, { ...options, _retried: true });
+  }
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.message || `Request failed (${res.status})`);
+  return data;
+}
+
+async function tryRefreshToken() {
+  try {
+    const res = await fetch(`${API_BASE}/auth/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({})
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) { clearAuth(); return false; }
+    authState.accessToken = data.data.accessToken;
+    authState.user = data.data.user;
+    saveAuthToStorage();
+    return true;
+  } catch (e) { return false; }
+}
+
+function updateAuthUI() {
+  const btn = document.getElementById('navAuthBtn');
+  const mobileLink = document.getElementById('mobileAuthLink');
+  const nameEl = document.querySelector('.user-name');
+  const handleEl = document.querySelector('.user-handle');
+
+  if (authState.user) {
+    if (btn) { btn.textContent = authState.user.displayName || authState.user.username; btn.onclick = confirmLogout; }
+    if (mobileLink) {
+      mobileLink.innerHTML = `<i class="ti ti-logout"></i> Log Out (${authState.user.username})`;
+      mobileLink.onclick = (e) => { e.preventDefault(); toggleMenu(); doLogout(); };
+    }
+    if (nameEl) nameEl.textContent = authState.user.displayName || authState.user.username;
+    if (handleEl) handleEl.textContent = `@${authState.user.username}`;
+  } else {
+    if (btn) { btn.textContent = 'Sign In'; btn.onclick = () => openModal('auth-modal'); }
+    if (mobileLink) {
+      mobileLink.innerHTML = `<i class="ti ti-login"></i> Sign In / Sign Up`;
+      mobileLink.onclick = (e) => { e.preventDefault(); toggleMenu(); openModal('auth-modal'); };
+    }
+  }
+}
+
+function confirmLogout() {
+  if (confirm('Log out of TechTribe?')) doLogout();
+}
+
+function requireLogin(actionLabel) {
+  if (!authState.user) {
+    showToast(`Please sign in to ${actionLabel}.`, 'warn');
+    openModal('auth-modal');
+    return false;
+  }
+  return true;
+}
+
+// =============================================
+// PAGE NAVIGATION
+// =============================================
+function showPage(name, linkEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + name);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  if (linkEl) linkEl.classList.add('active');
+  else {
+    const lnk = document.querySelector(`.nav-links a[onclick*="'${name}'"]`);
+    if (lnk) lnk.classList.add('active');
+  }
+  window.scrollTo(0, 0);
+  document.getElementById('mobileMenu').classList.remove('open');
+
+  // Lazy-load real backend data the first time a page is shown
+  if (name === 'community') loadCommunityPosts();
+  if (name === 'dashboard') loadDashboard();
+}
+
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// Close mobile menu on outside click
+document.addEventListener('click', e => {
+  const menu = document.getElementById('mobileMenu');
+  const ham = document.querySelector('.hamburger');
+  if (menu.classList.contains('open') && !menu.contains(e.target) && ham && !ham.contains(e.target))
+    menu.classList.remove('open');
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+    closeAIPanel();
+  }
+});
+
+// =============================================
+// MODALS
+// =============================================
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('modal-overlay')) e.target.classList.remove('open');
+});
+
+function switchModalTab(el, panel) {
+  el.closest('.tabs').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#auth-modal .tab-panel').forEach(p => p.classList.remove('active'));
+  const t = document.getElementById('modal-' + panel);
+  if (t) t.classList.add('active');
+}
+function switchModalTabByName(panel) {
+  const tabs = document.querySelectorAll('#auth-modal .tab-btn');
+  if (panel === 'signup' && tabs[1]) tabs[1].click();
+}
+async function doSignIn() {
+  const emailOrUsername = document.getElementById('signinEmail').value.trim();
+  const password = document.getElementById('signinPassword').value;
+  if (!emailOrUsername || !password) return showToast('Enter your email/username and password.', 'warn');
+  const btn = document.getElementById('signinSubmitBtn');
+  btn.disabled = true;
+  try {
+    const data = await apiFetch('/auth/login', { method: 'POST', body: { emailOrUsername, password } });
+    authState.accessToken = data.data.accessToken;
+    authState.user = data.data.user;
+    saveAuthToStorage();
+    updateAuthUI();
+    closeModal('auth-modal');
+    showToast(`Welcome back, ${authState.user.displayName || authState.user.username}! 👋`, 'success');
+    if (document.getElementById('page-dashboard').classList.contains('active')) loadDashboard();
+    if (document.getElementById('page-community').classList.contains('active')) loadCommunityPosts();
+  } catch (e) {
+    showToast(e.message || 'Login failed', 'error');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function doSignUp() {
+  const displayName = document.getElementById('signupName').value.trim();
+  const username = document.getElementById('signupUsername').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  if (!username || !email || !password) return showToast('Please fill in username, email and password.', 'warn');
+  const btn = document.getElementById('signupSubmitBtn');
+  btn.disabled = true;
+  try {
+    const data = await apiFetch('/auth/register', {
+      method: 'POST',
+      body: { email, username, password, displayName: displayName || undefined }
+    });
+    authState.accessToken = data.data.accessToken;
+    authState.user = data.data.user;
+    saveAuthToStorage();
+    updateAuthUI();
+    closeModal('auth-modal');
+    showToast('Account created! Welcome to TechTribe 🎉', 'success');
+    if (document.getElementById('page-dashboard').classList.contains('active')) loadDashboard();
+  } catch (e) {
+    showToast(e.message || 'Sign up failed', 'error');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function doLogout() {
+  try { await apiFetch('/auth/logout', { method: 'POST', body: {} }); } catch (e) { /* ignore */ }
+  clearAuth();
+  showToast('Logged out. See you soon!', 'info');
+  showPage('home');
+}
+
+// =============================================
+// TOAST NOTIFICATIONS
+// =============================================
+function showToast(msg, type = 'info') {
+  const colors = { success: 'var(--green)', error: 'var(--orange)', info: 'var(--accent)', warn: 'var(--yellow)' };
+  const c = colors[type] || colors.info;
+  const t = document.createElement('div');
+  t.style.cssText = `position:fixed;bottom:1.5rem;right:1.5rem;z-index:500;background:var(--bg2);border:1px solid ${c};border-left:3px solid ${c};border-radius:var(--radius);padding:12px 18px;font-size:13px;color:var(--text);box-shadow:0 4px 20px rgba(0,0,0,.5);max-width:340px;word-break:break-word;opacity:1;transition:opacity .3s`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 3500);
+}
+
+// =============================================
+// TABS (generic)
+// =============================================
+function switchNewsTab(el, targetId) {
+  el.closest('.tabs').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#page-news .tab-panel').forEach(p => p.classList.remove('active'));
+  const t = document.getElementById(targetId);
+  if (t) { t.classList.add('active'); t.style.display = 'flex'; t.style.flexDirection = 'column'; t.style.gap = '1rem'; }
+}
+
+// =============================================
+// LIVE NEWS FEED
+// Primary: Dev.to public API (free, no key, CORS-enabled) — https://developers.forem.com/api
+// Fallback: Hacker News Algolia Search API (free, no key, CORS-enabled) — used per-category if Dev.to fails
+// Last resort: small bundled sample so the page is never empty, clearly marked "Sample"
+// Fetches real, section-relevant articles and caches them for 24h so the
+// same stories aren't reshown every day — cache auto-expires and refetches.
+// =============================================
+const NEWS_CACHE_KEY = 'techtribe_news_cache_v1';
+const NEWS_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+// Each key maps 1:1 to a tab-panel id (news-<key>), a Dev.to tag, and HN search keywords —
+// all scoped so only articles relevant to that section are pulled.
+const NEWS_CATEGORIES = {
+  ai:       { tag: 'ai',          hn: 'AI OR "machine learning" OR LLM OR OpenAI', label: 'Artificial Intelligence', short: 'AI',       color: 'var(--purple)', emoji: '🤖' },
+  dev:      { tag: 'programming', hn: 'programming OR software engineering',        label: 'Programming',             short: 'Dev',      color: 'var(--accent)', emoji: '💻' },
+  sec:      { tag: 'security',    hn: 'security OR vulnerability OR CVE',           label: 'Security',                short: 'Security', color: 'var(--orange)', emoji: '🔐' },
+  cloud:    { tag: 'cloud',       hn: 'cloud OR AWS OR Azure OR GCP',                label: 'Cloud',                   short: 'Cloud',    color: 'var(--green)',  emoji: '☁️' },
+  web:      { tag: 'webdev',      hn: '"web development" OR javascript OR frontend',label: 'Web',                     short: 'Web',      color: 'var(--teal)',   emoji: '🌐' },
+  startups: { tag: 'startup',     hn: 'startup OR "Y Combinator" OR funding',        label: 'Startups',                short: 'Startups', color: 'var(--green)',  emoji: '🚀' }
+};
+const NEWS_ALL_INFO = { label: 'News', color: 'var(--accent)', emoji: '📰' };
+
+// Small offline sample used ONLY if both live sources fail (e.g. no internet,
+// or the page was opened directly from disk with file:// where browsers block
+// fetch() to other origins). Links point to a real search results page so
+// they always open to something relevant instead of a dead link.
+function newsSampleFor(key, info) {
+  const q = encodeURIComponent(info.label + ' news');
+  return [{
+    id: 'sample-' + key,
+    title: `Search the latest ${info.label} news`,
+    description: `Live articles couldn't be loaded right now, so here's a quick search instead. Tap "Refresh now" once you're back online to load real, current ${info.label} stories.`,
+    url: `https://www.google.com/search?q=${q}&tbm=nws`,
+    published_at: new Date().toISOString(),
+    tag_list: ['sample'],
+    reading_time_minutes: 1,
+    public_reactions_count: 0,
+    comments_count: 0,
+    isSample: true
+  }];
+}
+
+async function fetchNewsForTag(tag, perPage = 6) {
+  const url = `https://dev.to/api/articles?tag=${encodeURIComponent(tag)}&top=1&per_page=${perPage}`;
+  const res = await fetch(url, { headers: { Accept: 'application/json' } });
+  if (!res.ok) throw new Error('Dev.to fetch failed (' + tag + '): ' + res.status);
+  const json = await res.json();
+  if (!Array.isArray(json)) throw new Error('Dev.to unexpected response for ' + tag);
+  return json;
+}
+
+async function fetchNewsFromHN(query, perPage = 6) {
+  const url = `https://hn.algolia.com/api/v1/search_by_date?tags=story&hitsPerPage=${perPage}&query=${encodeURIComponent(query)}`;
+  const res = await fetch(url, { headers: { Accept: 'application/json' } });
+  if (!res.ok) throw new Error('HN fetch failed: ' + res.status);
+  const json = await res.json();
+  return (json.hits || [])
+    .filter(h => h.title)
+    .map(h => ({
+      id: 'hn-' + h.objectID,
+      title: h.title,
+      description: (h.story_text || '').slice(0, 200) || 'Discussion on Hacker News — tap to read the full story and comments.',
+      url: h.url || `https://news.ycombinator.com/item?id=${h.objectID}`,
+      published_at: h.created_at,
+      tag_list: ['hackernews'],
+      reading_time_minutes: 3,
+      public_reactions_count: h.points || 0,
+      comments_count: h.num_comments || 0
+    }));
+}
+
+async function fetchNewsForCategory(key) {
+  const info = NEWS_CATEGORIES[key];
+  try {
+    const articles = await fetchNewsForTag(info.tag, 6);
+    if (articles.length) return articles;
+  } catch (e) {
+    console.warn('Dev.to source failed for', key, e);
+  }
+  try {
+    const articles = await fetchNewsFromHN(info.hn, 6);
+    if (articles.length) return articles;
+  } catch (e) {
+    console.warn('HN fallback failed for', key, e);
+  }
+  return [];
+}
+
+async function fetchAllSectionNews() {
+  const keys = Object.keys(NEWS_CATEGORIES);
+  const entries = await Promise.all(keys.map(async key => {
+    const articles = await fetchNewsForCategory(key);
+    return [key, articles];
+  }));
+  const data = Object.fromEntries(entries);
+
+  // If every single source failed for every category (e.g. offline, or opened
+  // via file:// where fetch() is blocked cross-origin), fall back to samples
+  // instead of leaving every tab looking broken/empty.
+  const totalLive = keys.reduce((n, k) => n + data[k].length, 0);
+  if (totalLive === 0) {
+    keys.forEach(key => { data[key] = newsSampleFor(key, NEWS_CATEGORIES[key]); });
+    data._offline = true;
+  }
+
+  const seen = new Set();
+  const merged = [];
+  keys.forEach(key => (data[key] || []).forEach(a => {
+    if (!seen.has(a.id)) { seen.add(a.id); merged.push(a); }
+  }));
+  merged.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+  data.all = merged.slice(0, 12);
+  return data;
+}
+
+function newsTimeAgo(dateStr) {
+  const diffMs = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diffMs / 60000);
+  if (mins < 60) return (mins <= 1 ? '1 min' : mins + ' min') + ' ago';
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return hrs + (hrs === 1 ? ' hr ago' : ' hrs ago');
+  const days = Math.floor(hrs / 24);
+  if (days === 1) return 'Yesterday';
+  if (days < 7) return days + ' days ago';
+  return new Date(dateStr).toLocaleDateString();
+}
+
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+// Opens article links robustly: tries a real new tab first, and if the
+// browser/embedded viewer blocks popups (common in sandboxed previews),
+// falls back to navigating the current tab instead of silently failing.
+function openExternal(url, evt) {
+  if (evt) evt.preventDefault();
+  if (!url) return false;
+  const win = window.open(url, '_blank', 'noopener,noreferrer');
+  if (!win) location.href = url;
+  return false;
+}
+
+function newsCardHTML(article, info, compact) {
+  const title = escapeHtml(article.title || 'Untitled');
+  let summary = escapeHtml(article.description || '');
+  if (summary.length > 160) summary = summary.slice(0, 160).trim() + '…';
+  const readMin = article.reading_time_minutes || 3;
+  const likes = article.public_reactions_count ?? 0;
+  const comments = article.comments_count ?? 0;
+  const url = escapeHtml(article.url || '#');
+  const badgeLabel = article.isSample ? 'Sample' : (compact ? info.short || info.label : info.label);
+  const tags = (article.tag_list || []).slice(0, 3).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+  return `<div class="card news-card">
+    <div style="display:flex;${compact ? 'gap:.5rem;align-items:center' : 'justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem'}">
+      <span class="news-cat" style="color:${info.color}">${info.emoji} ${badgeLabel}</span>
+      <div class="news-meta"><i class="ti ti-clock"></i> ${readMin} min ${compact ? '' : `&nbsp;<i class="ti ti-calendar"></i> ${newsTimeAgo(article.published_at)}`}</div>
+    </div>
+    <a href="${url}" target="_blank" rel="noopener noreferrer" class="news-title" onclick="return openExternal(this.getAttribute('href'), event)">${title}</a>
+    <div class="news-summary">${summary}</div>
+    ${compact ? '' : `<div class="tag-list mb-4">${tags}</div>`}
+    <div class="news-actions">
+      <button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> ${likes}</button>
+      <button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i>${compact ? '' : ' Save'}</button>
+      <button class="icon-btn" onclick="shareItem(this)" data-url="${url}"><i class="ti ti-share"></i>${compact ? '' : ' Share'}</button>
+      ${compact ? '' : `<button class="icon-btn"><i class="ti ti-message-circle"></i> ${comments}</button>`}
+    </div>
+  </div>`;
+}
+
+function renderNewsPanel(panelId, articles, info) {
+  const el = document.getElementById(panelId);
+  if (!el) return;
+  el.style.display = 'flex';
+  el.style.flexDirection = 'column';
+  el.style.gap = '1rem';
+  if (!articles || !articles.length) {
+    el.innerHTML = `<div class="notice"><i class="ti ti-info-circle"></i> No fresh ${info.label} news right now. Try refreshing later.</div>`;
+    return;
+  }
+  el.innerHTML = articles.map(a => newsCardHTML(a, info, false)).join('');
+}
+
+function applyNewsData(data) {
+  renderNewsPanel('news-all', data.all, NEWS_ALL_INFO);
+  Object.keys(NEWS_CATEGORIES).forEach(key => {
+    renderNewsPanel('news-' + key, data[key], NEWS_CATEGORIES[key]);
+  });
+  const preview = document.getElementById('home-news-preview');
+  if (preview && data.all && data.all.length) {
+    preview.innerHTML = data.all.slice(0, 3).map(a => {
+      const cat = Object.values(NEWS_CATEGORIES).find(c => (a.tag_list || []).includes(c.tag)) || NEWS_ALL_INFO;
+      return newsCardHTML(a, cat, true);
+    }).join('');
+  }
+}
+
+function setNewsStatus(text, isWarning) {
+  const el = document.getElementById('newsLastUpdated');
+  if (el) {
+    el.innerHTML = `<i class="ti ti-clock"></i> ${text}`;
+    el.style.color = isWarning ? 'var(--orange)' : '';
+  }
+}
+
+async function refreshNewsData(force = false) {
+  let cache = null;
+  try { cache = JSON.parse(localStorage.getItem(NEWS_CACHE_KEY) || 'null'); } catch (e) { cache = null; }
+  const isFresh = cache && (Date.now() - cache.timestamp < NEWS_TTL_MS);
+
+  if (isFresh && !force) {
+    applyNewsData(cache.data);
+    const label = cache.data._offline ? 'Offline sample shown' : 'Updated ' + newsTimeAgo(new Date(cache.timestamp).toISOString());
+    setNewsStatus(label + ' · next refresh in ' + Math.ceil((NEWS_TTL_MS - (Date.now() - cache.timestamp)) / 3600000) + 'h', !!cache.data._offline);
+    return;
+  }
+
+  setNewsStatus('Fetching latest stories…');
+  try {
+    const data = await fetchAllSectionNews();
+    const timestamp = Date.now();
+    localStorage.setItem(NEWS_CACHE_KEY, JSON.stringify({ timestamp, data }));
+    applyNewsData(data);
+    if (data._offline) {
+      const isFileProtocol = location.protocol === 'file:';
+      setNewsStatus(
+        isFileProtocol
+          ? 'Live news needs the page served over http(s) — opening the file directly blocks it. Host it (e.g. a local server) or upload it, then Refresh.'
+          : 'Could not reach the news APIs — showing a sample. Check your connection and hit Refresh.',
+        true
+      );
+      if (force) showToast('Live news unavailable, showing a sample', 'warn');
+    } else {
+      setNewsStatus('Updated just now · auto-refreshes every 24h');
+      if (force) showToast('News refreshed ✓', 'success');
+    }
+  } catch (e) {
+    console.error('News refresh failed', e);
+    if (cache) {
+      applyNewsData(cache.data);
+      setNewsStatus('Showing cached news (refresh failed) · last updated ' + newsTimeAgo(new Date(cache.timestamp).toISOString()), true);
+    } else {
+      setNewsStatus('Could not load live news. Check your connection and hit Refresh.', true);
+    }
+    if (force) showToast('Could not refresh news right now', 'error');
+  }
+}
+
+// Fixed 24-hour auto-refresh timer: checks cache age on load (survives page
+// reloads/closed tabs) and also re-checks every hour in case the tab is
+// left open past the 24h mark, so news never repeats day to day.
+document.addEventListener('DOMContentLoaded', () => {
+  refreshNewsData(false);
+  setInterval(() => refreshNewsData(false), 60 * 60 * 1000); // hourly check, only refetches once 24h have actually passed
+});
+
+// Restore any saved session as soon as the DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  loadAuthFromStorage();
+  updateAuthUI();
+});
+
+// =============================================
+// LANGUAGE FILTER
+// =============================================
+function filterLangs(el, cat) {
+  document.querySelectorAll('#langGrid .card').forEach(c => {
+    c.style.display = (cat === 'all' || (c.dataset.cats || '').includes(cat)) ? '' : 'none';
+  });
+  document.querySelectorAll('#page-languages .filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// =============================================
+// LANGUAGE DATA
+// =============================================
+const langData = {
+  python: {
+    icon:'Py', color:'#ffd700', bg:'rgba(255,215,0,.12)', name:'Python', version:'3.12',
+    tags:['Beginner Friendly','AI/ML','Web','Automation','Data Science'],
+    desc:'Python is a high-level, interpreted programming language known for its clear, readable syntax. Created by Guido van Rossum in 1991, it has grown to become one of the most popular languages in the world — used from beginner scripts to production AI systems at Google, NASA, and Netflix.',
+    uses:'Web development (Django, FastAPI, Flask), data science (pandas, NumPy), machine learning (TensorFlow, PyTorch), automation, scripting, and API development.',
+    install:`<span class="cm"># Check if Python is installed</span>\npython --version\n\n<span class="cm"># macOS (Homebrew):</span>\nbrew install python\n\n<span class="cm"># Linux (Ubuntu):</span>\nsudo apt-get install python3 python3-pip\n\n<span class="cm"># Windows: Download installer from python.org</span>\n<span class="cm"># Verify pip (package manager)</span>\npip --version`,
+    hello:`<span class="cm"># Your first Python program</span>\n<span class="kw">print</span>(<span class="str">"Hello, World!"</span>)\n\n<span class="cm"># Variables are dynamically typed</span>\nname = <span class="str">"DevHub"</span>\nyear = <span class="nc">2025</span>\n<span class="kw">print</span>(<span class="str">f"Welcome to {name}! Year: {year}"</span>)`,
+    variables:`<span class="cm"># Python infers types automatically</span>\nname = <span class="str">"Alice"</span>           <span class="cm"># str</span>\nage = <span class="nc">30</span>                <span class="cm"># int</span>\nheight = <span class="nc">5.9</span>             <span class="cm"># float</span>\nis_dev = <span class="kw">True</span>            <span class="cm"># bool</span>\nscores = [<span class="nc">90</span>, <span class="nc">85</span>, <span class="nc">92</span>]    <span class="cm"># list</span>\ninfo = {<span class="str">"lang"</span>: <span class="str">"Python"</span>}  <span class="cm"># dict</span>\n\n<span class="cm"># Type hints (optional, Python 3.5+)</span>\ndef greet(name: str) -> str:\n    return f"Hello, {name}"`,
+    control:`<span class="cm"># if / elif / else</span>\nscore = <span class="nc">85</span>\n<span class="kw">if</span> score >= <span class="nc">90</span>:\n    <span class="kw">print</span>(<span class="str">"A grade"</span>)\n<span class="kw">elif</span> score >= <span class="nc">75</span>:\n    <span class="kw">print</span>(<span class="str">"B grade"</span>)\n<span class="kw">else</span>:\n    <span class="kw">print</span>(<span class="str">"Keep going!"</span>)\n\n<span class="cm"># for loop (iterates over any sequence)</span>\n<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nc">5</span>):   <span class="cm"># 0, 1, 2, 3, 4</span>\n    <span class="kw">print</span>(i)\n\n<span class="cm"># while loop</span>\ncount = <span class="nc">0</span>\n<span class="kw">while</span> count < <span class="nc">3</span>:\n    count += <span class="nc">1</span>`,
+    functions:`<span class="kw">def</span> <span class="fn">greet</span>(name, greeting=<span class="str">"Hello"</span>):\n    <span class="str">"""Return a greeting string."""</span>\n    <span class="kw">return</span> <span class="str">f"{greeting}, {name}!"</span>\n\nmessage = <span class="fn">greet</span>(<span class="str">"Rahul"</span>)\n<span class="kw">print</span>(message)  <span class="cm"># Hello, Rahul!</span>\n\n<span class="cm"># Lambda — single-expression functions</span>\nsquare = <span class="kw">lambda</span> x: x ** <span class="nc">2</span>\n<span class="kw">print</span>(<span class="fn">square</span>(<span class="nc">5</span>))  <span class="cm"># 25</span>\n\n<span class="cm"># *args and **kwargs</span>\n<span class="kw">def</span> <span class="fn">log</span>(*args, **kwargs):\n    <span class="kw">for</span> a <span class="kw">in</span> args: <span class="kw">print</span>(a)\n    <span class="kw">for</span> k, v <span class="kw">in</span> kwargs.items(): <span class="kw">print</span>(f"{k}={v}")`,
+    oop:`<span class="kw">class</span> <span class="fn">Animal</span>:\n    <span class="kw">def</span> <span class="fn">__init__</span>(self, name):\n        self.name = name\n\n    <span class="kw">def</span> <span class="fn">speak</span>(self):\n        <span class="kw">return</span> <span class="str">f"{self.name} makes a sound"</span>\n\n<span class="kw">class</span> <span class="fn">Dog</span>(<span class="fn">Animal</span>):     <span class="cm"># inherits Animal</span>\n    <span class="kw">def</span> <span class="fn">speak</span>(self):   <span class="cm"># override</span>\n        <span class="kw">return</span> <span class="str">f"{self.name} barks!"</span>\n\ndog = <span class="fn">Dog</span>(<span class="str">"Rex"</span>)\n<span class="kw">print</span>(dog.<span class="fn">speak</span>())   <span class="cm"># Rex barks!</span>\n<span class="kw">print</span>(<span class="fn">isinstance</span>(dog, Animal))  <span class="cm"># True</span>`,
+    errors:`<span class="kw">try</span>:\n    result = <span class="nc">10</span> / <span class="nc">0</span>\n<span class="kw">except</span> ZeroDivisionError <span class="kw">as</span> e:\n    <span class="kw">print</span>(<span class="str">f"Error: {e}"</span>)\n<span class="kw">finally</span>:\n    <span class="kw">print</span>(<span class="str">"Always runs"</span>)\n\n<span class="cm"># Raise custom exceptions</span>\n<span class="kw">class</span> <span class="fn">AgeError</span>(Exception):\n    <span class="kw">pass</span>\n\n<span class="kw">def</span> <span class="fn">set_age</span>(age):\n    <span class="kw">if</span> age < <span class="nc">0</span>:\n        <span class="kw">raise</span> <span class="fn">AgeError</span>(<span class="str">"Age cannot be negative"</span>)\n    <span class="kw">return</span> age`
+  },
+  javascript: {
+    icon:'JS', color:'#f7dc00', bg:'rgba(247,220,0,.12)', name:'JavaScript', version:'ES2024',
+    tags:['Web','Node.js','Full Stack','Frontend','React'],
+    desc:'JavaScript is the programming language of the web. Originally created for client-side scripting in browsers, it has evolved into a versatile language used for server-side development (Node.js), mobile apps (React Native), desktop software (Electron), and more.',
+    uses:'Web frontends (React, Vue, Angular), Node.js backends, REST & GraphQL APIs, real-time apps (WebSockets), mobile apps (React Native), and desktop apps (Electron).',
+    install:`<span class="cm"># Install Node.js via nvm (recommended)</span>\ncurl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash\nnvm install --lts\nnvm use --lts\nnode --version   <span class="cm"># v22.x.x</span>\nnpm --version    <span class="cm"># 10.x.x</span>`,
+    hello:`<span class="cm">// Hello World</span>\nconsole.<span class="fn">log</span>(<span class="str">"Hello, World!"</span>);\n\n<span class="cm">// ES6+ template literals</span>\n<span class="kw">const</span> name = <span class="str">"DevHub"</span>;\n<span class="kw">const</span> year = <span class="nc">2025</span>;\nconsole.<span class="fn">log</span>(<span class="str">\`Welcome to \${name}! Year: \${year}\`</span>);`,
+    variables:`<span class="cm">// Prefer const; use let only when reassigning</span>\n<span class="kw">const</span> name = <span class="str">"Alice"</span>;      <span class="cm">// immutable binding</span>\n<span class="kw">let</span> age = <span class="nc">30</span>;              <span class="cm">// block-scoped, mutable</span>\n<span class="cm">// var is function-scoped — avoid in modern JS</span>\n\n<span class="cm">// Destructuring</span>\n<span class="kw">const</span> { id, title } = post;\n<span class="kw">const</span> [first, ...rest] = array;\n\n<span class="cm">// Optional chaining & nullish coalescing</span>\n<span class="kw">const</span> city = user?.address?.city ?? <span class="str">"Unknown"</span>;`,
+    control:`<span class="cm">// if / else if / else</span>\n<span class="kw">const</span> score = <span class="nc">85</span>;\n<span class="kw">if</span> (score >= <span class="nc">90</span>) console.<span class="fn">log</span>(<span class="str">"A"</span>);\n<span class="kw">else if</span> (score >= <span class="nc">75</span>) console.<span class="fn">log</span>(<span class="str">"B"</span>);\n<span class="kw">else</span> console.<span class="fn">log</span>(<span class="str">"Try harder"</span>);\n\n<span class="cm">// for...of (iterate values)</span>\n<span class="kw">for</span> (<span class="kw">const</span> item <span class="kw">of</span> items) console.<span class="fn">log</span>(item);\n\n<span class="cm">// Array methods (prefer over loops)</span>\n<span class="kw">const</span> evens = [<span class="nc">1</span>,<span class="nc">2</span>,<span class="nc">3</span>,<span class="nc">4</span>].<span class="fn">filter</span>(n => n % <span class="nc">2</span> === <span class="nc">0</span>);\n<span class="kw">const</span> doubled = evens.<span class="fn">map</span>(n => n * <span class="nc">2</span>);`,
+    functions:`<span class="cm">// Arrow functions (ES6+)</span>\n<span class="kw">const</span> <span class="fn">greet</span> = (name, greeting = <span class="str">"Hello"</span>) => \n  <span class="str">\`\${greeting}, \${name}!\`</span>;\n\n<span class="cm">// Async/await for asynchronous operations</span>\n<span class="kw">const</span> <span class="fn">fetchUser</span> = <span class="kw">async</span> (id) => {\n  <span class="kw">try</span> {\n    <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">\`/api/users/\${id}\`</span>);\n    <span class="kw">if</span> (!res.ok) <span class="kw">throw new</span> <span class="fn">Error</span>(<span class="str">"Not found"</span>);\n    <span class="kw">return</span> <span class="kw">await</span> res.<span class="fn">json</span>();\n  } <span class="kw">catch</span> (err) {\n    console.<span class="fn">error</span>(err);\n  }\n};`,
+    oop:`<span class="cm">// ES6 class syntax</span>\n<span class="kw">class</span> <span class="fn">Animal</span> {\n  <span class="fn">constructor</span>(name) { this.name = name; }\n  <span class="fn">speak</span>() { <span class="kw">return</span> <span class="str">\`\${this.name} makes a sound\`</span>; }\n}\n\n<span class="kw">class</span> <span class="fn">Dog</span> <span class="kw">extends</span> <span class="fn">Animal</span> {\n  <span class="fn">speak</span>() { <span class="kw">return</span> <span class="str">\`\${this.name} barks!\`</span>; }\n}\n\n<span class="kw">const</span> dog = <span class="kw">new</span> <span class="fn">Dog</span>(<span class="str">"Rex"</span>);\nconsole.<span class="fn">log</span>(dog.<span class="fn">speak</span>());    <span class="cm">// Rex barks!</span>\nconsole.<span class="fn">log</span>(dog <span class="kw">instanceof</span> Animal);  <span class="cm">// true</span>`,
+    errors:`<span class="cm">// try / catch / finally</span>\n<span class="kw">try</span> {\n  JSON.<span class="fn">parse</span>(<span class="str">"invalid json {"</span>);\n} <span class="kw">catch</span> (err) {\n  console.<span class="fn">error</span>(<span class="str">"Parse error:"</span>, err.message);\n} <span class="kw">finally</span> {\n  console.<span class="fn">log</span>(<span class="str">"Always runs"</span>);\n}\n\n<span class="cm">// Custom error class</span>\n<span class="kw">class</span> <span class="fn">ApiError</span> <span class="kw">extends</span> <span class="fn">Error</span> {\n  <span class="fn">constructor</span>(msg, status) {\n    <span class="kw">super</span>(msg); this.status = status;\n  }\n}`
+  },
+  rust: {
+    icon:'Rs', color:'#f78166', bg:'rgba(247,129,102,.12)', name:'Rust', version:'1.78',
+    tags:['Systems','Performance','Memory Safe','WebAssembly','CLI'],
+    desc:"Rust is a systems programming language focused on safety, speed, and concurrency. It achieves memory safety without a garbage collector using a unique ownership system checked at compile time — eliminating entire classes of bugs like null pointer dereferences and data races.",
+    uses:'Systems programming, CLI tools, WebAssembly modules, game engines, embedded systems, OS kernels, and high-performance networking services.',
+    install:`<span class="cm"># Install Rust via rustup (official installer)</span>\ncurl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh\n\nrustc --version   <span class="cm"># rust compiler</span>\ncargo --version   <span class="cm"># build tool & package manager</span>\n\n<span class="cm"># Create a new project</span>\ncargo new my_project\n<span class="kw">cd</span> my_project && cargo run`,
+    hello:`<span class="cm">// Hello World in Rust</span>\n<span class="kw">fn</span> <span class="fn">main</span>() {\n    <span class="fn">println!</span>(<span class="str">"Hello, World!"</span>);\n\n    <span class="cm">// Variables are immutable by default</span>\n    <span class="kw">let</span> name = <span class="str">"DevHub"</span>;\n    <span class="kw">let mut</span> year = <span class="nc">2025</span>;\n    year += <span class="nc">1</span>;                    <span class="cm">// mut allows mutation</span>\n    <span class="fn">println!</span>(<span class="str">"{} — {}"</span>, name, year);\n}`,
+    variables:`<span class="cm">// let = immutable, let mut = mutable</span>\n<span class="kw">let</span> x = <span class="nc">5</span>;           <span class="cm">// immutable i32</span>\n<span class="kw">let mut</span> y = <span class="nc">10</span>;      <span class="cm">// mutable</span>\ny += <span class="nc">1</span>;\n\n<span class="cm">// Explicit type annotation</span>\n<span class="kw">let</span> z: f64 = <span class="nc">3.14</span>;\n<span class="kw">let</span> flag: bool = <span class="kw">true</span>;\n<span class="kw">let</span> name: &str = <span class="str">"Rust"</span>;           <span class="cm">// string slice</span>\n<span class="kw">let</span> greeting = String::<span class="fn">from</span>(<span class="str">"Hello"</span>); <span class="cm">// owned String</span>`,
+    control:`<span class="cm">// if expressions (return values!)</span>\n<span class="kw">let</span> score = <span class="nc">85</span>;\n<span class="kw">let</span> grade = <span class="kw">if</span> score >= <span class="nc">90</span> { <span class="str">"A"</span> } <span class="kw">else</span> { <span class="str">"B"</span> };\n\n<span class="cm">// loop / while / for</span>\n<span class="kw">for</span> i <span class="kw">in</span> <span class="nc">0</span>..<span class="nc">5</span> {\n    <span class="fn">println!</span>(<span class="str">"{}"</span>, i);\n}\n\n<span class="cm">// match (like switch, but exhaustive)</span>\n<span class="kw">match</span> score {\n    <span class="nc">90</span>..=<span class="nc">100</span> => <span class="fn">println!</span>(<span class="str">"A"</span>),\n    <span class="nc">75</span>..=<span class="nc">89</span>  => <span class="fn">println!</span>(<span class="str">"B"</span>),\n    _         => <span class="fn">println!</span>(<span class="str">"C or below"</span>),\n}`,
+    functions:`<span class="kw">fn</span> <span class="fn">add</span>(x: i32, y: i32) -> i32 {\n    x + y  <span class="cm">// implicit return (no semicolon)</span>\n}\n\n<span class="cm">// Ownership: each value has ONE owner</span>\n<span class="kw">fn</span> <span class="fn">print_str</span>(s: String) { <span class="cm">// s is moved in</span>\n    <span class="fn">println!</span>(<span class="str">"{}"</span>, s);\n}  <span class="cm">// s dropped here</span>\n\n<span class="cm">// Borrowing: lend without moving</span>\n<span class="kw">fn</span> <span class="fn">display</span>(s: &str) {\n    <span class="fn">println!</span>(<span class="str">"{}"</span>, s);  <span class="cm">// just borrows</span>\n}`,
+    oop:`<span class="cm">// Rust uses structs + impl (no classes)</span>\n<span class="kw">struct</span> <span class="fn">Dog</span> {\n    name: String,\n    age: u8,\n}\n\n<span class="kw">impl</span> <span class="fn">Dog</span> {\n    <span class="kw">fn</span> <span class="fn">new</span>(name: &str, age: u8) -> <span class="fn">Dog</span> {\n        Dog { name: String::<span class="fn">from</span>(name), age }\n    }\n    <span class="kw">fn</span> <span class="fn">speak</span>(&self) -> String {\n        <span class="fn">format!</span>(<span class="str">"{} barks!"</span>, self.name)\n    }\n}\n\n<span class="kw">let</span> dog = Dog::<span class="fn">new</span>(<span class="str">"Rex"</span>, <span class="nc">3</span>);\n<span class="fn">println!</span>(<span class="str">"{}"</span>, dog.<span class="fn">speak</span>());`,
+    errors:`<span class="cm">// Rust uses Result<T, E> — no exceptions</span>\n<span class="kw">fn</span> <span class="fn">divide</span>(a: f64, b: f64) -> Result&lt;f64, String&gt; {\n    <span class="kw">if</span> b == <span class="nc">0.0</span> {\n        Err(String::<span class="fn">from</span>(<span class="str">"Cannot divide by zero"</span>))\n    } <span class="kw">else</span> {\n        Ok(a / b)\n    }\n}\n\n<span class="kw">match</span> <span class="fn">divide</span>(<span class="nc">10.0</span>, <span class="nc">0.0</span>) {\n    Ok(result) => <span class="fn">println!</span>(<span class="str">"{}"</span>, result),\n    Err(e)     => <span class="fn">println!</span>(<span class="str">"Error: {}"</span>, e),\n}\n\n<span class="cm">// ? operator — propagate errors</span>\n<span class="kw">let</span> val = <span class="fn">divide</span>(<span class="nc">5.0</span>, <span class="nc">2.0</span>)?;`
+  },
+  typescript: {
+    icon:'TS', color:'#58a6ff', bg:'rgba(88,166,255,.12)', name:'TypeScript', version:'5.4',
+    tags:['Typed JS','Web','Angular','Node.js','React'],
+    desc:"TypeScript is a strongly typed superset of JavaScript developed by Microsoft. It adds static types, interfaces, enums, generics, and decorators that are checked at compile time — then compiles to plain JavaScript that runs anywhere.",
+    uses:'Large-scale web apps, Angular applications, typed Node.js backends, React projects, and any codebase where you want fewer runtime bugs and better IDE support.',
+    install:`npm install -g typescript\ntsc --version\n\n<span class="cm"># Init project</span>\ntsc --init   <span class="cm"># creates tsconfig.json</span>\n\n<span class="cm"># Compile</span>\ntsc app.ts   <span class="cm"># outputs app.js</span>\ntsc --watch  <span class="cm"># auto-compile on change</span>`,
+    hello:`<span class="cm">// TypeScript adds types to JS</span>\n<span class="kw">const</span> name: string = <span class="str">"DevHub"</span>;\n<span class="kw">const</span> year: number = <span class="nc">2025</span>;\n<span class="kw">const</span> active: boolean = <span class="kw">true</span>;\nconsole.<span class="fn">log</span>(<span class="str">\`Welcome to \${name}!\`</span>);`,
+    variables:`<span class="kw">let</span> msg: string = <span class="str">"Hello"</span>;\n<span class="kw">let</span> count: number = <span class="nc">42</span>;\n<span class="kw">let</span> items: string[] = [<span class="str">"a"</span>, <span class="str">"b"</span>];\n\n<span class="cm">// Union types</span>\n<span class="kw">let</span> id: string | number = <span class="str">"abc123"</span>;\n\n<span class="cm">// Type aliases</span>\n<span class="kw">type</span> Status = <span class="str">"active"</span> | <span class="str">"inactive"</span> | <span class="str">"pending"</span>;\n<span class="kw">let</span> status: Status = <span class="str">"active"</span>;\n\n<span class="cm">// Tuple</span>\n<span class="kw">let</span> pair: [string, number] = [<span class="str">"age"</span>, <span class="nc">30</span>];`,
+    control:`<span class="cm">// Same as JS — TS adds type narrowing</span>\n<span class="kw">function</span> <span class="fn">process</span>(val: string | number) {\n  <span class="kw">if</span> (<span class="kw">typeof</span> val === <span class="str">"string"</span>) {\n    console.<span class="fn">log</span>(val.<span class="fn">toUpperCase</span>());  <span class="cm">// TS knows: string</span>\n  } <span class="kw">else</span> {\n    console.<span class="fn">log</span>(val.<span class="fn">toFixed</span>(<span class="nc">2</span>));  <span class="cm">// TS knows: number</span>\n  }\n}`,
+    functions:`<span class="cm">// Fully typed signatures</span>\n<span class="kw">function</span> <span class="fn">greet</span>(name: string, times: number = <span class="nc">1</span>): string {\n  <span class="kw">return</span> <span class="str">\`Hello, \${name}! x\${times}\`</span>;\n}\n\n<span class="cm">// Generic functions</span>\n<span class="kw">function</span> <span class="fn">first</span>&lt;T&gt;(arr: T[]): T | undefined {\n  <span class="kw">return</span> arr[<span class="nc">0</span>];\n}\n<span class="kw">const</span> n = <span class="fn">first</span>([<span class="nc">1</span>, <span class="nc">2</span>, <span class="nc">3</span>]);  <span class="cm">// inferred: number</span>`,
+    oop:`<span class="cm">// Interfaces define object shapes</span>\n<span class="kw">interface</span> User {\n  id: number;\n  name: string;\n  role?: <span class="str">"admin"</span> | <span class="str">"user"</span>;\n}\n\n<span class="cm">// Classes with access modifiers</span>\n<span class="kw">class</span> <span class="fn">UserService</span> {\n  <span class="kw">private</span> users: User[] = [];\n\n  <span class="fn">add</span>(user: User): <span class="kw">void</span> {\n    this.users.<span class="fn">push</span>(user);\n  }\n  <span class="fn">find</span>(id: number): User | undefined {\n    <span class="kw">return</span> this.users.<span class="fn">find</span>(u => u.id === id);\n  }\n}`,
+    errors:`<span class="cm">// TypeScript + error handling</span>\n<span class="kw">class</span> <span class="fn">ApiError</span> <span class="kw">extends</span> <span class="fn">Error</span> {\n  <span class="fn">constructor</span>(<span class="kw">public</span> status: number, msg: string) {\n    <span class="kw">super</span>(msg);\n  }\n}\n\n<span class="kw">async function</span> <span class="fn">getData</span>(): Promise&lt;string&gt; {\n  <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">"/api/data"</span>);\n  <span class="kw">if</span> (!res.ok) <span class="kw">throw new</span> <span class="fn">ApiError</span>(res.status, <span class="str">"Failed"</span>);\n  <span class="kw">return</span> res.<span class="fn">text</span>();\n}`
+  },
+  go: {
+    icon:'Go', color:'#39d353', bg:'rgba(57,211,83,.12)', name:'Go', version:'1.22',
+    tags:['Backend','Cloud','Concurrency','CLI','Microservices'],
+    desc:"Go (Golang) is an open-source language created at Google. It's designed for simplicity, fast compilation, and excellent concurrency support via goroutines — making it ideal for microservices, cloud-native apps, and developer tools.",
+    uses:'Microservices, cloud-native apps, CLI tools, containers (Docker and Kubernetes are written in Go), REST APIs, and high-throughput networking.',
+    install:`brew install go            <span class="cm"># macOS</span>\nsudo apt install golang    <span class="cm"># Linux</span>\ngo version`,
+    hello:`<span class="kw">package</span> main\n\n<span class="kw">import</span> <span class="str">"fmt"</span>\n\n<span class="kw">func</span> <span class="fn">main</span>() {\n    fmt.<span class="fn">Println</span>(<span class="str">"Hello, World!"</span>)\n    name := <span class="str">"DevHub"</span>  <span class="cm">// := infers type</span>\n    fmt.<span class="fn">Printf</span>(<span class="str">"Welcome to %s!\\n"</span>, name)\n}`,
+    variables:`name := <span class="str">"Alice"</span>           <span class="cm">// short declaration</span>\nage := <span class="nc">30</span>\n<span class="kw">var</span> active <span class="kw">bool</span> = <span class="kw">true</span>   <span class="cm">// explicit</span>\n<span class="kw">var</span> scores = []<span class="kw">int</span>{<span class="nc">90</span>, <span class="nc">85</span>}\nx, y := <span class="nc">10</span>, <span class="nc">20</span>            <span class="cm">// multiple</span>`,
+    control:`score := <span class="nc">85</span>\n<span class="kw">if</span> score >= <span class="nc">90</span> {\n    fmt.<span class="fn">Println</span>(<span class="str">"A"</span>)\n} <span class="kw">else</span> {\n    fmt.<span class="fn">Println</span>(<span class="str">"B"</span>)\n}\n\n<span class="kw">for</span> i := <span class="nc">0</span>; i < <span class="nc">5</span>; i++ {\n    fmt.<span class="fn">Println</span>(i)\n}\n\n<span class="cm">// switch</span>\n<span class="kw">switch</span> score {\n<span class="kw">case</span> <span class="nc">90</span>: fmt.<span class="fn">Println</span>(<span class="str">"A"</span>)\n<span class="kw">default</span>: fmt.<span class="fn">Println</span>(<span class="str">"Other"</span>)\n}`,
+    functions:`<span class="cm">// Multiple return values</span>\n<span class="kw">func</span> <span class="fn">divide</span>(a, b <span class="kw">float64</span>) (<span class="kw">float64</span>, error) {\n    <span class="kw">if</span> b == <span class="nc">0</span> {\n        <span class="kw">return</span> <span class="nc">0</span>, fmt.<span class="fn">Errorf</span>(<span class="str">"divide by zero"</span>)\n    }\n    <span class="kw">return</span> a / b, <span class="kw">nil</span>\n}\n\nresult, err := <span class="fn">divide</span>(<span class="nc">10</span>, <span class="nc">2</span>)\n<span class="kw">if</span> err != <span class="kw">nil</span> {\n    fmt.<span class="fn">Println</span>(err)\n}`,
+    oop:`<span class="kw">type</span> Dog <span class="kw">struct</span> {\n    Name string\n    Age  <span class="kw">int</span>\n}\n\n<span class="kw">func</span> (d Dog) <span class="fn">Speak</span>() string {\n    <span class="kw">return</span> d.Name + <span class="str">" barks!"</span>\n}\n\ndog := Dog{Name: <span class="str">"Rex"</span>, Age: <span class="nc">3</span>}\nfmt.<span class="fn">Println</span>(dog.<span class="fn">Speak</span>())`,
+    errors:`<span class="cm">// Go errors are values — check them explicitly</span>\nval, err := <span class="fn">someFunc</span>()\n<span class="kw">if</span> err != <span class="kw">nil</span> {\n    fmt.<span class="fn">Println</span>(<span class="str">"Error:"</span>, err)\n    <span class="kw">return</span>\n}\n\n<span class="cm">// Wrap errors with context</span>\nerr = fmt.<span class="fn">Errorf</span>(<span class="str">"loading user: %w"</span>, err)`
+  },
+  java: {
+    icon:'Jv', color:'#ff8c42', bg:'rgba(247,129,102,.08)', name:'Java', version:'21 LTS',
+    tags:['Enterprise','OOP','Backend','Android','Cross-platform'],
+    desc:'Java is a class-based, object-oriented language designed to have as few implementation dependencies as possible. "Write once, run anywhere" — Java compiles to bytecode that runs on the JVM on any platform. It powers Android apps, enterprise backends, and big-data systems.',
+    uses:'Enterprise backends (Spring Boot), Android development, large-scale distributed systems, financial applications, and big data (Hadoop, Spark).',
+    install:`brew install openjdk@21   <span class="cm"># macOS</span>\nsudo apt install openjdk-21-jdk  <span class="cm"># Linux</span>\njava --version\njavac --version`,
+    hello:`<span class="kw">public class</span> <span class="fn">HelloWorld</span> {\n    <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {\n        System.out.<span class="fn">println</span>(<span class="str">"Hello, World!"</span>);\n        String name = <span class="str">"DevHub"</span>;\n        System.out.<span class="fn">printf</span>(<span class="str">"Welcome to %s!%n"</span>, name);\n    }\n}`,
+    variables:`String name = <span class="str">"Alice"</span>;\n<span class="kw">int</span> age = <span class="nc">30</span>;\n<span class="kw">double</span> height = <span class="nc">5.9</span>;\n<span class="kw">boolean</span> isActive = <span class="kw">true</span>;\n\n<span class="cm">// var type inference (Java 10+)</span>\n<span class="kw">var</span> list = <span class="kw">new</span> ArrayList&lt;String&gt;();\n<span class="kw">var</span> map = Map.<span class="fn">of</span>(<span class="str">"key"</span>, <span class="str">"value"</span>);`,
+    control:`<span class="kw">int</span> score = <span class="nc">85</span>;\n<span class="kw">if</span> (score >= <span class="nc">90</span>) System.out.<span class="fn">println</span>(<span class="str">"A"</span>);\n<span class="kw">else if</span> (score >= <span class="nc">75</span>) System.out.<span class="fn">println</span>(<span class="str">"B"</span>);\n<span class="kw">else</span> System.out.<span class="fn">println</span>(<span class="str">"C"</span>);\n\n<span class="kw">for</span> (<span class="kw">int</span> i = <span class="nc">0</span>; i < <span class="nc">5</span>; i++) System.out.<span class="fn">println</span>(i);\n\n<span class="cm">// enhanced for</span>\n<span class="kw">for</span> (String s : list) System.out.<span class="fn">println</span>(s);`,
+    functions:`<span class="kw">public class</span> <span class="fn">MathUtils</span> {\n    <span class="kw">public static int</span> <span class="fn">add</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {\n        <span class="kw">return</span> a + b;\n    }\n\n    <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {\n        System.out.<span class="fn">println</span>(<span class="fn">add</span>(<span class="nc">3</span>, <span class="nc">5</span>));  <span class="cm">// 8</span>\n    }\n}`,
+    oop:`<span class="kw">public class</span> <span class="fn">Animal</span> {\n    <span class="kw">protected</span> String name;\n    <span class="kw">public</span> <span class="fn">Animal</span>(String name) { this.name = name; }\n    <span class="kw">public</span> String <span class="fn">speak</span>() { <span class="kw">return</span> name + <span class="str">" sounds"</span>; }\n}\n\n<span class="kw">public class</span> <span class="fn">Dog</span> <span class="kw">extends</span> <span class="fn">Animal</span> {\n    <span class="kw">public</span> <span class="fn">Dog</span>(String name) { <span class="kw">super</span>(name); }\n    @Override\n    <span class="kw">public</span> String <span class="fn">speak</span>() { <span class="kw">return</span> name + <span class="str">" barks!"</span>; }\n}`,
+    errors:`<span class="kw">try</span> {\n    <span class="kw">int</span> result = <span class="nc">10</span> / <span class="nc">0</span>;\n} <span class="kw">catch</span> (ArithmeticException e) {\n    System.out.<span class="fn">println</span>(<span class="str">"Error: "</span> + e.getMessage());\n} <span class="kw">finally</span> {\n    System.out.<span class="fn">println</span>(<span class="str">"Done"</span>);\n}`
+  },
+  swift:{ icon:'Sw', color:'#ff6b35', bg:'rgba(247,129,102,.1)', name:'Swift', version:'5.10', tags:['iOS','macOS','SwiftUI','Apple','tvOS'], desc:"Apple's modern, safe, fast language for iOS and macOS. Features optionals for null safety and a clean, expressive syntax.", uses:'iOS apps, macOS apps, watchOS, tvOS, and server-side Swift (Vapor).', install:`xcode-select --install\nswift --version`, hello:`<span class="fn">print</span>(<span class="str">"Hello, World!"</span>)\n<span class="kw">let</span> name = <span class="str">"DevHub"</span>\n<span class="fn">print</span>(<span class="str">"Welcome to \\(name)!"</span>)`, variables:`<span class="kw">let</span> name: String = <span class="str">"Alice"</span>  <span class="cm">// constant</span>\n<span class="kw">var</span> age: Int = <span class="nc">30</span>            <span class="cm">// variable\n// Optionals</span>\n<span class="kw">var</span> nick: String? = <span class="kw">nil</span>\nnick = <span class="str">"Dev"</span>\n<span class="kw">if let</span> n = nick { <span class="fn">print</span>(n) }`, control:`<span class="kw">let</span> score = <span class="nc">85</span>\n<span class="kw">if</span> score >= <span class="nc">90</span> { <span class="fn">print</span>(<span class="str">"A"</span>) }\n<span class="kw">else</span> { <span class="fn">print</span>(<span class="str">"B"</span>) }\n\n<span class="kw">for</span> i <span class="kw">in</span> <span class="nc">0</span>..<<span class="nc">5</span> { <span class="fn">print</span>(i) }\n\n<span class="kw">switch</span> score {\n<span class="kw">case</span> <span class="nc">90</span>...<span class="nc">100</span>: <span class="fn">print</span>(<span class="str">"A"</span>)\n<span class="kw">default</span>: <span class="fn">print</span>(<span class="str">"Other"</span>)\n}`, functions:`<span class="kw">func</span> <span class="fn">greet</span>(name: String, times: Int = <span class="nc">1</span>) -> String {\n  <span class="kw">return</span> Array(<span class="fn">repeating</span>: <span class="str">"Hello \\(name)"</span>, count: times).<span class="fn">joined</span>(separator: <span class="str">", "</span>)\n}`, oop:`<span class="kw">class</span> <span class="fn">Dog</span> {\n  <span class="kw">var</span> name: String\n  <span class="kw">init</span>(name: String) { self.name = name }\n  <span class="kw">func</span> <span class="fn">speak</span>() -> String { <span class="str">"\\(name) barks!"</span> }\n}\n<span class="kw">let</span> d = <span class="fn">Dog</span>(name: <span class="str">"Rex"</span>)\n<span class="fn">print</span>(d.<span class="fn">speak</span>())`, errors:`<span class="kw">enum</span> <span class="fn">AppError</span>: Error { <span class="kw">case</span> notFound, invalid }\n<span class="kw">func</span> <span class="fn">load</span>() <span class="kw">throws</span> -> String {\n    <span class="kw">throw</span> AppError.notFound\n}\n<span class="kw">do</span> { <span class="kw">let</span> v = <span class="kw">try</span> <span class="fn">load</span>(); <span class="fn">print</span>(v) }\n<span class="kw">catch</span> { <span class="fn">print</span>(error) }` },
+  kotlin:{ icon:'Kt', color:'#bc8cff', bg:'rgba(188,140,255,.12)', name:'Kotlin', version:'2.0', tags:['Android','JVM','Multiplatform','Coroutines'], desc:"Kotlin is a modern, statically typed language from JetBrains that runs on the JVM. Google's preferred language for Android. 100% interoperable with Java.", uses:'Android apps, Spring Boot backends, Kotlin Multiplatform (shared iOS/Android code).', install:`brew install kotlin\nkotlin --version`, hello:`<span class="kw">fun</span> <span class="fn">main</span>() {\n    <span class="fn">println</span>(<span class="str">"Hello, World!"</span>)\n    <span class="kw">val</span> name = <span class="str">"DevHub"</span>\n    <span class="fn">println</span>(<span class="str">"Welcome to $name!"</span>)\n}`, variables:`<span class="kw">val</span> name = <span class="str">"Alice"</span>  <span class="cm">// immutable</span>\n<span class="kw">var</span> age = <span class="nc">30</span>        <span class="cm">// mutable</span>\n<span class="kw">var</span> nick: String? = <span class="kw">null</span>  <span class="cm">// nullable\n// Elvis operator</span>\n<span class="kw">val</span> len = nick?.<span class="fn">length</span> ?: <span class="nc">0</span>`, control:`<span class="kw">val</span> score = <span class="nc">85</span>\n<span class="kw">if</span> (score >= <span class="nc">90</span>) <span class="fn">println</span>(<span class="str">"A"</span>) <span class="kw">else</span> <span class="fn">println</span>(<span class="str">"B"</span>)\n\n<span class="kw">when</span> (score) {\n    <span class="kw">in</span> <span class="nc">90</span>..<span class="nc">100</span> -> <span class="fn">println</span>(<span class="str">"A"</span>)\n    <span class="kw">else</span>       -> <span class="fn">println</span>(<span class="str">"Other"</span>)\n}`, functions:`<span class="kw">fun</span> <span class="fn">greet</span>(name: String, greeting: String = <span class="str">"Hello"</span>): String {\n    <span class="kw">return</span> <span class="str">"$greeting, $name!"</span>\n}\n<span class="kw">val</span> square = { x: Int -> x * x }`, oop:`<span class="kw">data class</span> <span class="fn">User</span>(<span class="kw">val</span> id: Int, <span class="kw">val</span> name: String)\n\n<span class="kw">open class</span> <span class="fn">Animal</span>(<span class="kw">val</span> name: String) {\n    <span class="kw">open fun</span> <span class="fn">speak</span>() = <span class="str">"$name sounds"</span>\n}\n<span class="kw">class</span> <span class="fn">Dog</span>(name: String) : <span class="fn">Animal</span>(name) {\n    <span class="kw">override fun</span> <span class="fn">speak</span>() = <span class="str">"$name barks!"</span>\n}`, errors:`<span class="kw">try</span> {\n    <span class="kw">val</span> n = <span class="str">"abc"</span>.<span class="fn">toInt</span>()\n} <span class="kw">catch</span> (e: NumberFormatException) {\n    <span class="fn">println</span>(<span class="str">"Error: \${e.message}"</span>)\n}` },
+  cpp:{ icon:'C++', color:'#5e9fff', bg:'rgba(88,166,255,.1)', name:'C++', version:'C++23', tags:['Advanced','Games','Systems','Embedded'], desc:'C++ is a general-purpose, compiled language extending C with OOP, templates, and the Standard Library. One of the fastest languages — the choice for game engines, OS kernels, and databases.', uses:'Game development (Unreal Engine), OS kernels, compilers, real-time systems, high-frequency trading.', install:`<span class="cm"># macOS:</span>\nxcode-select --install\ng++ --version\n\n<span class="cm"># Linux:</span>\nsudo apt-get install g++ cmake\n\n<span class="cm"># Compile:</span>\ng++ -std=c++23 -o hello hello.cpp && ./hello`, hello:`#<span class="kw">include</span> <span class="str">&lt;iostream&gt;</span>\n<span class="kw">int</span> <span class="fn">main</span>() {\n    std::cout << <span class="str">"Hello, World!"</span> << std::endl;\n    std::string name = <span class="str">"DevHub"</span>;\n    std::cout << <span class="str">"Welcome to "</span> << name << <span class="str">"!"</span> << std::endl;\n    <span class="kw">return</span> <span class="nc">0</span>;\n}`, variables:`std::string name = <span class="str">"Alice"</span>;\n<span class="kw">int</span> age = <span class="nc">30</span>;\n<span class="kw">double</span> h = <span class="nc">5.9</span>;\n<span class="kw">bool</span> active = <span class="kw">true</span>;\n<span class="kw">auto</span> greeting = std::string(<span class="str">"Hi"</span>);\nstd::vector&lt;<span class="kw">int</span>&gt; scores = {<span class="nc">90</span>, <span class="nc">85</span>};`, control:`<span class="kw">int</span> score = <span class="nc">85</span>;\n<span class="kw">if</span> (score >= <span class="nc">90</span>) std::cout << <span class="str">"A\\n"</span>;\n<span class="kw">else</span> std::cout << <span class="str">"B\\n"</span>;\n\n<span class="kw">for</span> (<span class="kw">int</span> i = <span class="nc">0</span>; i < <span class="nc">5</span>; i++) std::cout << i;\n<span class="kw">for</span> (<span class="kw">auto</span> s : scores) std::cout << s;`, functions:`<span class="kw">int</span> <span class="fn">add</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) { <span class="kw">return</span> a + b; }\n\n<span class="cm">// Template (generic)</span>\n<span class="kw">template</span>&lt;<span class="kw">typename</span> T&gt;\nT <span class="fn">maxVal</span>(T a, T b) { <span class="kw">return</span> a > b ? a : b; }\n\n<span class="cm">// Lambda</span>\n<span class="kw">auto</span> sq = [](<span class="kw">int</span> x) { <span class="kw">return</span> x * x; };`, oop:`<span class="kw">class</span> <span class="fn">Dog</span> {\n<span class="kw">public</span>:\n    std::string name;\n    <span class="fn">Dog</span>(std::string n) : name(n) {}\n    std::string <span class="fn">speak</span>() { <span class="kw">return</span> name + <span class="str">" barks!"</span>; }\n};\nDog dog(<span class="str">"Rex"</span>);\nstd::cout << dog.<span class="fn">speak</span>();`, errors:`<span class="kw">try</span> {\n    <span class="kw">throw</span> std::runtime_error(<span class="str">"Something went wrong"</span>);\n} <span class="kw">catch</span> (<span class="kw">const</span> std::exception& e) {\n    std::cout << <span class="str">"Error: "</span> << e.what() << std::endl;\n}` },
+  sql:{ icon:'SQL', color:'#d29922', bg:'rgba(210,153,34,.12)', name:'SQL', version:'Standard', tags:['Databases','Data','Essential','PostgreSQL','MySQL'], desc:'SQL (Structured Query Language) is the standard language for managing and querying relational databases. Originally developed in the 1970s at IBM, it remains the most universally required skill in data and backend engineering.', uses:'Database design, data analysis, backend queries, business intelligence, and data pipelines.', install:`<span class="cm"># PostgreSQL (recommended)</span>\nbrew install postgresql@16  <span class="cm"># macOS</span>\nsudo apt install postgresql  <span class="cm"># Linux</span>\nbrew services start postgresql@16\npsql --version`, hello:`<span class="cm">-- Create a table</span>\n<span class="kw">CREATE TABLE</span> users (\n    id    <span class="kw">SERIAL PRIMARY KEY</span>,\n    name  <span class="kw">VARCHAR</span>(<span class="nc">100</span>) <span class="kw">NOT NULL</span>,\n    email <span class="kw">TEXT UNIQUE NOT NULL</span>\n);\n\n<span class="cm">-- Insert</span>\n<span class="kw">INSERT INTO</span> users (name, email)\n<span class="kw">VALUES</span> (<span class="str">'Alice'</span>, <span class="str">'alice@dev.com'</span>);\n\n<span class="cm">-- Query</span>\n<span class="kw">SELECT</span> * <span class="kw">FROM</span> users;`, variables:`<span class="kw">INTEGER</span>        <span class="cm">-- whole numbers</span>\n<span class="kw">BIGINT</span>         <span class="cm">-- large integers</span>\n<span class="kw">DECIMAL</span>(<span class="nc">10</span>,<span class="nc">2</span>)  <span class="cm">-- precise decimals</span>\n<span class="kw">VARCHAR</span>(<span class="nc">255</span>)   <span class="cm">-- variable string</span>\n<span class="kw">TEXT</span>           <span class="cm">-- unlimited text</span>\n<span class="kw">BOOLEAN</span>        <span class="cm">-- true / false</span>\n<span class="kw">TIMESTAMP</span>      <span class="cm">-- date + time</span>\n<span class="kw">UUID</span>           <span class="cm">-- unique identifiers</span>`, control:`<span class="cm">-- WHERE filters rows</span>\n<span class="kw">SELECT</span> * <span class="kw">FROM</span> users <span class="kw">WHERE</span> active = <span class="kw">TRUE</span>;\n\n<span class="cm">-- CASE — conditional in SQL</span>\n<span class="kw">SELECT</span> name,\n  <span class="kw">CASE WHEN</span> score >= <span class="nc">90</span> <span class="kw">THEN</span> <span class="str">'A'</span>\n       <span class="kw">ELSE</span> <span class="str">'B'</span> <span class="kw">END AS</span> grade\n<span class="kw">FROM</span> students;`, functions:`<span class="kw">SELECT</span>\n  <span class="fn">COUNT</span>(*) <span class="kw">AS</span> total,\n  <span class="fn">AVG</span>(age)  <span class="kw">AS</span> avg_age,\n  <span class="fn">MAX</span>(created_at) <span class="kw">AS</span> latest\n<span class="kw">FROM</span> users\n<span class="kw">WHERE</span> active = <span class="kw">TRUE</span>\n<span class="kw">GROUP BY</span> country\n<span class="kw">HAVING</span> <span class="fn">COUNT</span>(*) > <span class="nc">10</span>\n<span class="kw">ORDER BY</span> total <span class="kw">DESC</span>\n<span class="kw">LIMIT</span> <span class="nc">20</span>;`, oop:`<span class="cm">-- JOIN combines related tables</span>\n<span class="kw">SELECT</span> u.name, o.product, o.total\n<span class="kw">FROM</span> users u\n<span class="kw">INNER JOIN</span> orders o <span class="kw">ON</span> o.user_id = u.id\n<span class="kw">WHERE</span> o.created_at > NOW() - INTERVAL <span class="str">'30 days'</span>\n<span class="kw">ORDER BY</span> o.total <span class="kw">DESC</span>;`, errors:`<span class="cm">-- Use transactions for safety</span>\n<span class="kw">BEGIN</span>;\n  <span class="kw">UPDATE</span> accounts <span class="kw">SET</span> balance = balance - <span class="nc">100</span> <span class="kw">WHERE</span> id = <span class="nc">1</span>;\n  <span class="kw">UPDATE</span> accounts <span class="kw">SET</span> balance = balance + <span class="nc">100</span> <span class="kw">WHERE</span> id = <span class="nc">2</span>;\n<span class="kw">COMMIT</span>;  <span class="cm">-- or ROLLBACK on error</span>` },
+  ruby:{ icon:'Rb', color:'#e74c3c', bg:'rgba(247,129,102,.12)', name:'Ruby', version:'3.3', tags:['Web','Rails','Scripting','Beginner'], desc:"Ruby is a dynamic, interpreted, object-oriented language designed for developer productivity and happiness. Famous for Ruby on Rails — the framework that pioneered convention-over-configuration.", uses:'Web apps (Ruby on Rails), scripting and automation, DSLs, APIs, and rapid prototyping.', install:`brew install rbenv ruby-build\nrbenv install 3.3.0\nrbenv global 3.3.0\nruby --version\ngem --version`, hello:`<span class="fn">puts</span> <span class="str">"Hello, World!"</span>\nname = <span class="str">"DevHub"</span>\n<span class="fn">puts</span> <span class="str">"Welcome to #{name}!"</span>`, variables:`local_var = <span class="str">"local"</span>\n@instance_var = <span class="str">"inst"</span>\n@@class_var = <span class="str">"class"</span>\nCONSTANT = <span class="nc">42</span>\nnumbers = [<span class="nc">1</span>, <span class="nc">2</span>, <span class="nc">3</span>]\nhash = { name: <span class="str">"Alice"</span>, age: <span class="nc">30</span> }`, control:`score = <span class="nc">85</span>\n<span class="kw">if</span> score >= <span class="nc">90</span>\n  <span class="fn">puts</span> <span class="str">"A"</span>\n<span class="kw">elsif</span> score >= <span class="nc">75</span>\n  <span class="fn">puts</span> <span class="str">"B"</span>\n<span class="kw">else</span>\n  <span class="fn">puts</span> <span class="str">"C"</span>\n<span class="kw">end</span>\n\n[<span class="nc">1</span>,<span class="nc">2</span>,<span class="nc">3</span>].<span class="fn">each</span> { |n| <span class="fn">puts</span> n * <span class="nc">2</span> }`, functions:`<span class="kw">def</span> <span class="fn">greet</span>(name, greeting: <span class="str">"Hello"</span>)\n  <span class="str">"#{greeting}, #{name}!"</span>\n<span class="kw">end</span>\n<span class="fn">puts</span> <span class="fn">greet</span>(<span class="str">"Rahul"</span>)\n<span class="fn">puts</span> <span class="fn">greet</span>(<span class="str">"Rahul"</span>, greeting: <span class="str">"Hey"</span>)`, oop:`<span class="kw">class</span> <span class="fn">Dog</span>\n  <span class="fn">attr_reader</span> :name\n  <span class="kw">def</span> <span class="fn">initialize</span>(name)\n    @name = name\n  <span class="kw">end</span>\n  <span class="kw">def</span> <span class="fn">speak</span>\n    <span class="str">"#{@name} barks!"</span>\n  <span class="kw">end</span>\n<span class="kw">end</span>\nd = <span class="fn">Dog</span>.<span class="fn">new</span>(<span class="str">"Rex"</span>)\n<span class="fn">puts</span> d.<span class="fn">speak</span>()`, errors:`<span class="kw">begin</span>\n  result = <span class="nc">10</span> / <span class="nc">0</span>\n<span class="kw">rescue</span> ZeroDivisionError => e\n  <span class="fn">puts</span> <span class="str">"Error: #{e.message}"</span>\n<span class="kw">ensure</span>\n  <span class="fn">puts</span> <span class="str">"Always runs"</span>\n<span class="kw">end</span>` },
+  dart:{ icon:'Dt', color:'#00BCD4', bg:'rgba(0,188,212,.1)', name:'Dart', version:'3.3', tags:['Flutter','Mobile','Web','Google'], desc:"Dart is a client-optimized language by Google that powers Flutter — the UI toolkit for building beautiful, natively compiled apps for mobile, web, and desktop from a single codebase.", uses:'Flutter mobile apps, Flutter web, Flutter desktop, and server-side apps with shelf.', install:`<span class="cm"># Install Flutter (includes Dart)</span>\ngit clone https://github.com/flutter/flutter.git\nexport PATH="$PATH:flutter/bin"\nflutter doctor\ndart --version`, hello:`<span class="kw">void</span> <span class="fn">main</span>() {\n  <span class="fn">print</span>(<span class="str">'Hello, World!'</span>);\n  <span class="kw">var</span> name = <span class="str">'DevHub'</span>;\n  <span class="fn">print</span>(<span class="str">'Welcome to $name!'</span>);\n}`, variables:`String name = <span class="str">'Alice'</span>;\n<span class="kw">int</span> age = <span class="nc">30</span>;\n<span class="kw">double</span> h = <span class="nc">5.9</span>;\n<span class="kw">bool</span> active = <span class="kw">true</span>;\nString? nick;  <span class="cm">// nullable\nlate</span> String title;  <span class="cm">// late init</span>`, control:`<span class="kw">int</span> score = <span class="nc">85</span>;\n<span class="kw">if</span> (score >= <span class="nc">90</span>) <span class="fn">print</span>(<span class="str">'A'</span>);\n<span class="kw">else</span> <span class="fn">print</span>(<span class="str">'B'</span>);\n\n<span class="kw">for</span> (<span class="kw">var</span> i = <span class="nc">0</span>; i < <span class="nc">5</span>; i++) <span class="fn">print</span>(i);\n[<span class="nc">1</span>,<span class="nc">2</span>,<span class="nc">3</span>].<span class="fn">forEach</span>((n) => <span class="fn">print</span>(n));`, functions:`String <span class="fn">greet</span>(String name, {String greeting = <span class="str">'Hello'</span>}) {\n  <span class="kw">return</span> <span class="str">'$greeting, $name!'</span>;\n}\n<span class="kw">int</span> <span class="fn">square</span>(<span class="kw">int</span> x) => x * x;`, oop:`<span class="kw">class</span> <span class="fn">Dog</span> {\n  <span class="kw">final</span> String name;\n  <span class="fn">Dog</span>(this.name);\n  String <span class="fn">speak</span>() => <span class="str">'$name barks!'</span>;\n}\n<span class="kw">final</span> dog = <span class="fn">Dog</span>(<span class="str">'Rex'</span>);\n<span class="fn">print</span>(dog.<span class="fn">speak</span>());`, errors:`<span class="kw">try</span> {\n  <span class="kw">throw</span> <span class="fn">Exception</span>(<span class="str">'Something failed'</span>);\n} <span class="kw">catch</span> (e) {\n  <span class="fn">print</span>(<span class="str">'Error: $e'</span>);\n} <span class="kw">finally</span> {\n  <span class="fn">print</span>(<span class="str">'Done'</span>);\n}` }
+};
+
+// =============================================
+// OPEN LANGUAGE DETAIL
+// =============================================
+function openLang(lang) {
+  const d = langData[lang];
+  if (!d) return;
+  showPage('languages');
+  document.getElementById('lang-list').style.display = 'none';
+  document.getElementById('lang-detail').style.display = 'block';
+  document.getElementById('langMain').innerHTML = `
+    <div style="margin-bottom:.75rem">
+      <button class="icon-btn" onclick="closeLang()" style="font-size:13px"><i class="ti ti-arrow-left"></i> All Languages</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap">
+      <div class="lang-icon" style="background:${d.bg};color:${d.color};width:56px;height:56px;font-size:${lang==='cpp'||lang==='sql'?'13':'22'}px;margin-bottom:0;flex-shrink:0">${d.icon}</div>
+      <div><h1 style="margin-bottom:6px">${d.name} <span style="font-size:14px;font-weight:400;color:var(--text3)">${d.version}</span></h1>
+      <div class="tag-list">${d.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>
+    </div>
+    <h2>Introduction</h2>
+    <p>${d.desc}</p>
+    <p><strong style="color:var(--text)">Common uses:</strong> ${d.uses}</p>
+
+    <h2>Installation</h2>
+    <div class="code-wrap"><div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code>${d.install}</code></pre></div>
+
+    <h2>Hello, World!</h2>
+    <div class="code-wrap"><div class="code-header"><span class="code-lang">${lang}</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code>${d.hello}</code></pre></div>
+
+    <h2>Variables &amp; Data Types</h2>
+    <div class="code-wrap"><div class="code-header"><span class="code-lang">${lang}</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code>${d.variables}</code></pre></div>
+
+    <h2>Control Flow</h2>
+    <div class="code-wrap"><div class="code-header"><span class="code-lang">${lang}</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code>${d.control}</code></pre></div>
+
+    <h2>Functions</h2>
+    <div class="code-wrap"><div class="code-header"><span class="code-lang">${lang}</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code>${d.functions}</code></pre></div>
+
+    <h2>Classes &amp; OOP</h2>
+    <div class="code-wrap"><div class="code-header"><span class="code-lang">${lang}</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code>${d.oop}</code></pre></div>
+
+    <h2>Error Handling</h2>
+    <div class="code-wrap"><div class="code-header"><span class="code-lang">${lang}</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code>${d.errors}</code></pre></div>
+
+    <h2>Interview Questions</h2>
+    <div style="display:flex;flex-direction:column;gap:.75rem">
+      <div class="card" style="cursor:pointer" onclick="this.querySelector('.ans').style.display=this.querySelector('.ans').style.display==='block'?'none':'block'">
+        <div style="font-size:14px;font-weight:500">What are the key features of ${d.name}? <i class="ti ti-chevron-down" style="float:right;color:var(--text3)"></i></div>
+        <div class="ans" style="display:none;margin-top:.75rem;font-size:13px;color:var(--text2)">${d.desc}</div>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="this.querySelector('.ans').style.display=this.querySelector('.ans').style.display==='block'?'none':'block'">
+        <div style="font-size:14px;font-weight:500">When should you use ${d.name}? <i class="ti ti-chevron-down" style="float:right;color:var(--text3)"></i></div>
+        <div class="ans" style="display:none;margin-top:.75rem;font-size:13px;color:var(--text2)">${d.uses}</div>
+      </div>
+    </div>
+
+    <div class="notice" style="margin-top:1.5rem">
+      <i class="ti ti-sparkles"></i> Try the <a href="#" onclick="showPage('ai');openAIPanel('quiz');return false">AI Quiz Generator</a> to test your ${d.name} knowledge, or the <a href="#" onclick="showPage('ai');openAIPanel('code');return false">Code Explainer</a> for any snippet.
+    </div>
+  `;
+}
+
+function closeLang() {
+  document.getElementById('lang-list').style.display = 'block';
+  document.getElementById('lang-detail').style.display = 'none';
+}
+
+function copyCode(btn) {
+  const text = btn.closest('.code-wrap').querySelector('code').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => { btn.textContent = 'Error'; setTimeout(() => btn.textContent = 'Copy', 2000); });
+}
+
+// =============================================
+// VOTING
+// =============================================
+// Community posts don't support signed up/down voting on the backend (only
+// a single like/unlike toggle), so both arrows trigger the same like toggle;
+// the arrow clicked is highlighted for visual feedback only.
+function vote(btn, dir) {
+  const wrap = btn.parentElement;
+  const postId = wrap.closest('.post-card')?.dataset.id;
+  if (!postId) return;
+  if (!requireLogin('vote on posts')) return;
+  wrap.querySelectorAll('.vote-btn').forEach(b => b.classList.remove('active'));
+  if (dir > 0) btn.classList.add('active');
+  togglePostLike(postId, wrap.querySelector('.vote-count'));
+}
+
+// =============================================
+// LIKE & BOOKMARK (news cards — client-side only, no backend post id)
+// =============================================
+function toggleLike(btn) {
+  const m = btn.innerHTML.match(/\d+/);
+  const n = m ? parseInt(m[0]) : 0;
+  btn.classList.toggle('liked');
+  const liked = btn.classList.contains('liked');
+  btn.innerHTML = `<i class="ti ti-heart"></i> ${liked ? n+1 : n-1}`;
+  btn.style.color = liked ? 'var(--orange)' : '';
+}
+
+function toggleBookmark(btn) {
+  btn.classList.toggle('liked');
+  const saved = btn.classList.contains('liked');
+  btn.style.color = saved ? 'var(--accent)' : '';
+  showToast(saved ? '📌 Article saved to your library' : 'Article removed from library', saved ? 'success' : 'info');
+}
+
+function shareItem(btn) {
+  const title = btn.closest('.card')?.querySelector('.news-title')?.textContent || 'TechTribe Article';
+  const url = btn.dataset.url || location.href;
+  if (navigator.share) navigator.share({ title, url });
+  else navigator.clipboard.writeText(url)
+    .then(() => showToast('Link copied to clipboard!', 'success'))
+    .catch(() => showToast('Copied: ' + title, 'info'));
+}
+
+// =============================================
+// COMMUNITY (wired to the TechTribe backend /api/v1/community)
+// =============================================
+let communityState = { page: 1, sort: 'newest', loading: false };
+
+function openNewPost() {
+  if (!requireLogin('create a post')) return;
+  document.getElementById('newPostForm').style.display = 'block';
+  document.getElementById('postTitle').focus();
+}
+function closeNewPost() { document.getElementById('newPostForm').style.display = 'none'; }
+
+function communityErrorState(msg) {
+  document.getElementById('postList').innerHTML =
+    `<div class="notice notice-error"><i class="ti ti-alert-circle"></i><span>${escapeHtml(msg)}</span></div>`;
+}
+
+function timeAgoShort(dateStr) {
+  const diffMs = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diffMs / 60000);
+  if (mins < 1) return 'Just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  if (days < 2) return 'Yesterday';
+  if (days < 7) return `${days}d ago`;
+  return new Date(dateStr).toLocaleDateString();
+}
+
+function avatarColorFor(seed) {
+  const palette = [
+    ['rgba(255,215,0,.2)', '#ffd700'], ['rgba(88,166,255,.2)', 'var(--accent)'],
+    ['rgba(63,185,80,.2)', 'var(--green)'], ['rgba(247,129,102,.2)', 'var(--orange)'],
+    ['rgba(188,140,255,.2)', 'var(--purple)']
+  ];
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) % palette.length;
+  return palette[Math.abs(h) % palette.length];
+}
+
+function postCardHTML(post) {
+  const author = post.author?.displayName || post.author?.username || 'Unknown';
+  const initials = (post.author?.username || 'U').slice(0, 2).toUpperCase();
+  const [bg, color] = avatarColorFor(post.author?.username || 'u');
+  const tag = post.tags && post.tags[0] ? post.tags[0] : 'General';
+  return `<div class="card post-card" data-id="${post.id}">
+    <div class="post-votes">
+      <button class="vote-btn ${post.isLiked ? 'active' : ''}" onclick="vote(this,1)"><i class="ti ti-chevron-up"></i></button>
+      <span class="vote-count">${post.likeCount ?? 0}</span>
+      <button class="vote-btn" onclick="vote(this,-1)"><i class="ti ti-chevron-down"></i></button>
+    </div>
+    <div class="post-content">
+      <div class="post-title">${escapeHtml(post.title)}</div>
+      <div class="post-meta">
+        <span class="community-badge">${escapeHtml(tag)}</span>
+        <span><div class="avatar" style="background:${bg};color:${color}">${initials}</div> ${escapeHtml(author)}</span>
+        <span><i class="ti ti-message-circle"></i> ${post.commentCount ?? 0}</span>
+        <span>${timeAgoShort(post.createdAt)}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function loadCommunityPosts(sort) {
+  if (sort) communityState.sort = sort;
+  communityState.page = 1;
+  const listEl = document.getElementById('postList');
+  listEl.innerHTML = `<div class="text-muted text-sm" style="padding:1rem;text-align:center">Loading posts…</div>`;
+  try {
+    const data = await apiFetch(`/community/posts?page=1&limit=20&sort=${communityState.sort}`);
+    const posts = data.data.items || [];
+    listEl.innerHTML = posts.length
+      ? posts.map(postCardHTML).join('')
+      : `<div class="text-muted text-sm" style="padding:1rem;text-align:center">No posts yet — be the first to share something!</div>`;
+    document.getElementById('loadMorePostsBtn').style.display = data.data.meta?.hasNextPage ? '' : 'none';
+  } catch (e) {
+    communityErrorState(e.message || 'Could not load community posts.');
+  }
+}
+
+async function loadMoreCommunityPosts() {
+  communityState.page++;
+  try {
+    const data = await apiFetch(`/community/posts?page=${communityState.page}&limit=20&sort=${communityState.sort}`);
+    const posts = data.data.items || [];
+    document.getElementById('postList').insertAdjacentHTML('beforeend', posts.map(postCardHTML).join(''));
+    document.getElementById('loadMorePostsBtn').style.display = data.data.meta?.hasNextPage ? '' : 'none';
+  } catch (e) {
+    showToast(e.message || 'Could not load more posts', 'error');
+  }
+}
+
+async function togglePostLike(postId, countEl) {
+  try {
+    const data = await apiFetch(`/community/posts/${postId}/like`, { method: 'POST', body: {} });
+    if (countEl) countEl.textContent = data.data.likeCount ?? countEl.textContent;
+  } catch (e) {
+    showToast(e.message || 'Could not like post', 'error');
+  }
+}
+
+async function submitPost() {
+  if (!requireLogin('create a post')) return;
+  const title = document.getElementById('postTitle').value.trim();
+  const community = document.getElementById('postCommunity').value;
+  const body = document.getElementById('postBody').value.trim();
+  if (!title || title.length < 3) return showToast('Title must be at least 3 characters.', 'warn');
+  if (!body) return showToast('Please write something in the post body.', 'warn');
+  const tag = community ? community.replace(/^r\//, '') : 'General';
+  try {
+    await apiFetch('/community/posts', { method: 'POST', body: { title, body, tags: [tag] } });
+    document.getElementById('postTitle').value = '';
+    document.getElementById('postBody').value = '';
+    document.getElementById('postCommunity').value = '';
+    closeNewPost();
+    showToast('Post published! 🎉', 'success');
+    loadCommunityPosts();
+  } catch (e) {
+    showToast(e.message || 'Could not publish post', 'error');
+  }
+}
+
+function sortPosts(el, type) {
+  document.querySelectorAll('#communityGrid .filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const sortMap = { hot: 'popular', top: 'popular', new: 'newest', rising: 'newest' };
+  loadCommunityPosts(sortMap[type] || 'newest');
+}
+
+// =============================================
+// NEWSLETTER
+// =============================================
+function subscribe() {
+  const el = document.getElementById('nlEmail');
+  if (el && el.value.includes('@')) {
+    document.getElementById('nl-success').style.display = 'block';
+    el.value = '';
+    showToast('Subscribed! See you Monday. 📬', 'success');
+  } else {
+    showToast('Please enter a valid email address.', 'warn');
+  }
+}
+
+// =============================================
+// DASHBOARD
+// =============================================
+function switchDash(el, panel) {
+  document.querySelectorAll('.dash-nav a').forEach(a => a.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#dashContent .tab-panel').forEach(p => p.classList.remove('active'));
+  const t = document.getElementById('dash-' + panel);
+  if (t) t.classList.add('active');
+  if (panel === 'saved') loadSavedBookmarks();
+}
+
+async function loadDashboard() {
+  if (!authState.user) {
+    showToast('Sign in to see your personal dashboard.', 'warn');
+    openModal('auth-modal');
+    return;
+  }
+  try {
+    const data = await apiFetch('/users/dashboard');
+    const s = data.data.stats;
+    document.getElementById('statStreak').textContent = `🔥 ${s.streakCount}`;
+    document.getElementById('statXP').textContent = s.xp;
+    document.getElementById('statPosts').textContent = s.postCount;
+    document.getElementById('statBookmarks').textContent = s.bookmarkCount;
+    document.getElementById('statLevelLabel').textContent = `Level ${s.level}`;
+    document.getElementById('statXPLabel').textContent = `${s.xp} XP`;
+    const pct = Math.min(100, Math.round(((s.xp % 1000) / 1000) * 100));
+    document.getElementById('statXPBarFill').style.width = pct + '%';
+  } catch (e) {
+    showToast(e.message || 'Could not load dashboard stats', 'error');
+  }
+}
+
+function bookmarkItemHTML(b) {
+  if (b.newsArticle) {
+    return `<div class="card news-card"><span class="news-cat" style="color:var(--accent)">${escapeHtml(b.newsArticle.category || 'News')}</span><div class="news-title">${escapeHtml(b.newsArticle.title)}</div><div class="news-meta"><i class="ti ti-calendar"></i> Saved ${timeAgoShort(b.createdAt)}</div></div>`;
+  }
+  if (b.post) {
+    const author = b.post.author?.displayName || b.post.author?.username || 'Unknown';
+    return `<div class="card news-card"><span class="news-cat" style="color:var(--purple)">Community post</span><div class="news-title">${escapeHtml(b.post.title)}</div><div class="news-meta"><i class="ti ti-user"></i> ${escapeHtml(author)} · Saved ${timeAgoShort(b.createdAt)}</div></div>`;
+  }
+  if (b.challenge) {
+    return `<div class="card news-card"><span class="news-cat" style="color:var(--green)">Challenge</span><div class="news-title">${escapeHtml(b.challenge.title)}</div><div class="news-meta">Saved ${timeAgoShort(b.createdAt)}</div></div>`;
+  }
+  if (b.roadmap) {
+    return `<div class="card news-card"><span class="news-cat" style="color:var(--yellow)">Roadmap</span><div class="news-title">${escapeHtml(b.roadmap.title)}</div><div class="news-meta">Saved ${timeAgoShort(b.createdAt)}</div></div>`;
+  }
+  return '';
+}
+
+async function loadSavedBookmarks() {
+  const el = document.getElementById('dashSavedList');
+  el.innerHTML = `<div class="text-muted text-sm">Loading…</div>`;
+  try {
+    const data = await apiFetch('/bookmarks?limit=50');
+    const items = data.data.items || [];
+    el.innerHTML = items.length
+      ? items.map(bookmarkItemHTML).join('')
+      : `<div class="text-muted text-sm">You haven't saved anything yet. Bookmark posts or news to see them here.</div>`;
+  } catch (e) {
+    el.innerHTML = `<div class="notice notice-error"><i class="ti ti-alert-circle"></i><span>${escapeHtml(e.message || 'Could not load saved items')}</span></div>`;
+  }
+}
+
+// =============================================
+// SEARCH
+// =============================================
+function handleSearch(e) {
+  if (e.key === 'Enter') {
+    const q = e.target.value.trim();
+    if (q) { showPage('search'); document.getElementById('searchInput').value = q; runSearch(q); }
+  }
+}
+function handleMobileSearch(e) {
+  if (e.key === 'Enter') {
+    const q = e.target.value.trim();
+    if (q) { showPage('search'); document.getElementById('searchInput').value = q; runSearch(q); toggleMenu(); }
+  }
+}
+
+const searchIndex = [
+  ...Object.entries(langData).map(([k,v]) => ({ type:'Language', title:v.name, desc:v.tags.join(', '), action:`openLang('${k}')` })),
+  { type:'AI Tool', title:'Code Explainer', desc:'Explain any code in plain English', action:"openAIPanel('code')" },
+  { type:'AI Tool', title:'Error Debugger', desc:'Diagnose and fix your errors', action:"openAIPanel('debug')" },
+  { type:'AI Tool', title:'Quiz Generator', desc:'Test your knowledge with AI quizzes', action:"openAIPanel('quiz')" },
+  { type:'AI Tool', title:'Learning Path Builder', desc:'Get a personalized roadmap', action:"openAIPanel('path')" },
+  { type:'AI Tool', title:'Code Reviewer', desc:'Senior-level code review', action:"openAIPanel('review')" },
+  { type:'AI Tool', title:'Article Summarizer', desc:'Summarize any article instantly', action:"openAIPanel('summary')" },
+];
+
+let searchFilter = 'all';
+let searchDebounceTimer = null;
+
+function renderSearchResults(q, results) {
+  const el = document.getElementById('searchResults');
+  const colors = { Language:'var(--accent)', News:'var(--purple)', Post:'var(--green)', 'AI Tool':'var(--orange)', User:'var(--yellow)' };
+  if (!results.length) {
+    el.innerHTML = `<div class="card" style="text-align:center;padding:2.5rem;color:var(--text3)"><i class="ti ti-search" style="font-size:3rem;opacity:.3;display:block;margin:0 auto .75rem"></i><p>No results for "<strong style="color:var(--text)">${escapeHtml(q)}</strong>"</p><p style="font-size:13px;margin-top:.5rem">Try a different keyword or browse the Languages page.</p></div>`;
+    return;
+  }
+  el.innerHTML = `<p style="font-size:13px;color:var(--text3);margin-bottom:1rem">${results.length} result${results.length===1?'':'s'} for "<strong style="color:var(--text)">${escapeHtml(q)}</strong>"</p>` +
+    results.map(r => {
+      const c = colors[r.type] || 'var(--accent)';
+      const action = r.action ? `onclick="(function(){${r.action}})()"` : '';
+      return `<div class="card" style="margin-bottom:.75rem;cursor:${r.action?'pointer':'default'}" ${action}><div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:11px;font-weight:600;color:${c};background:${c}22;padding:3px 10px;border-radius:20px;white-space:nowrap;border:1px solid ${c}44;flex-shrink:0">${r.type}</span><div><div style="font-size:14px;font-weight:500;color:var(--text)">${escapeHtml(r.title)}</div><div style="font-size:12px;color:var(--text3);margin-top:2px">${escapeHtml(r.desc)}</div></div></div></div>`;
+    }).join('');
+}
+
+async function runSearch(q) {
+  const el = document.getElementById('searchResults');
+  if (!q.trim()) { el.innerHTML = ''; return; }
+  const lower = q.toLowerCase();
+
+  // Local reference content (languages + AI tools) — instant, no network needed
+  let localResults = searchIndex.filter(r =>
+    r.title.toLowerCase().includes(lower) || r.desc.toLowerCase().includes(lower)
+  );
+
+  clearTimeout(searchDebounceTimer);
+  const applyFilterAndRender = (results) => {
+    const filtered = searchFilter !== 'all' ? results.filter(r => r.type.toLowerCase().includes(searchFilter)) : results;
+    renderSearchResults(q, filtered);
+  };
+
+  // Show local matches immediately, then merge in live backend results (news/posts/users)
+  applyFilterAndRender(localResults);
+  if (q.trim().length < 2) return;
+
+  searchDebounceTimer = setTimeout(async () => {
+    try {
+      const data = await apiFetch(`/search?q=${encodeURIComponent(q.trim())}`);
+      const r = data.data.results;
+      const backendResults = [
+        ...(r.news || []).map(n => ({ type: 'News', title: n.title, desc: n.description || n.category || 'News' })),
+        ...(r.posts || []).map(p => ({ type: 'Post', title: p.title, desc: `by ${p.author?.username || 'unknown'}` })),
+        ...(r.users || []).map(u => ({ type: 'User', title: u.displayName || u.username, desc: `@${u.username}` }))
+      ];
+      applyFilterAndRender([...localResults, ...backendResults]);
+    } catch (e) {
+      // Backend search failed (e.g. offline) — keep showing local-only results
+    }
+  }, 300);
+}
+
+function filterSearch(el, type) {
+  document.querySelectorAll('#page-search .filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  searchFilter = type;
+  const q = document.getElementById('searchInput').value;
+  if (q) runSearch(q);
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchResults').innerHTML = '';
+}
+
+// =============================================
+// AI PANEL CONFIGS
+// =============================================
+const aiPanels = {
+  code: {
+    title: 'Code Explainer',
+    html: `<p class="text-muted text-sm mb-4">Paste any code and get a plain-English explanation, line by line. Supports 30+ languages.</p>
+      <textarea id="codeInput" rows="9" class="form-input mono-f" placeholder="def factorial(n):\n    if n == 0:\n        return 1\n    return n * factorial(n - 1)"></textarea>
+      <div style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap">
+        <button class="btn-primary" onclick="callAI('code')"><i class="ti ti-wand"></i> Explain Code</button>
+        <button class="btn-secondary" style="font-size:13px" onclick="document.getElementById('codeInput').value=''"><i class="ti ti-trash"></i> Clear</button>
+      </div><div id="aiResult-code"></div>`
+  },
+  debug: {
+    title: 'Error Debugger',
+    html: `<p class="text-muted text-sm mb-4">Paste your error message or stack trace. Get the cause explained and a fix with code examples.</p>
+      <textarea id="debugInput" rows="7" class="form-input mono-f" placeholder="TypeError: Cannot read properties of undefined (reading 'map')\n    at Component.render (App.jsx:42:15)"></textarea>
+      <button class="btn-primary" style="margin-top:.75rem" onclick="callAI('debug')"><i class="ti ti-bug"></i> Debug This Error</button>
+      <div id="aiResult-debug"></div>`
+  },
+  quiz: {
+    title: 'Quiz Generator',
+    html: `<p class="text-muted text-sm mb-4">Pick a language and difficulty — AI generates a 3-question quiz with instant feedback.</p>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:.75rem">
+        <select id="quizLang" class="form-input" style="width:auto;flex:1;min-width:140px">
+          <option>Python</option><option>JavaScript</option><option>TypeScript</option>
+          <option>Rust</option><option>Java</option><option>Go</option><option>SQL</option>
+          <option>Swift</option><option>Kotlin</option><option>C++</option>
+        </select>
+        <select id="quizDiff" class="form-input" style="width:auto;flex:1;min-width:130px">
+          <option>Beginner</option><option>Intermediate</option><option>Advanced</option>
+        </select>
+        <button class="btn-primary" onclick="callAI('quiz')"><i class="ti ti-refresh"></i> Generate Quiz</button>
+      </div>
+      <div id="aiResult-quiz"></div>`
+  },
+  summary: {
+    title: 'Article Summarizer',
+    html: `<p class="text-muted text-sm mb-4">Paste article text to get a structured summary: TL;DR, key points, and developer impact.</p>
+      <textarea id="summaryInput" rows="9" class="form-input" placeholder="Paste the article text here..."></textarea>
+      <button class="btn-primary" style="margin-top:.75rem" onclick="callAI('summary')"><i class="ti ti-sparkles"></i> Summarize</button>
+      <div id="aiResult-summary"></div>`
+  },
+  path: {
+    title: 'Learning Path Builder',
+    html: `<p class="text-muted text-sm mb-4">Tell us your goal and current level — get a personalized 6-month roadmap with milestones and projects.</p>
+      <div class="form-group"><label class="form-label">Your goal</label><input type="text" id="pathGoal" class="form-input" placeholder="e.g. I want to become a backend developer using Python and build REST APIs"></div>
+      <div class="form-group"><label class="form-label">Current level</label><select id="pathLevel" class="form-input"><option>Complete beginner</option><option>Know the basics</option><option>Intermediate developer</option><option>Experienced, switching focus</option></select></div>
+      <button class="btn-primary" onclick="callAI('path')"><i class="ti ti-map"></i> Build My Path</button>
+      <div id="aiResult-path"></div>`
+  },
+  review: {
+    title: 'Code Reviewer',
+    html: `<p class="text-muted text-sm mb-4">Submit your code for a senior-level review: readability, performance, security, and best practices.</p>
+      <textarea id="reviewInput" rows="12" class="form-input mono-f" placeholder="// Paste your code here..."></textarea>
+      <button class="btn-primary" style="margin-top:.75rem" onclick="callAI('review')"><i class="ti ti-checklist"></i> Review My Code</button>
+      <div id="aiResult-review"></div>`
+  }
+};
+
+function openAIPanel(key) {
+  const cfg = aiPanels[key];
+  if (!cfg) return;
+  document.getElementById('aiPanelTitle').textContent = cfg.title;
+  document.getElementById('aiPanelContent').innerHTML = cfg.html;
+  const panel = document.getElementById('aiPanel');
+  panel.style.display = 'block';
+  setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+}
+function closeAIPanel() { document.getElementById('aiPanel').style.display = 'none'; }
+
+// =============================================
+// AI API CALLS — proxied through the TechTribe backend (/api/v1/ai/*)
+// so the Anthropic API key never has to live in the browser.
+// =============================================
+const PATH_LEVEL_MAP = {
+  'Complete beginner': 'Beginner',
+  'Know the basics': 'Beginner',
+  'Intermediate developer': 'Intermediate',
+  'Experienced, switching focus': 'Advanced'
+};
+
+async function callAI(type) {
+  if (!requireLogin('use AI tools')) return;
+  const resultEl = document.getElementById(`aiResult-${type}`);
+
+  let endpoint, body, onSuccess;
+  if (type === 'code') {
+    const v = document.getElementById('codeInput')?.value?.trim();
+    if (!v) return showToast('Paste some code first.', 'warn');
+    endpoint = '/ai/quick-ask';
+    body = { question: `Explain this code clearly in plain English, section by section:\n\n${v}`.slice(0, 2000) };
+    onSuccess = (data) => { resultEl.innerHTML = `<div class="ai-response">${formatAI(data.data.answer)}</div>`; };
+  } else if (type === 'debug') {
+    const v = document.getElementById('debugInput')?.value?.trim();
+    if (!v) return showToast('Paste an error or stack trace first.', 'warn');
+    endpoint = '/ai/quick-ask';
+    body = { question: `Debug this error. Cover: what went wrong, root cause, step-by-step fix:\n\n${v}`.slice(0, 2000) };
+    onSuccess = (data) => { resultEl.innerHTML = `<div class="ai-response">${formatAI(data.data.answer)}</div>`; };
+  } else if (type === 'quiz') {
+    const language = document.getElementById('quizLang')?.value;
+    const difficulty = document.getElementById('quizDiff')?.value;
+    endpoint = '/ai/quiz';
+    body = { language, difficulty };
+    onSuccess = (data) => { renderQuiz(data.data.questions || [], resultEl); };
+  } else if (type === 'summary') {
+    const v = document.getElementById('summaryInput')?.value?.trim();
+    if (!v || v.length < 20) return showToast('Paste at least 20 characters of article text.', 'warn');
+    endpoint = '/ai/summary';
+    body = { content: v };
+    onSuccess = (data) => { resultEl.innerHTML = `<div class="ai-response">${formatAI(data.data.summary)}</div>`; };
+  } else if (type === 'path') {
+    const goal = document.getElementById('pathGoal')?.value?.trim();
+    const rawLevel = document.getElementById('pathLevel')?.value;
+    if (!goal || goal.length < 3) return showToast('Tell us your learning goal first.', 'warn');
+    endpoint = '/ai/path';
+    body = { goal, level: PATH_LEVEL_MAP[rawLevel] || 'Beginner' };
+    onSuccess = (data) => { resultEl.innerHTML = `<div class="ai-response">${formatAI(data.data.path)}</div>`; };
+  } else if (type === 'review') {
+    const v = document.getElementById('reviewInput')?.value?.trim();
+    if (!v || v.length < 5) return showToast('Paste some code to review.', 'warn');
+    endpoint = '/ai/review';
+    body = { code: v };
+    onSuccess = (data) => { resultEl.innerHTML = `<div class="ai-response">${formatAI(data.data.review)}</div>`; };
+  } else {
+    return;
+  }
+
+  resultEl.innerHTML = `<div class="ai-loading"><div class="ai-dots"><span></span><span></span><span></span></div> AI is thinking…</div>`;
+  try {
+    const data = await apiFetch(endpoint, { method: 'POST', body });
+    onSuccess(data);
+  } catch (err) {
+    resultEl.innerHTML = `<div class="notice notice-error" style="margin-top:1rem">
+      <i class="ti ti-alert-circle"></i>
+      <div>
+        <strong>AI request failed</strong><br>
+        <span style="font-size:12px;opacity:.8">${escapeHtml(err.message || 'Please try again in a moment.')}</span>
+      </div>
+    </div>`;
+  }
+}
+
+function formatAI(text) {
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/^### (.+)$/gm,'<h3 style="font-size:14px;font-weight:600;color:var(--text);margin:1rem 0 .5rem">$1</h3>')
+    .replace(/^## (.+)$/gm,'<h3 style="font-size:15px;font-weight:600;color:var(--text);margin:1rem 0 .5rem">$1</h3>')
+    .replace(/^- (.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/g,'<ul>$&</ul>')
+    .replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
+    .replace(/\n{2,}/g,'</p><p style="margin-top:.75rem">')
+    .replace(/\n/g,'<br>');
+}
+
+// =============================================
+// QUIZ ENGINE
+// =============================================
+let quizState = { questions:[], current:0, score:0, container:null };
+
+function renderQuiz(questions, container) {
+  quizState = { questions, current:0, score:0, container };
+  showQ();
+}
+
+function showQ() {
+  const { questions, current, score, container } = quizState;
+  if (!container) return;
+  if (current >= questions.length) {
+    const pct = Math.round((score / questions.length) * 100);
+    container.innerHTML = `<div class="card" style="text-align:center;padding:2rem;margin-top:1rem">
+      <div style="font-size:3.5rem;margin-bottom:.5rem">${pct>=80?'🎉':pct>=60?'👍':'📚'}</div>
+      <div style="font-size:2.5rem;font-weight:700;color:var(--accent)">${score}/${questions.length}</div>
+      <div class="text-muted" style="margin-top:.25rem">${pct}% — ${pct>=80?'Excellent!':pct>=60?'Good job!':'Keep practising!'}</div>
+      <button class="btn-secondary" style="margin-top:1.25rem" onclick="callAI('quiz')"><i class="ti ti-refresh"></i> New Quiz</button>
+    </div>`;
+    return;
+  }
+  const q = questions[current];
+  container.innerHTML = `<div class="card" style="margin-top:.75rem">
+    <div style="font-size:12px;color:var(--text3);margin-bottom:.5rem">Question ${current+1} of ${questions.length} — Score: ${score}</div>
+    <div style="font-size:15px;font-weight:500;margin-bottom:1rem">${q.q}</div>
+    <div style="display:flex;flex-direction:column;gap:.5rem">
+      ${q.options.map((o,i)=>`<button class="btn-secondary" style="text-align:left;justify-content:flex-start" onclick="answerQ(${i},this)">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+    </div>
+  </div>`;
+}
+
+function answerQ(i, btn) {
+  const q = quizState.questions[quizState.current];
+  const correct = q.answer === i;
+  if (correct) quizState.score++;
+  btn.parentElement.querySelectorAll('button').forEach((b, idx) => {
+    b.disabled = true;
+    if (idx === q.answer) b.style.cssText += ';border-color:var(--green);color:var(--green)';
+    else if (idx === i && !correct) b.style.cssText += ';border-color:var(--orange);color:var(--orange)';
+  });
+  const exp = document.createElement('div');
+  exp.className = `notice ${correct ? '' : 'notice-warn'}`;
+  exp.style.marginTop = '.75rem';
+  exp.innerHTML = `<i class="ti ti-${correct?'check':'x'}" style="color:var(--${correct?'green':'orange'})"></i> <span>${q.explanation || (correct?'Correct!':'Incorrect.')}</span>`;
+  btn.closest('.card').appendChild(exp);
+  setTimeout(() => { quizState.current++; showQ(); }, 2200);
+}
+
+// =============================================
+// QUICK ASK (Home sidebar)
+// =============================================
+async function quickAsk() {
+  const q = document.getElementById('quickAskInput').value.trim();
+  if (!q) return;
+  if (!requireLogin('ask the AI a question')) return;
+  const el = document.getElementById('quickAskResult');
+  el.innerHTML = `<div class="ai-loading" style="margin-top:.75rem"><div class="ai-dots"><span></span><span></span><span></span></div></div>`;
+  try {
+    const data = await apiFetch('/ai/quick-ask', { method: 'POST', body: { question: q } });
+    el.innerHTML = `<div class="ai-response" style="margin-top:.75rem;font-size:13px">${formatAI(data.data.answer)}</div>`;
+  } catch (e) {
+    el.innerHTML = `<div class="notice notice-error" style="margin-top:.75rem;font-size:12px">
+      <i class="ti ti-alert-circle"></i>
+      <span>${escapeHtml(e.message || 'AI request failed. Please try again.')}</span>
+    </div>`;
+  }
+}
+
+// =============================================
+// RESPONSIVE LAYOUT ADJUSTMENT
+// =============================================
+function checkLayouts() {
+  const tc = document.getElementById('home-two-col');
+  if (tc) tc.style.gridTemplateColumns = window.innerWidth < 900 ? '1fr' : '1fr 320px';
+  const cg = document.getElementById('communityGrid');
+  if (cg) cg.style.gridTemplateColumns = window.innerWidth < 900 ? '1fr' : '1fr 280px';
+  const nf = document.getElementById('newsFilterSidebar');
+  if (nf) nf.style.display = window.innerWidth < 900 ? 'none' : 'block';
+}
+window.addEventListener('resize', checkLayouts);
+checkLayouts();
+</script>
+</body>
+</html>
