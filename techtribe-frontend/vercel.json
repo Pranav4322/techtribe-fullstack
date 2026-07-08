@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/v1/:path*",
-      "destination": "https://YOUR-BACKEND-URL.onrender.com/api/v1/:path*"
+      "destination": "https://techtribe-fullstack-1.onrender.com/api/v1/:path*"
     }
   ],
   "headers": [
