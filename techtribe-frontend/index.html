@@ -7,6 +7,8 @@
 <meta name="description" content="TechTribe — Your all-in-one hub for programming docs, AI & tech news, developer community, and real AI-powered learning tools.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 38 42'><defs><linearGradient id='b' x1='0' y1='0' x2='1' y2='0'><stop offset='0%25' stop-color='%23a855f7'/><stop offset='100%25' stop-color='%237c3aed'/></linearGradient><linearGradient id='s1' x1='0' y1='0' x2='0' y2='1'><stop offset='0%25' stop-color='%231e1b4b'/><stop offset='100%25' stop-color='%23312e81'/></linearGradient><linearGradient id='s2' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%234338ca'/><stop offset='100%25' stop-color='%236d28d9'/></linearGradient></defs><polygon points='2,4 36,4 34,11 4,11' fill='url(%23b)'/><polygon points='14,11 20,11 20,36 13,42 12,36' fill='url(%23s1)'/><polygon points='20,11 24,11 24,34 20,36' fill='url(%23s2)' opacity='.85'/><polygon points='20,28 24,34 20,36' fill='%231e1b4b' opacity='.4'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <style>
@@ -439,36 +441,7 @@ textarea.mono-f{font-family:var(--mono);font-size:13px}
             <a href="#" class="section-link" onclick="showPage('news');return false">All news <i class="ti ti-arrow-right"></i></a>
           </div>
           <div id="home-news-preview" style="display:flex;flex-direction:column;gap:1rem">
-            <div class="card news-card">
-              <div style="display:flex;gap:.5rem;align-items:center"><span class="news-cat" style="color:var(--purple)">🤖 AI</span><span class="news-meta"><i class="ti ti-clock"></i> 3 min</span></div>
-              <a href="#" class="news-title" onclick="return false">Claude 4 Sets New Benchmark in Reasoning and Code Generation</a>
-              <div class="news-summary">Anthropic's latest model demonstrates significant improvements across mathematical reasoning and multi-step code generation, outperforming previous versions by a substantial margin.</div>
-              <div class="news-actions">
-                <button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> 142</button>
-                <button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i></button>
-                <button class="icon-btn" onclick="shareItem(this)"><i class="ti ti-share"></i></button>
-              </div>
-            </div>
-            <div class="card news-card">
-              <div style="display:flex;gap:.5rem;align-items:center"><span class="news-cat" style="color:var(--accent)">💻 Dev</span><span class="news-meta"><i class="ti ti-clock"></i> 5 min</span></div>
-              <a href="#" class="news-title" onclick="return false">Rust Named Most Admired Language for the 9th Year in a Row</a>
-              <div class="news-summary">Stack Overflow's annual developer survey reveals Rust continues to dominate developer satisfaction, with 83% of users saying they'd choose it again.</div>
-              <div class="news-actions">
-                <button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> 98</button>
-                <button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i></button>
-                <button class="icon-btn" onclick="shareItem(this)"><i class="ti ti-share"></i></button>
-              </div>
-            </div>
-            <div class="card news-card">
-              <div style="display:flex;gap:.5rem;align-items:center"><span class="news-cat" style="color:var(--green)">🚀 Startups</span><span class="news-meta"><i class="ti ti-clock"></i> 2 min</span></div>
-              <a href="#" class="news-title" onclick="return false">Y Combinator W24 Batch: 70% of Startups Using AI in Core Product</a>
-              <div class="news-summary">This season's batch reveals a record number of AI-native startups building tooling to help developers ship faster using large language models.</div>
-              <div class="news-actions">
-                <button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> 67</button>
-                <button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i></button>
-                <button class="icon-btn" onclick="shareItem(this)"><i class="ti ti-share"></i></button>
-              </div>
-            </div>
+            <div class="text-muted text-sm" style="padding:1rem;text-align:center">Loading latest stories…</div>
           </div>
         </section>
 
@@ -656,20 +629,16 @@ textarea.mono-f{font-family:var(--mono);font-size:13px}
       </div>
       <div>
         <div id="news-all" class="tab-panel active" style="display:flex;flex-direction:column;gap:1rem">
-          <div class="card news-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem"><span class="news-cat" style="color:var(--purple)">🤖 Artificial Intelligence</span><div class="news-meta"><i class="ti ti-clock"></i> 4 min &nbsp;<i class="ti ti-calendar"></i> Today</div></div><a href="#" class="news-title" onclick="return false">OpenAI Releases o3-mini: Smaller Model, Comparable Reasoning</a><div class="news-summary">The new model targets cost-sensitive use cases while maintaining near-parity with o3 on most reasoning benchmarks. Available via API starting today.</div><div class="tag-list mb-4"><span class="tag">OpenAI</span><span class="tag">LLM</span><span class="tag">API</span></div><div class="news-actions"><button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> 312</button><button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i> Save</button><button class="icon-btn" onclick="shareItem(this)"><i class="ti ti-share"></i> Share</button><button class="icon-btn"><i class="ti ti-message-circle"></i> 54</button></div></div>
-          <div class="card news-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem"><span class="news-cat" style="color:var(--accent)">💻 Programming</span><div class="news-meta"><i class="ti ti-clock"></i> 6 min &nbsp;<i class="ti ti-calendar"></i> Yesterday</div></div><a href="#" class="news-title" onclick="return false">Node.js 22 LTS: What's New and Why You Should Upgrade</a><div class="news-summary">Node 22 enters LTS status with native test runner improvements, ESM support enhancements, and a V8 engine upgrade bringing up to 30% performance gains.</div><div class="tag-list mb-4"><span class="tag">Node.js</span><span class="tag">JavaScript</span><span class="tag">LTS</span></div><div class="news-actions"><button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> 201</button><button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i> Save</button><button class="icon-btn" onclick="shareItem(this)"><i class="ti ti-share"></i> Share</button><button class="icon-btn"><i class="ti ti-message-circle"></i> 29</button></div></div>
-          <div class="card news-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem"><span class="news-cat" style="color:var(--orange)">🔐 Security</span><div class="news-meta"><i class="ti ti-clock"></i> 3 min &nbsp;<i class="ti ti-calendar"></i> 2 days ago</div></div><a href="#" class="news-title" onclick="return false">Critical CVE in Popular npm Package Affects 2 Million Projects</a><div class="news-summary">A vulnerability in a widely-used JSON parsing library allows arbitrary code execution through specially crafted payloads. Patch immediately.</div><div class="tag-list mb-4"><span class="tag">npm</span><span class="tag">CVE</span><span class="tag">Security</span></div><div class="news-actions"><button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> 455</button><button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i> Save</button><button class="icon-btn" onclick="shareItem(this)"><i class="ti ti-share"></i> Share</button><button class="icon-btn"><i class="ti ti-message-circle"></i> 112</button></div></div>
-          <div class="card news-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem"><span class="news-cat" style="color:var(--green)">☁️ Cloud</span><div class="news-meta"><i class="ti ti-clock"></i> 5 min &nbsp;<i class="ti ti-calendar"></i> 3 days ago</div></div><a href="#" class="news-title" onclick="return false">AWS Cuts Lambda Pricing by 20% as Competition with Vercel Heats Up</a><div class="news-summary">Amazon announces a significant price reduction for Lambda invocations and compute time, responding to growing pressure from edge-computing platforms.</div><div class="tag-list mb-4"><span class="tag">AWS</span><span class="tag">Serverless</span><span class="tag">Cloud</span></div><div class="news-actions"><button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> 178</button><button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i> Save</button><button class="icon-btn" onclick="shareItem(this)"><i class="ti ti-share"></i> Share</button><button class="icon-btn"><i class="ti ti-message-circle"></i> 43</button></div></div>
+          <div class="text-muted text-sm" style="padding:1rem;text-align:center">Loading latest stories…</div>
         </div>
-        <div id="news-ai" class="tab-panel"><div class="notice"><i class="ti ti-robot"></i> Showing AI news only.</div></div>
-        <div id="news-dev" class="tab-panel"><div class="notice"><i class="ti ti-code"></i> Showing Programming news only.</div></div>
-        <div id="news-sec" class="tab-panel"><div class="notice"><i class="ti ti-shield"></i> Showing Security news only.</div></div>
-        <div id="news-cloud" class="tab-panel"><div class="notice"><i class="ti ti-cloud"></i> Showing Cloud news only.</div></div>
-        <div id="news-web" class="tab-panel"><div class="notice"><i class="ti ti-world"></i> Showing Web news only.</div></div>
-        <div id="news-startups" class="tab-panel"><div class="notice"><i class="ti ti-rocket"></i> Showing Startup news only.</div></div>
+        <div id="news-ai" class="tab-panel"><div class="text-muted text-sm" style="padding:1rem;text-align:center">Loading…</div></div>
+        <div id="news-dev" class="tab-panel"><div class="text-muted text-sm" style="padding:1rem;text-align:center">Loading…</div></div>
+        <div id="news-sec" class="tab-panel"><div class="text-muted text-sm" style="padding:1rem;text-align:center">Loading…</div></div>
+        <div id="news-cloud" class="tab-panel"><div class="text-muted text-sm" style="padding:1rem;text-align:center">Loading…</div></div>
+        <div id="news-web" class="tab-panel"><div class="text-muted text-sm" style="padding:1rem;text-align:center">Loading…</div></div>
+        <div id="news-startups" class="tab-panel"><div class="text-muted text-sm" style="padding:1rem;text-align:center">Loading…</div></div>
       </div>
       <div style="display:flex;flex-direction:column;gap:1rem">
-        <div class="card"><div class="section-title" style="font-size:14px;margin-bottom:1rem"><i class="ti ti-fire"></i> Top This Week</div><div class="trending-item"><div class="trending-num">01</div><div><div class="trending-title">TypeScript 5.5 Removes 40% of Boilerplate</div><div class="trending-meta">12k views</div></div></div><div class="trending-item"><div class="trending-num">02</div><div><div class="trending-title">Gemini 2.0 Ultra Benchmarks</div><div class="trending-meta">9.8k views</div></div></div><div class="trending-item"><div class="trending-num">03</div><div><div class="trending-title">Linux 6.9 Kernel Performance</div><div class="trending-meta">7.2k views</div></div></div><div class="trending-item"><div class="trending-num">04</div><div><div class="trending-title">Bun 2.0 Replaces npm?</div><div class="trending-meta">5.4k views</div></div></div></div>
         <div class="newsletter"><h3>📬 Daily Digest</h3><p>Top 5 stories in your inbox every morning.</p><div class="nl-form" style="flex-direction:column"><input type="email" placeholder="your@email.com"><button onclick="this.textContent='✓ Subscribed!';this.style.background='var(--green)'">Subscribe Free</button></div></div>
       </div>
     </div>
@@ -1105,31 +1074,29 @@ function switchNewsTab(el, targetId) {
 
 // =============================================
 // LIVE NEWS FEED
-// Primary: Dev.to public API (free, no key, CORS-enabled) — https://developers.forem.com/api
-// Fallback: Hacker News Algolia Search API (free, no key, CORS-enabled) — used per-category if Dev.to fails
-// Last resort: small bundled sample so the page is never empty, clearly marked "Sample"
-// Fetches real, section-relevant articles and caches them for 24h so the
-// same stories aren't reshown every day — cache auto-expires and refetches.
+// Fetched through the TechTribe backend (/api/v1/news), which itself pulls
+// from Dev.to / Hacker News server-side and caches results for 24h in Redis
+// — so every visitor sees the same fresh set of stories, refreshed once a
+// day, and no third-party API endpoint is ever called from the browser.
+// A short-lived localStorage cache here just avoids re-hitting our own API
+// on every page load within the same day.
 // =============================================
 const NEWS_CACHE_KEY = 'techtribe_news_cache_v1';
-const NEWS_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+const NEWS_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours — mirrors the backend's own cache window
 
-// Each key maps 1:1 to a tab-panel id (news-<key>), a Dev.to tag, and HN search keywords —
-// all scoped so only articles relevant to that section are pulled.
 const NEWS_CATEGORIES = {
-  ai:       { tag: 'ai',          hn: 'AI OR "machine learning" OR LLM OR OpenAI', label: 'Artificial Intelligence', short: 'AI',       color: 'var(--purple)', emoji: '🤖' },
-  dev:      { tag: 'programming', hn: 'programming OR software engineering',        label: 'Programming',             short: 'Dev',      color: 'var(--accent)', emoji: '💻' },
-  sec:      { tag: 'security',    hn: 'security OR vulnerability OR CVE',           label: 'Security',                short: 'Security', color: 'var(--orange)', emoji: '🔐' },
-  cloud:    { tag: 'cloud',       hn: 'cloud OR AWS OR Azure OR GCP',                label: 'Cloud',                   short: 'Cloud',    color: 'var(--green)',  emoji: '☁️' },
-  web:      { tag: 'webdev',      hn: '"web development" OR javascript OR frontend',label: 'Web',                     short: 'Web',      color: 'var(--teal)',   emoji: '🌐' },
-  startups: { tag: 'startup',     hn: 'startup OR "Y Combinator" OR funding',        label: 'Startups',                short: 'Startups', color: 'var(--green)',  emoji: '🚀' }
+  ai:       { label: 'Artificial Intelligence', short: 'AI',       color: 'var(--purple)', emoji: '🤖' },
+  dev:      { label: 'Programming',             short: 'Dev',      color: 'var(--accent)', emoji: '💻' },
+  sec:      { label: 'Security',                short: 'Security', color: 'var(--orange)', emoji: '🔐' },
+  cloud:    { label: 'Cloud',                   short: 'Cloud',    color: 'var(--green)',  emoji: '☁️' },
+  web:      { label: 'Web',                     short: 'Web',      color: 'var(--teal)',   emoji: '🌐' },
+  startups: { label: 'Startups',                short: 'Startups', color: 'var(--green)',  emoji: '🚀' }
 };
 const NEWS_ALL_INFO = { label: 'News', color: 'var(--accent)', emoji: '📰' };
 
-// Small offline sample used ONLY if both live sources fail (e.g. no internet,
-// or the page was opened directly from disk with file:// where browsers block
-// fetch() to other origins). Links point to a real search results page so
-// they always open to something relevant instead of a dead link.
+// Small offline sample used ONLY if the backend can't be reached at all
+// (e.g. it's down, or you're offline). Links point to a real search results
+// page so they always open to something relevant instead of a dead link.
 function newsSampleFor(key, info) {
   const q = encodeURIComponent(info.label + ' news');
   return [{
@@ -1137,85 +1104,43 @@ function newsSampleFor(key, info) {
     title: `Search the latest ${info.label} news`,
     description: `Live articles couldn't be loaded right now, so here's a quick search instead. Tap "Refresh now" once you're back online to load real, current ${info.label} stories.`,
     url: `https://www.google.com/search?q=${q}&tbm=nws`,
-    published_at: new Date().toISOString(),
-    tag_list: ['sample'],
-    reading_time_minutes: 1,
-    public_reactions_count: 0,
-    comments_count: 0,
+    publishedAt: new Date().toISOString(),
+    tagList: ['sample'],
+    readingTimeMinutes: 1,
+    externalReactionCount: 0,
+    externalCommentCount: 0,
     isSample: true
   }];
 }
 
-async function fetchNewsForTag(tag, perPage = 6) {
-  const url = `https://dev.to/api/articles?tag=${encodeURIComponent(tag)}&top=1&per_page=${perPage}`;
-  const res = await fetch(url, { headers: { Accept: 'application/json' } });
-  if (!res.ok) throw new Error('Dev.to fetch failed (' + tag + '): ' + res.status);
-  const json = await res.json();
-  if (!Array.isArray(json)) throw new Error('Dev.to unexpected response for ' + tag);
-  return json;
-}
-
-async function fetchNewsFromHN(query, perPage = 6) {
-  const url = `https://hn.algolia.com/api/v1/search_by_date?tags=story&hitsPerPage=${perPage}&query=${encodeURIComponent(query)}`;
-  const res = await fetch(url, { headers: { Accept: 'application/json' } });
-  if (!res.ok) throw new Error('HN fetch failed: ' + res.status);
-  const json = await res.json();
-  return (json.hits || [])
-    .filter(h => h.title)
-    .map(h => ({
-      id: 'hn-' + h.objectID,
-      title: h.title,
-      description: (h.story_text || '').slice(0, 200) || 'Discussion on Hacker News — tap to read the full story and comments.',
-      url: h.url || `https://news.ycombinator.com/item?id=${h.objectID}`,
-      published_at: h.created_at,
-      tag_list: ['hackernews'],
-      reading_time_minutes: 3,
-      public_reactions_count: h.points || 0,
-      comments_count: h.num_comments || 0
-    }));
-}
-
-async function fetchNewsForCategory(key) {
-  const info = NEWS_CATEGORIES[key];
-  try {
-    const articles = await fetchNewsForTag(info.tag, 6);
-    if (articles.length) return articles;
-  } catch (e) {
-    console.warn('Dev.to source failed for', key, e);
-  }
-  try {
-    const articles = await fetchNewsFromHN(info.hn, 6);
-    if (articles.length) return articles;
-  } catch (e) {
-    console.warn('HN fallback failed for', key, e);
-  }
-  return [];
+async function fetchCategoryFromBackend(category, limit) {
+  const qs = category ? `category=${encodeURIComponent(category)}&limit=${limit}` : `limit=${limit}`;
+  const data = await apiFetch(`/news?${qs}`);
+  return data.data.items || [];
 }
 
 async function fetchAllSectionNews() {
   const keys = Object.keys(NEWS_CATEGORIES);
-  const entries = await Promise.all(keys.map(async key => {
-    const articles = await fetchNewsForCategory(key);
-    return [key, articles];
-  }));
-  const data = Object.fromEntries(entries);
+  const [allResult, ...catResults] = await Promise.allSettled([
+    fetchCategoryFromBackend(undefined, 12),
+    ...keys.map((k) => fetchCategoryFromBackend(k, 6))
+  ]);
 
-  // If every single source failed for every category (e.g. offline, or opened
-  // via file:// where fetch() is blocked cross-origin), fall back to samples
-  // instead of leaving every tab looking broken/empty.
-  const totalLive = keys.reduce((n, k) => n + data[k].length, 0);
+  const data = {};
+  keys.forEach((key, i) => {
+    const r = catResults[i];
+    data[key] = r.status === 'fulfilled' ? r.value : [];
+  });
+  data.all = allResult.status === 'fulfilled' ? allResult.value : [];
+
+  // If every request failed (backend unreachable), fall back to samples so
+  // the page is never left blank.
+  const totalLive = keys.reduce((n, k) => n + data[k].length, 0) + data.all.length;
   if (totalLive === 0) {
-    keys.forEach(key => { data[key] = newsSampleFor(key, NEWS_CATEGORIES[key]); });
+    keys.forEach((key) => { data[key] = newsSampleFor(key, NEWS_CATEGORIES[key]); });
+    data.all = newsSampleFor('all', NEWS_ALL_INFO);
     data._offline = true;
   }
-
-  const seen = new Set();
-  const merged = [];
-  keys.forEach(key => (data[key] || []).forEach(a => {
-    if (!seen.has(a.id)) { seen.add(a.id); merged.push(a); }
-  }));
-  merged.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
-  data.all = merged.slice(0, 12);
   return data;
 }
 
@@ -1250,23 +1175,26 @@ function newsCardHTML(article, info, compact) {
   const title = escapeHtml(article.title || 'Untitled');
   let summary = escapeHtml(article.description || '');
   if (summary.length > 160) summary = summary.slice(0, 160).trim() + '…';
-  const readMin = article.reading_time_minutes || 3;
-  const likes = article.public_reactions_count ?? 0;
-  const comments = article.comments_count ?? 0;
+  const readMin = article.readingTimeMinutes || 3;
+  const likes = article.externalReactionCount ?? 0;
+  const comments = article.externalCommentCount ?? 0;
   const url = escapeHtml(article.url || '#');
   const badgeLabel = article.isSample ? 'Sample' : (compact ? info.short || info.label : info.label);
-  const tags = (article.tag_list || []).slice(0, 3).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
-  return `<div class="card news-card">
+  const tags = (article.tagList || []).slice(0, 3).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+  const isRealArticle = !article.isSample && typeof article.id === 'string';
+  const heartClass = article.isLiked ? 'liked' : '';
+  const heartColor = article.isLiked ? 'style="color:var(--orange)"' : '';
+  return `<div class="card news-card" data-id="${escapeHtml(article.id || '')}">
     <div style="display:flex;${compact ? 'gap:.5rem;align-items:center' : 'justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem'}">
       <span class="news-cat" style="color:${info.color}">${info.emoji} ${badgeLabel}</span>
-      <div class="news-meta"><i class="ti ti-clock"></i> ${readMin} min ${compact ? '' : `&nbsp;<i class="ti ti-calendar"></i> ${newsTimeAgo(article.published_at)}`}</div>
+      <div class="news-meta"><i class="ti ti-clock"></i> ${readMin} min ${compact ? '' : `&nbsp;<i class="ti ti-calendar"></i> ${newsTimeAgo(article.publishedAt)}`}</div>
     </div>
     <a href="${url}" target="_blank" rel="noopener noreferrer" class="news-title" onclick="return openExternal(this.getAttribute('href'), event)">${title}</a>
     <div class="news-summary">${summary}</div>
     ${compact ? '' : `<div class="tag-list mb-4">${tags}</div>`}
     <div class="news-actions">
-      <button class="icon-btn" onclick="toggleLike(this)"><i class="ti ti-heart"></i> ${likes}</button>
-      <button class="icon-btn" onclick="toggleBookmark(this)"><i class="ti ti-bookmark"></i>${compact ? '' : ' Save'}</button>
+      <button class="icon-btn ${heartClass}" ${heartColor} onclick="${isRealArticle ? 'toggleNewsLike(this)' : "showToast('Sample article — sign in and refresh to like real stories.','info')"}"><i class="ti ti-heart"></i> ${likes}</button>
+      <button class="icon-btn ${article.isBookmarked ? 'liked' : ''}" ${article.isBookmarked ? 'style="color:var(--accent)"' : ''} onclick="${isRealArticle ? 'toggleNewsBookmark(this)' : "showToast('Sample article — sign in and refresh to save real stories.','info')"}"><i class="ti ti-bookmark"></i>${compact ? '' : ' Save'}</button>
       <button class="icon-btn" onclick="shareItem(this)" data-url="${url}"><i class="ti ti-share"></i>${compact ? '' : ' Share'}</button>
       ${compact ? '' : `<button class="icon-btn"><i class="ti ti-message-circle"></i> ${comments}</button>`}
     </div>
@@ -1294,7 +1222,7 @@ function applyNewsData(data) {
   const preview = document.getElementById('home-news-preview');
   if (preview && data.all && data.all.length) {
     preview.innerHTML = data.all.slice(0, 3).map(a => {
-      const cat = Object.values(NEWS_CATEGORIES).find(c => (a.tag_list || []).includes(c.tag)) || NEWS_ALL_INFO;
+      const cat = NEWS_CATEGORIES[a.category] || NEWS_ALL_INFO;
       return newsCardHTML(a, cat, true);
     }).join('');
   }
@@ -1327,13 +1255,7 @@ async function refreshNewsData(force = false) {
     localStorage.setItem(NEWS_CACHE_KEY, JSON.stringify({ timestamp, data }));
     applyNewsData(data);
     if (data._offline) {
-      const isFileProtocol = location.protocol === 'file:';
-      setNewsStatus(
-        isFileProtocol
-          ? 'Live news needs the page served over http(s) — opening the file directly blocks it. Host it (e.g. a local server) or upload it, then Refresh.'
-          : 'Could not reach the news APIs — showing a sample. Check your connection and hit Refresh.',
-        true
-      );
+      setNewsStatus('Could not reach the TechTribe API — showing a sample. Check your connection and hit Refresh.', true);
       if (force) showToast('Live news unavailable, showing a sample', 'warn');
     } else {
       setNewsStatus('Updated just now · auto-refreshes every 24h');
@@ -1353,7 +1275,9 @@ async function refreshNewsData(force = false) {
 
 // Fixed 24-hour auto-refresh timer: checks cache age on load (survives page
 // reloads/closed tabs) and also re-checks every hour in case the tab is
-// left open past the 24h mark, so news never repeats day to day.
+// left open past the 24h mark, so news never repeats day to day. The
+// backend itself refreshes its own cache on the same 24h cycle, so every
+// visitor — not just this browser — sees the same daily-fresh set.
 document.addEventListener('DOMContentLoaded', () => {
   refreshNewsData(false);
   setInterval(() => refreshNewsData(false), 60 * 60 * 1000); // hourly check, only refetches once 24h have actually passed
@@ -1558,22 +1482,46 @@ function vote(btn, dir) {
 }
 
 // =============================================
-// LIKE & BOOKMARK (news cards — client-side only, no backend post id)
+// LIKE & BOOKMARK (news cards — wired to /api/v1/news/:id/like|bookmark)
 // =============================================
-function toggleLike(btn) {
+async function toggleNewsLike(btn) {
+  if (!requireLogin('like articles')) return;
+  const card = btn.closest('.news-card');
+  const articleId = card?.dataset.id;
+  if (!articleId) return;
   const m = btn.innerHTML.match(/\d+/);
   const n = m ? parseInt(m[0]) : 0;
-  btn.classList.toggle('liked');
-  const liked = btn.classList.contains('liked');
-  btn.innerHTML = `<i class="ti ti-heart"></i> ${liked ? n+1 : n-1}`;
-  btn.style.color = liked ? 'var(--orange)' : '';
+  btn.disabled = true;
+  try {
+    const data = await apiFetch(`/news/${articleId}/like`, { method: 'POST', body: {} });
+    const liked = data.data.liked;
+    btn.classList.toggle('liked', liked);
+    btn.innerHTML = `<i class="ti ti-heart"></i> ${liked ? n + 1 : Math.max(0, n - 1)}`;
+    btn.style.color = liked ? 'var(--orange)' : '';
+  } catch (e) {
+    showToast(e.message || 'Could not like article', 'error');
+  } finally {
+    btn.disabled = false;
+  }
 }
 
-function toggleBookmark(btn) {
-  btn.classList.toggle('liked');
-  const saved = btn.classList.contains('liked');
-  btn.style.color = saved ? 'var(--accent)' : '';
-  showToast(saved ? '📌 Article saved to your library' : 'Article removed from library', saved ? 'success' : 'info');
+async function toggleNewsBookmark(btn) {
+  if (!requireLogin('save articles')) return;
+  const card = btn.closest('.news-card');
+  const articleId = card?.dataset.id;
+  if (!articleId) return;
+  btn.disabled = true;
+  try {
+    const data = await apiFetch(`/news/${articleId}/bookmark`, { method: 'POST', body: {} });
+    const saved = data.data.bookmarked;
+    btn.classList.toggle('liked', saved);
+    btn.style.color = saved ? 'var(--accent)' : '';
+    showToast(saved ? '📌 Article saved to your library' : 'Article removed from library', saved ? 'success' : 'info');
+  } catch (e) {
+    showToast(e.message || 'Could not save article', 'error');
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 function shareItem(btn) {

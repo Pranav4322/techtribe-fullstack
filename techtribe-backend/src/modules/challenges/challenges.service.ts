@@ -2,7 +2,7 @@ import { ChallengeDifficulty } from '@prisma/client';
 import { prisma } from '../../config/prisma';
 import { ApiError } from '../../utils/ApiError';
 import { parsePagination, buildPaginatedResult } from '../../utils/pagination';
-import { callClaude } from '../ai/anthropic.client';
+import { callAI } from '../ai/groq.client';
 
 export async function listChallenges(query: { page?: string; limit?: string; difficulty?: string; tag?: string }) {
   const pagination = parsePagination(query);
@@ -103,7 +103,7 @@ ${code}
 
 Mentally trace the code against EVERY test case. Respond ONLY with valid JSON, no markdown fences: {"passedCount": <number>, "totalCount": ${challenge.testCases.length}, "allPassed": <true|false>, "feedback": "<concise senior-dev feedback: correctness per test, edge cases missed, complexity, style>"}`;
 
-  const raw = await callClaude(prompt, 1200);
+  const raw = await callAI(prompt, 1200);
   let passedCount = 0;
   let feedback = raw;
   let allPassed = false;

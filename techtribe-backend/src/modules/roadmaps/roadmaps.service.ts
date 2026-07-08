@@ -1,7 +1,7 @@
 import { DifficultyLevel } from '@prisma/client';
 import { prisma } from '../../config/prisma';
 import { ApiError } from '../../utils/ApiError';
-import { callClaude } from '../ai/anthropic.client';
+import { callAI } from '../ai/groq.client';
 import { notifyUser } from '../notifications/notifications.service';
 
 export async function listRoadmaps(query: { level?: string }) {
@@ -59,7 +59,7 @@ export async function generateRoadmap(userId: string, goal: string, level: strin
 Format: {"title":"...","milestones":[{"title":"Month 1: ...","content":"what to learn this month, 2-4 sentences","resources":["resource 1","resource 2"],"projectIdea":"a mini project to build"}]}
 Include exactly 6 milestones, one per month.`;
 
-  const raw = await callClaude(prompt, 1800);
+  const raw = await callAI(prompt, 1800);
   let parsed: { title: string; milestones: { title: string; content: string; resources: string[]; projectIdea?: string }[] };
   try {
     parsed = JSON.parse(raw.replace(/```json|```/g, '').trim());

@@ -15,8 +15,8 @@ const envSchema = z.object({
   JWT_ACCESS_EXPIRES_IN: z.string().default('15m'),
   JWT_REFRESH_EXPIRES_IN: z.string().default('30d'),
 
-  ANTHROPIC_API_KEY: z.string().min(1, 'ANTHROPIC_API_KEY is required for AI features'),
-  ANTHROPIC_MODEL: z.string().default('claude-sonnet-4-6'),
+  GROQ_API_KEY: z.string().min(1, 'GROQ_API_KEY is required for AI features'),
+  GROQ_MODEL: z.string().default('llama-3.3-70b-versatile'),
 
   SMTP_HOST: z.string().optional(),
   SMTP_PORT: z.coerce.number().optional(),

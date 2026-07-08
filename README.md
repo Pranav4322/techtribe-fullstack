@@ -44,7 +44,7 @@ would need new pages/components to use them.
 
 ```bash
 cd techtribe-backend
-cp .env.example .env      # fill in DATABASE_URL, REDIS_URL, JWT secrets, ANTHROPIC_API_KEY
+cp .env.example .env      # fill in DATABASE_URL, REDIS_URL, JWT secrets, GROQ_API_KEY
 npm install
 
 # Postgres + Redis for local dev (optional, if you don't already have them running)
@@ -100,7 +100,7 @@ So the setup here is:
 3. Add a managed Postgres instance and a Redis instance (Render or Upstash),
    and set these environment variables on the service:
    `DATABASE_URL`, `REDIS_URL`, `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`,
-   `ANTHROPIC_API_KEY`, `CLIENT_ORIGIN` (your Vercel URL, e.g.
+   `GROQ_API_KEY`, `CLIENT_ORIGIN` (your Vercel URL, e.g.
    `https://techtribe.vercel.app`), `NODE_ENV=production`.
 4. After first deploy, run migrations once (Render Shell or a one-off job):
    `npx prisma migrate deploy`
