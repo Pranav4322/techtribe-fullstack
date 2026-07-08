@@ -117,7 +117,7 @@ export async function listComments(postId: string, userId?: string) {
   });
 
   if (!userId) {
-    return comments.map(mapComment);
+    return comments.map((c: (typeof comments)[number]) => mapComment(c));
   }
 
   const allIds = comments.flatMap((c: (typeof comments)[number]) => [
