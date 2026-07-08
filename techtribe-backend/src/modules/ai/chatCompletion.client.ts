@@ -33,7 +33,7 @@ export async function chatCompletion(opts: {
   const data = (await res.json()) as ChatCompletionResponse;
 
   if (!res.ok) {
-    throw new Error(data.error?.message || res.statusText);
+    throw new Error(`HTTP ${res.status}: ${data.error?.message || res.statusText} — ${JSON.stringify(data).slice(0, 500)}`);
   }
 
   const text = data.choices?.[0]?.message?.content || '';
