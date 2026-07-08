@@ -33,6 +33,10 @@ export function createApp(): Application {
   app.use(morgan('combined', { stream: httpLogStream }));
   app.use('/api', generalRateLimiter);
 
+  app.get('/', (_req, res) => {
+    res.status(200).json({ status: 'ok', service: 'TechTribe API' });
+  });
+
   app.use('/api/v1', apiRoutes);
 
   app.use(notFoundHandler);
