@@ -17,6 +17,9 @@ const envSchema = z.object({
 
   GROQ_API_KEY: z.string().min(1, 'GROQ_API_KEY is required for AI features'),
   GROQ_MODEL: z.string().default('llama-3.3-70b-versatile'),
+  // Optional automatic fallback if Groq is rate-limited or unavailable
+  OPENAI_API_KEY: z.string().optional().default(''),
+  OPENAI_MODEL: z.string().default('gpt-4o-mini'),
 
   SMTP_HOST: z.string().optional(),
   SMTP_PORT: z.coerce.number().optional(),

@@ -1,7 +1,7 @@
 import { DifficultyLevel } from '@prisma/client';
 import { prisma } from '../../config/prisma';
 import { ApiError } from '../../utils/ApiError';
-import { callAI } from '../ai/groq.client';
+import { callAI } from '../ai/ai.client';
 import { notifyUser } from '../notifications/notifications.service';
 
 export async function listRoadmaps(query: { level?: string }) {

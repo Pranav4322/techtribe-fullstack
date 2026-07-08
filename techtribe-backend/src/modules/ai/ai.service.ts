@@ -1,6 +1,6 @@
 import { prisma } from '../../config/prisma';
 import { ApiError } from '../../utils/ApiError';
-import { callAI } from './groq.client';
+import { callAI } from './ai.client';
 
 async function logUsage(userId: string, feature: string, inputChars: number, outputChars: number) {
   await prisma.aiUsageLog.create({ data: { userId, feature, inputChars, outputChars } });

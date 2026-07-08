@@ -2,7 +2,7 @@ import { ChallengeDifficulty } from '@prisma/client';
 import { prisma } from '../../config/prisma';
 import { ApiError } from '../../utils/ApiError';
 import { parsePagination, buildPaginatedResult } from '../../utils/pagination';
-import { callAI } from '../ai/groq.client';
+import { callAI } from '../ai/ai.client';
 
 export async function listChallenges(query: { page?: string; limit?: string; difficulty?: string; tag?: string }) {
   const pagination = parsePagination(query);
