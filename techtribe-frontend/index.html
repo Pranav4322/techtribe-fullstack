@@ -628,8 +628,22 @@ textarea.mono-f{font-family:var(--mono);font-size:13px}
     </div>
     <div class="news-layout">
       <div id="newsFilterSidebar" style="padding-top:.5rem">
-        <div class="filter-group"><div class="filter-title">Date</div><div class="filter-item"><input type="radio" name="date" checked> Today</div><div class="filter-item"><input type="radio" name="date"> This week</div><div class="filter-item"><input type="radio" name="date"> This month</div></div>
-        <div class="filter-group"><div class="filter-title">Category</div><div class="filter-item"><div class="filter-dot" style="background:var(--purple)"></div>AI<input type="checkbox" checked style="margin-left:auto"></div><div class="filter-item"><div class="filter-dot" style="background:var(--accent)"></div>Programming<input type="checkbox" checked style="margin-left:auto"></div><div class="filter-item"><div class="filter-dot" style="background:var(--orange)"></div>Security<input type="checkbox" style="margin-left:auto"></div><div class="filter-item"><div class="filter-dot" style="background:var(--green)"></div>Cloud<input type="checkbox" style="margin-left:auto"></div></div>
+        <div class="filter-group">
+          <div class="filter-title">Date</div>
+          <div class="filter-item"><input type="radio" name="date" value="today" onchange="applyNewsFilters()"> Today</div>
+          <div class="filter-item"><input type="radio" name="date" value="week" onchange="applyNewsFilters()"> This week</div>
+          <div class="filter-item"><input type="radio" name="date" value="month" checked onchange="applyNewsFilters()"> This month</div>
+        </div>
+        <div class="filter-group">
+          <div class="filter-title">Category</div>
+          <div class="filter-item"><div class="filter-dot" style="background:var(--purple)"></div>AI<input type="checkbox" checked data-cat="ai" style="margin-left:auto" onchange="applyNewsFilters()"></div>
+          <div class="filter-item"><div class="filter-dot" style="background:var(--accent)"></div>Programming<input type="checkbox" checked data-cat="dev" style="margin-left:auto" onchange="applyNewsFilters()"></div>
+          <div class="filter-item"><div class="filter-dot" style="background:var(--orange)"></div>Security<input type="checkbox" checked data-cat="sec" style="margin-left:auto" onchange="applyNewsFilters()"></div>
+          <div class="filter-item"><div class="filter-dot" style="background:var(--green)"></div>Cloud<input type="checkbox" checked data-cat="cloud" style="margin-left:auto" onchange="applyNewsFilters()"></div>
+          <div class="filter-item"><div class="filter-dot" style="background:var(--teal)"></div>Web<input type="checkbox" checked data-cat="web" style="margin-left:auto" onchange="applyNewsFilters()"></div>
+          <div class="filter-item"><div class="filter-dot" style="background:var(--green)"></div>Startups<input type="checkbox" checked data-cat="startups" style="margin-left:auto" onchange="applyNewsFilters()"></div>
+        </div>
+        <button class="icon-btn" style="width:100%;justify-content:center" onclick="resetNewsFilters()"><i class="ti ti-restore"></i> Reset filters</button>
       </div>
       <div>
         <div id="news-all" class="tab-panel active" style="display:flex;flex-direction:column;gap:1rem">
@@ -1117,17 +1131,17 @@ function newsSampleFor(key, info) {
   }];
 }
 
-async function fetchCategoryFromBackend(category, limit) {
+async function fetchCategoryFromBackend(category, limit, force) {
   const qs = category ? `category=${encodeURIComponent(category)}&limit=${limit}` : `limit=${limit}`;
-  const data = await apiFetch(`/news?${qs}`);
+  const data = await apiFetch(`/news?${qs}${force ? '&force=true' : ''}`);
   return data.data.items || [];
 }
 
-async function fetchAllSectionNews() {
+async function fetchAllSectionNews(force = false) {
   const keys = Object.keys(NEWS_CATEGORIES);
   const [allResult, ...catResults] = await Promise.allSettled([
-    fetchCategoryFromBackend(undefined, 12),
-    ...keys.map((k) => fetchCategoryFromBackend(k, 6))
+    fetchCategoryFromBackend(undefined, 12, force),
+    ...keys.map((k) => fetchCategoryFromBackend(k, 6, force))
   ]);
 
   const data = {};
@@ -1218,11 +1232,14 @@ function renderNewsPanel(panelId, articles, info) {
   el.innerHTML = articles.map(a => newsCardHTML(a, info, false)).join('');
 }
 
+let lastNewsAllData = [];
+
 function applyNewsData(data) {
-  renderNewsPanel('news-all', data.all, NEWS_ALL_INFO);
+  lastNewsAllData = data.all || [];
   Object.keys(NEWS_CATEGORIES).forEach(key => {
     renderNewsPanel('news-' + key, data[key], NEWS_CATEGORIES[key]);
   });
+  applyNewsFilters();
   const preview = document.getElementById('home-news-preview');
   if (preview && data.all && data.all.length) {
     preview.innerHTML = data.all.slice(0, 3).map(a => {
@@ -1230,6 +1247,38 @@ function applyNewsData(data) {
       return newsCardHTML(a, cat, true);
     }).join('');
   }
+}
+
+function applyNewsFilters() {
+  const checkedCats = Array.from(document.querySelectorAll('#newsFilterSidebar input[data-cat]:checked')).map(el => el.dataset.cat);
+  const dateVal = document.querySelector('#newsFilterSidebar input[name="date"]:checked')?.value || 'month';
+  const maxAgeMs = { today: 24 * 60 * 60 * 1000, week: 7 * 24 * 60 * 60 * 1000, month: 31 * 24 * 60 * 60 * 1000 }[dateVal];
+  const now = Date.now();
+
+  const filtered = lastNewsAllData.filter(a => {
+    const inCategory = !a.category || checkedCats.includes(a.category) || a.isSample;
+    const age = now - new Date(a.publishedAt).getTime();
+    const inDateRange = a.isSample || age <= maxAgeMs;
+    return inCategory && inDateRange;
+  });
+
+  const el = document.getElementById('news-all');
+  if (!el) return;
+  if (!filtered.length) {
+    el.innerHTML = `<div class="notice"><i class="ti ti-filter-off"></i> No articles match the current filters. Try widening the date range or checking more categories.</div>`;
+    return;
+  }
+  el.style.display = 'flex';
+  el.style.flexDirection = 'column';
+  el.style.gap = '1rem';
+  el.innerHTML = filtered.map(a => newsCardHTML(a, NEWS_CATEGORIES[a.category] || NEWS_ALL_INFO, false)).join('');
+}
+
+function resetNewsFilters() {
+  document.querySelectorAll('#newsFilterSidebar input[data-cat]').forEach(el => { el.checked = true; });
+  const monthRadio = document.querySelector('#newsFilterSidebar input[name="date"][value="month"]');
+  if (monthRadio) monthRadio.checked = true;
+  applyNewsFilters();
 }
 
 function setNewsStatus(text, isWarning) {
@@ -1252,9 +1301,9 @@ async function refreshNewsData(force = false) {
     return;
   }
 
-  setNewsStatus('Fetching latest stories…');
+  setNewsStatus(force ? 'Force-refreshing from live sources…' : 'Fetching latest stories…');
   try {
-    const data = await fetchAllSectionNews();
+    const data = await fetchAllSectionNews(force);
     const timestamp = Date.now();
     localStorage.setItem(NEWS_CACHE_KEY, JSON.stringify({ timestamp, data }));
     applyNewsData(data);

@@ -7,7 +7,8 @@ export const list = asyncHandler(async (req: Request, res: Response) => {
     category: req.query.category as string | undefined,
     page: req.query.page as string | undefined,
     limit: req.query.limit as string | undefined,
-    userId: req.user?.id
+    userId: req.user?.id,
+    force: req.query.force === 'true'
   });
   res.status(200).json({ success: true, data: result });
 });

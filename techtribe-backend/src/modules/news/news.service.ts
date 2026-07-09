@@ -115,10 +115,12 @@ async function refreshCategory(categoryKey: string): Promise<void> {
   );
 }
 
-async function ensureCategoryFresh(categoryKey: string): Promise<void> {
+async function ensureCategoryFresh(categoryKey: string, force = false): Promise<void> {
   const cacheKey = `news:fresh:${categoryKey}`;
-  const isFresh = await cacheGet<boolean>(cacheKey);
-  if (isFresh) return;
+  if (!force) {
+    const isFresh = await cacheGet<boolean>(cacheKey);
+    if (isFresh) return;
+  }
   await refreshCategory(categoryKey);
   await cacheSet(cacheKey, true, NEWS_CACHE_TTL_SECONDS);
 }
@@ -128,16 +130,17 @@ export async function listNews(params: {
   page?: string;
   limit?: string;
   userId?: string;
+  force?: boolean;
 }) {
-  const { category } = params;
+  const { category, force = false } = params;
   if (category && category !== 'all' && !VALID_CATEGORIES.includes(category)) {
     throw ApiError.badRequest(`Unknown category "${category}". Valid: ${VALID_CATEGORIES.join(', ')}`);
   }
 
   if (category && category !== 'all') {
-    await ensureCategoryFresh(category);
+    await ensureCategoryFresh(category, force);
   } else {
-    await Promise.all(VALID_CATEGORIES.map((c) => ensureCategoryFresh(c)));
+    await Promise.all(VALID_CATEGORIES.map((c) => ensureCategoryFresh(c, force)));
   }
 
   const pagination = parsePagination(params);
