@@ -1100,7 +1100,6 @@ function switchNewsTab(el, targetId) {
 // on every page load within the same day.
 // =============================================
 const NEWS_CACHE_KEY = 'techtribe_news_cache_v1';
-const NEWS_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours — mirrors the backend's own cache window
 
 const NEWS_CATEGORIES = {
   ai:       { label: 'Artificial Intelligence', short: 'AI',       color: 'var(--purple)', emoji: '🤖' },
@@ -1289,15 +1288,45 @@ function setNewsStatus(text, isWarning) {
   }
 }
 
+// News refreshes on a fixed daily schedule (in the visitor's local time):
+// 12 AM, 7 AM, 12 PM, 6 PM. This mirrors the backend's own checkpoint-based
+// cache, so content updates 4x/day instead of on a rolling "24h since last
+// visit" window.
+const NEWS_CHECKPOINT_HOURS = [0, 7, 12, 18];
+
+function lastNewsCheckpoint(now = new Date()) {
+  const d = new Date(now);
+  const hour = [...NEWS_CHECKPOINT_HOURS].reverse().find((h) => h <= now.getHours()) ?? NEWS_CHECKPOINT_HOURS[NEWS_CHECKPOINT_HOURS.length - 1];
+  d.setHours(hour, 0, 0, 0);
+  if (hour > now.getHours()) d.setDate(d.getDate() - 1); // wrapped past midnight
+  return d;
+}
+
+function nextNewsCheckpoint(now = new Date()) {
+  const nextHour = NEWS_CHECKPOINT_HOURS.find((h) => h > now.getHours());
+  const d = new Date(now);
+  if (nextHour !== undefined) {
+    d.setHours(nextHour, 0, 0, 0);
+  } else {
+    d.setDate(d.getDate() + 1);
+    d.setHours(NEWS_CHECKPOINT_HOURS[0], 0, 0, 0);
+  }
+  return d;
+}
+
+function formatCheckpointTime(d) {
+  return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+}
+
 async function refreshNewsData(force = false) {
   let cache = null;
   try { cache = JSON.parse(localStorage.getItem(NEWS_CACHE_KEY) || 'null'); } catch (e) { cache = null; }
-  const isFresh = cache && (Date.now() - cache.timestamp < NEWS_TTL_MS);
+  const isFresh = cache && cache.timestamp >= lastNewsCheckpoint().getTime();
 
   if (isFresh && !force) {
     applyNewsData(cache.data);
     const label = cache.data._offline ? 'Offline sample shown' : 'Updated ' + newsTimeAgo(new Date(cache.timestamp).toISOString());
-    setNewsStatus(label + ' · next refresh in ' + Math.ceil((NEWS_TTL_MS - (Date.now() - cache.timestamp)) / 3600000) + 'h', !!cache.data._offline);
+    setNewsStatus(label + ' · next refresh at ' + formatCheckpointTime(nextNewsCheckpoint()), !!cache.data._offline);
     return;
   }
 
@@ -1311,7 +1340,7 @@ async function refreshNewsData(force = false) {
       setNewsStatus('Could not reach the TechTribe API — showing a sample. Check your connection and hit Refresh.', true);
       if (force) showToast('Live news unavailable, showing a sample', 'warn');
     } else {
-      setNewsStatus('Updated just now · auto-refreshes every 24h');
+      setNewsStatus('Updated just now · next refresh at ' + formatCheckpointTime(nextNewsCheckpoint()));
       if (force) showToast('News refreshed ✓', 'success');
     }
   } catch (e) {
@@ -1326,14 +1355,21 @@ async function refreshNewsData(force = false) {
   }
 }
 
-// Fixed 24-hour auto-refresh timer: checks cache age on load (survives page
-// reloads/closed tabs) and also re-checks every hour in case the tab is
-// left open past the 24h mark, so news never repeats day to day. The
-// backend itself refreshes its own cache on the same 24h cycle, so every
-// visitor — not just this browser — sees the same daily-fresh set.
+// Loads on page open, then schedules a timer to fire exactly at the next
+// checkpoint (12am/7am/12pm/6pm local time) rather than polling hourly —
+// and reschedules itself after each firing so it keeps working for as long
+// as the tab stays open.
+function scheduleNextNewsCheckpoint() {
+  const msUntilNext = nextNewsCheckpoint().getTime() - Date.now();
+  setTimeout(() => {
+    refreshNewsData(false);
+    scheduleNextNewsCheckpoint();
+  }, msUntilNext + 2000); // +2s safety margin past the boundary
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   refreshNewsData(false);
-  setInterval(() => refreshNewsData(false), 60 * 60 * 1000); // hourly check, only refetches once 24h have actually passed
+  scheduleNextNewsCheckpoint();
 });
 
 // Restore any saved session as soon as the DOM is ready

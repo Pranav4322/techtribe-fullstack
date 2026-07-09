@@ -3,7 +3,7 @@ import { cacheGet, cacheSet } from '../../config/redis';
 import { logger } from '../../config/logger';
 import { ApiError } from '../../utils/ApiError';
 import { parsePagination, buildPaginatedResult } from '../../utils/pagination';
-import { NEWS_CACHE_TTL_SECONDS, NEWS_CATEGORIES, VALID_CATEGORIES } from './news.constants';
+import { NEWS_CATEGORIES, VALID_CATEGORIES, secondsUntilNextNewsCheckpoint } from './news.constants';
 
 interface DevToArticle {
   id: number;
@@ -122,7 +122,7 @@ async function ensureCategoryFresh(categoryKey: string, force = false): Promise<
     if (isFresh) return;
   }
   await refreshCategory(categoryKey);
-  await cacheSet(cacheKey, true, NEWS_CACHE_TTL_SECONDS);
+  await cacheSet(cacheKey, true, secondsUntilNextNewsCheckpoint());
 }
 
 export async function listNews(params: {
