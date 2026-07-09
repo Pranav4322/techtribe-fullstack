@@ -1476,6 +1476,10 @@ function openLang(lang) {
       <i class="ti ti-sparkles"></i> Try the <a href="#" onclick="showPage('ai');openAIPanel('quiz');return false">AI Quiz Generator</a> to test your ${d.name} knowledge, or the <a href="#" onclick="showPage('ai');openAIPanel('code');return false">Code Explainer</a> for any snippet.
     </div>
   `;
+  window.scrollTo(0, 0);
+  document.querySelectorAll('#langSidebar a').forEach(a => a.classList.remove('active'));
+  document.querySelector('#langSidebar a[data-target="lang-sec-intro"]')?.classList.add('active');
+  setupLangScrollSpy();
 }
 
 function closeLang() {
@@ -1490,6 +1494,31 @@ function scrollToLangSection(linkEl) {
   document.querySelectorAll('#langSidebar a').forEach(a => a.classList.remove('active'));
   linkEl.classList.add('active');
   return false;
+}
+
+let langScrollObserver = null;
+function setupLangScrollSpy() {
+  if (langScrollObserver) langScrollObserver.disconnect();
+  const sections = document.querySelectorAll('#langMain h2[id]');
+  if (!sections.length) return;
+
+  const linksByTarget = {};
+  document.querySelectorAll('#langSidebar a[data-target]').forEach(a => {
+    (linksByTarget[a.dataset.target] ||= []).push(a);
+  });
+
+  langScrollObserver = new IntersectionObserver((entries) => {
+    // Pick whichever observed section is closest to the top of the viewport
+    // among those currently intersecting, so the highlight tracks naturally
+    // as the user scrolls (not just on click).
+    const visible = entries.filter(e => e.isIntersecting);
+    if (!visible.length) return;
+    const top = visible.reduce((a, b) => (a.boundingClientRect.top < b.boundingClientRect.top ? a : b));
+    document.querySelectorAll('#langSidebar a').forEach(a => a.classList.remove('active'));
+    (linksByTarget[top.target.id] || []).forEach(a => a.classList.add('active'));
+  }, { root: null, rootMargin: '-96px 0px -65% 0px', threshold: 0 });
+
+  sections.forEach(s => langScrollObserver.observe(s));
 }
 
 function copyCode(btn) {
