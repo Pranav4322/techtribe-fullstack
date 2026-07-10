@@ -1088,6 +1088,7 @@ function switchNewsTab(el, targetId) {
   document.querySelectorAll('#page-news .tab-panel').forEach(p => p.classList.remove('active'));
   const t = document.getElementById(targetId);
   if (t) { t.classList.add('active'); t.style.display = 'flex'; t.style.flexDirection = 'column'; t.style.gap = '1rem'; }
+  applyNewsFilters();
 }
 
 // =============================================
@@ -1140,7 +1141,7 @@ async function fetchAllSectionNews(force = false) {
   const keys = Object.keys(NEWS_CATEGORIES);
   const [allResult, ...catResults] = await Promise.allSettled([
     fetchCategoryFromBackend(undefined, 12, force),
-    ...keys.map((k) => fetchCategoryFromBackend(k, 6, force))
+    ...keys.map((k) => fetchCategoryFromBackend(k, 20, force))
   ]);
 
   const data = {};
@@ -1233,11 +1234,16 @@ function renderNewsPanel(panelId, articles, info) {
 
 let lastNewsAllData = [];
 
+let lastNewsByCategory = {};
+let newsDataLoaded = false;
+
 function applyNewsData(data) {
   lastNewsAllData = data.all || [];
+  lastNewsByCategory = {};
   Object.keys(NEWS_CATEGORIES).forEach(key => {
-    renderNewsPanel('news-' + key, data[key], NEWS_CATEGORIES[key]);
+    lastNewsByCategory[key] = data[key] || [];
   });
+  newsDataLoaded = true;
   applyNewsFilters();
   const preview = document.getElementById('home-news-preview');
   if (preview && data.all && data.all.length) {
@@ -1248,29 +1254,46 @@ function applyNewsData(data) {
   }
 }
 
+// Maps each news tab-panel id to which raw dataset + info it should filter from
+const NEWS_PANEL_MAP = {
+  'news-all': { data: () => lastNewsAllData, info: NEWS_ALL_INFO, filterByCategory: true },
+  ...Object.fromEntries(Object.keys(NEWS_CATEGORIES).map(key => [
+    'news-' + key,
+    { data: () => lastNewsByCategory[key] || [], info: NEWS_CATEGORIES[key], filterByCategory: false }
+  ]))
+};
+
+// Applies the Date filter (and, on the "All" tab only, the Category
+// checkboxes) to whichever news tab is currently visible — not just "All" —
+// so switching to AI/Security/etc. and adjusting filters actually works.
 function applyNewsFilters() {
+  if (!newsDataLoaded) return;
+  const activePanel = document.querySelector('#page-news .tab-panel.active');
+  const panelId = activePanel ? activePanel.id : 'news-all';
+  const config = NEWS_PANEL_MAP[panelId] || NEWS_PANEL_MAP['news-all'];
+
   const checkedCats = Array.from(document.querySelectorAll('#newsFilterSidebar input[data-cat]:checked')).map(el => el.dataset.cat);
   const dateVal = document.querySelector('#newsFilterSidebar input[name="date"]:checked')?.value || 'month';
   const maxAgeMs = { today: 24 * 60 * 60 * 1000, week: 7 * 24 * 60 * 60 * 1000, month: 31 * 24 * 60 * 60 * 1000 }[dateVal];
   const now = Date.now();
 
-  const filtered = lastNewsAllData.filter(a => {
-    const inCategory = !a.category || checkedCats.includes(a.category) || a.isSample;
+  const filtered = config.data().filter(a => {
+    const inCategory = !config.filterByCategory || !a.category || checkedCats.includes(a.category) || a.isSample;
     const age = now - new Date(a.publishedAt).getTime();
     const inDateRange = a.isSample || age <= maxAgeMs;
     return inCategory && inDateRange;
   });
 
-  const el = document.getElementById('news-all');
+  const el = document.getElementById(panelId);
   if (!el) return;
   if (!filtered.length) {
-    el.innerHTML = `<div class="notice"><i class="ti ti-filter-off"></i> No articles match the current filters. Try widening the date range or checking more categories.</div>`;
+    el.innerHTML = `<div class="notice"><i class="ti ti-filter-off"></i> No articles match the current filters. Try widening the date range${config.filterByCategory ? ' or checking more categories' : ''}.</div>`;
     return;
   }
   el.style.display = 'flex';
   el.style.flexDirection = 'column';
   el.style.gap = '1rem';
-  el.innerHTML = filtered.map(a => newsCardHTML(a, NEWS_CATEGORIES[a.category] || NEWS_ALL_INFO, false)).join('');
+  el.innerHTML = filtered.map(a => newsCardHTML(a, NEWS_CATEGORIES[a.category] || config.info, false)).join('');
 }
 
 function resetNewsFilters() {
