@@ -77,3 +77,9 @@ export const report = asyncHandler(async (req: Request, res: Response) => {
   const result = await service.reportContent(req.user!.id, req.body);
   res.status(201).json({ success: true, message: 'Report submitted. Our moderators will review it.', data: { report: result } });
 });
+
+export const topTags = asyncHandler(async (req: Request, res: Response) => {
+  const limit = req.query.limit ? Number(req.query.limit) : 6;
+  const tags = await service.getTopTags(limit);
+  res.status(200).json({ success: true, data: { tags } });
+});

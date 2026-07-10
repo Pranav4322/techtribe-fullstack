@@ -274,3 +274,19 @@ export async function reportContent(
     }
   });
 }
+
+/**
+ * Aggregates real post counts per tag, unnesting the Postgres text[] column,
+ * so the "Communities" sidebar shows genuine live data instead of static
+ * placeholder numbers.
+ */
+export async function getTopTags(limit = 6) {
+  const rows = await prisma.$queryRaw<{ tag: string; count: bigint }[]>`
+    SELECT unnest(tags) AS tag, COUNT(*) AS count
+    FROM "CommunityPost"
+    GROUP BY tag
+    ORDER BY count DESC
+    LIMIT ${limit}
+  `;
+  return rows.map((r: { tag: string; count: bigint }) => ({ tag: r.tag, count: Number(r.count) }));
+}

@@ -680,6 +680,14 @@ textarea.mono-f{font-family:var(--mono);font-size:13px}
           <div class="form-group"><input type="text" id="postTitle" class="form-input" placeholder="Post title..."></div>
           <div class="form-group"><select id="postCommunity" class="form-input"><option value="">Choose community...</option><option>r/Python</option><option>r/JavaScript</option><option>r/AI</option><option>r/WebDevelopment</option><option>r/CareerAdvice</option><option>r/OpenSource</option><option>r/General</option></select></div>
           <div class="form-group"><textarea id="postBody" rows="4" class="form-input" placeholder="Share your question, project, or idea..."></textarea></div>
+          <div class="form-group">
+            <input type="file" id="postImageInput" accept="image/png,image/jpeg,image/gif,image/webp" style="display:none" onchange="handlePostImageSelect(this)">
+            <div id="postImagePreviewWrap" style="display:none;position:relative;margin-bottom:.5rem">
+              <img id="postImagePreview" style="max-width:100%;max-height:220px;border-radius:var(--radius);display:block">
+              <button type="button" onclick="removePostImage()" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,.7);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer"><i class="ti ti-x"></i></button>
+            </div>
+            <button type="button" class="btn-secondary" id="postImagePickBtn" onclick="document.getElementById('postImageInput').click()"><i class="ti ti-photo"></i> Add Image</button>
+          </div>
           <div style="display:flex;gap:.5rem;justify-content:flex-end"><button class="btn-secondary" onclick="closeNewPost()">Cancel</button><button class="btn-primary" onclick="submitPost()"><i class="ti ti-send"></i> Post</button></div>
         </div>
         <div id="postList" style="display:flex;flex-direction:column;gap:.75rem">
@@ -690,21 +698,14 @@ textarea.mono-f{font-family:var(--mono);font-size:13px}
       <div>
         <div class="card mb-4">
           <div style="font-size:15px;font-weight:600;margin-bottom:1rem"><i class="ti ti-building-community" style="color:var(--accent)"></i> Communities</div>
-          <div style="display:flex;flex-direction:column;gap:2px">
-            <div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius)"><span>r/Python</span><span class="text-muted text-xs">12.4k</span></div>
-            <div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius)"><span>r/JavaScript</span><span class="text-muted text-xs">10.1k</span></div>
-            <div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius)"><span>r/AI</span><span class="text-muted text-xs">9.8k</span></div>
-            <div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius)"><span>r/WebDevelopment</span><span class="text-muted text-xs">8.2k</span></div>
-            <div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius)"><span>r/CareerAdvice</span><span class="text-muted text-xs">7.5k</span></div>
-            <div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius)"><span>r/OpenSource</span><span class="text-muted text-xs">5.9k</span></div>
+          <div id="communitiesWidget" style="display:flex;flex-direction:column;gap:2px">
+            <div class="text-muted text-xs" style="padding:7px 8px">Loading…</div>
           </div>
         </div>
         <div class="card">
           <div style="font-size:15px;font-weight:600;margin-bottom:1rem"><i class="ti ti-trophy" style="color:var(--yellow)"></i> Top Contributors</div>
-          <div style="display:flex;flex-direction:column;gap:.75rem">
-            <div style="display:flex;align-items:center;gap:10px"><div class="avatar" style="width:32px;height:32px;font-size:13px;background:rgba(255,215,0,.2);color:#ffd700">VN</div><div style="flex:1"><div style="font-size:13px;font-weight:500">vikram_n</div><div style="font-size:11px;color:var(--text3)">4,820 XP</div></div><span class="badge-pill badge-green">Expert</span></div>
-            <div style="display:flex;align-items:center;gap:10px"><div class="avatar" style="width:32px;height:32px;font-size:13px;background:rgba(88,166,255,.2);color:var(--accent)">PD</div><div style="flex:1"><div style="font-size:13px;font-weight:500">priya_d</div><div style="font-size:11px;color:var(--text3)">3,610 XP</div></div><span class="badge-pill badge-blue">Pro</span></div>
-            <div style="display:flex;align-items:center;gap:10px"><div class="avatar" style="width:32px;height:32px;font-size:13px;background:rgba(63,185,80,.2);color:var(--green)">MS</div><div style="flex:1"><div style="font-size:13px;font-weight:500">mansi_s</div><div style="font-size:11px;color:var(--text3)">2,990 XP</div></div><span class="badge-pill badge-purple">Builder</span></div>
+          <div id="leaderboardWidget" style="display:flex;flex-direction:column;gap:.75rem">
+            <div class="text-muted text-xs">Loading…</div>
           </div>
         </div>
       </div>
@@ -1758,6 +1759,7 @@ function postCardHTML(post) {
   const initials = (post.author?.username || 'U').slice(0, 2).toUpperCase();
   const [bg, color] = avatarColorFor(post.author?.username || 'u');
   const tag = post.tags && post.tags[0] ? post.tags[0] : 'General';
+  const imageHTML = post.imageUrl ? `<img src="${post.imageUrl}" alt="" style="max-width:100%;border-radius:var(--radius);margin:.5rem 0;display:block">` : '';
   return `<div class="card post-card" data-id="${post.id}">
     <div class="post-votes">
       <button class="vote-btn ${post.isLiked ? 'active' : ''}" onclick="vote(this,1)"><i class="ti ti-chevron-up"></i></button>
@@ -1766,6 +1768,7 @@ function postCardHTML(post) {
     </div>
     <div class="post-content">
       <div class="post-title">${escapeHtml(post.title)}</div>
+      ${imageHTML}
       <div class="post-meta">
         <span class="community-badge">${escapeHtml(tag)}</span>
         <span><div class="avatar" style="background:${bg};color:${color}">${initials}</div> ${escapeHtml(author)}</span>
@@ -1791,6 +1794,54 @@ async function loadCommunityPosts(sort) {
   } catch (e) {
     communityErrorState(e.message || 'Could not load community posts.');
   }
+  loadCommunitySidebarWidgets();
+}
+
+// =============================================
+// COMMUNITY SIDEBAR — real live data (top tags by post count, top users by XP)
+// =============================================
+async function loadCommunitySidebarWidgets() {
+  const communitiesEl = document.getElementById('communitiesWidget');
+  const leaderboardEl = document.getElementById('leaderboardWidget');
+
+  try {
+    const data = await apiFetch('/community/tags/top?limit=6');
+    const tags = data.data.tags || [];
+    communitiesEl.innerHTML = tags.length
+      ? tags.map(t => `<div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius);cursor:pointer" onclick="filterCommunityByTag('${escapeHtml(t.tag)}')"><span>${escapeHtml(t.tag)}</span><span class="text-muted text-xs">${t.count}</span></div>`).join('')
+      : `<div class="text-muted text-xs" style="padding:7px 8px">No posts yet — communities will appear here once people start posting.</div>`;
+  } catch (e) {
+    communitiesEl.innerHTML = `<div class="text-muted text-xs" style="padding:7px 8px">Could not load communities.</div>`;
+  }
+
+  try {
+    const data = await apiFetch('/users/leaderboard?limit=3');
+    const users = data.data.users || [];
+    const badgeClass = { Expert: 'badge-green', Pro: 'badge-blue', Builder: 'badge-purple' };
+    leaderboardEl.innerHTML = users.length
+      ? users.map(u => {
+          const [bg, color] = avatarColorFor(u.username);
+          const initials = u.username.slice(0, 2).toUpperCase();
+          return `<div style="display:flex;align-items:center;gap:10px"><div class="avatar" style="width:32px;height:32px;font-size:13px;background:${bg};color:${color}">${initials}</div><div style="flex:1"><div style="font-size:13px;font-weight:500">${escapeHtml(u.username)}</div><div style="font-size:11px;color:var(--text3)">${u.xp.toLocaleString()} XP</div></div><span class="badge-pill ${badgeClass[u.badge] || 'badge-blue'}">${u.badge}</span></div>`;
+        }).join('')
+      : `<div class="text-muted text-xs">No contributors yet — be the first!</div>`;
+  } catch (e) {
+    leaderboardEl.innerHTML = `<div class="text-muted text-xs">Could not load leaderboard.</div>`;
+  }
+}
+
+function filterCommunityByTag(tag) {
+  // Simple client-side jump: reload posts filtered server-side by this tag
+  communityState.page = 1;
+  apiFetch(`/community/posts?page=1&limit=20&sort=${communityState.sort}&tag=${encodeURIComponent(tag)}`)
+    .then(data => {
+      const posts = data.data.items || [];
+      document.getElementById('postList').innerHTML = posts.length
+        ? posts.map(postCardHTML).join('')
+        : `<div class="text-muted text-sm" style="padding:1rem;text-align:center">No posts in "${escapeHtml(tag)}" yet.</div>`;
+      document.getElementById('loadMorePostsBtn').style.display = 'none';
+    })
+    .catch(e => showToast(e.message || 'Could not filter by tag', 'error'));
 }
 
 async function loadMoreCommunityPosts() {
@@ -1814,6 +1865,55 @@ async function togglePostLike(postId, countEl) {
   }
 }
 
+// =============================================
+// POST IMAGE UPLOAD — downscale/compress client-side to a base64 data URL
+// (backend caps at ~2MB; images are stored inline, no external file storage needed)
+// =============================================
+let pendingPostImageDataUrl = null;
+
+function handlePostImageSelect(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) return showToast('Please select an image file.', 'warn');
+  if (file.size > 12 * 1024 * 1024) return showToast('Image is too large (max 12MB before compression).', 'warn');
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const maxDim = 1280;
+      let { width, height } = img;
+      if (width > maxDim || height > maxDim) {
+        const scale = maxDim / Math.max(width, height);
+        width = Math.round(width * scale);
+        height = Math.round(height * scale);
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.75);
+      if (dataUrl.length > 2_700_000) {
+        showToast('Image is still too large after compression — try a smaller photo.', 'warn');
+        return;
+      }
+      pendingPostImageDataUrl = dataUrl;
+      document.getElementById('postImagePreview').src = dataUrl;
+      document.getElementById('postImagePreviewWrap').style.display = 'block';
+      document.getElementById('postImagePickBtn').style.display = 'none';
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePostImage() {
+  pendingPostImageDataUrl = null;
+  document.getElementById('postImageInput').value = '';
+  document.getElementById('postImagePreviewWrap').style.display = 'none';
+  document.getElementById('postImagePickBtn').style.display = '';
+}
+
 async function submitPost() {
   if (!requireLogin('create a post')) return;
   const title = document.getElementById('postTitle').value.trim();
@@ -1823,10 +1923,13 @@ async function submitPost() {
   if (!body) return showToast('Please write something in the post body.', 'warn');
   const tag = community ? community.replace(/^r\//, '') : 'General';
   try {
-    await apiFetch('/community/posts', { method: 'POST', body: { title, body, tags: [tag] } });
+    const payload = { title, body, tags: [tag] };
+    if (pendingPostImageDataUrl) payload.imageUrl = pendingPostImageDataUrl;
+    await apiFetch('/community/posts', { method: 'POST', body: payload });
     document.getElementById('postTitle').value = '';
     document.getElementById('postBody').value = '';
     document.getElementById('postCommunity').value = '';
+    removePostImage();
     closeNewPost();
     showToast('Post published! 🎉', 'success');
     loadCommunityPosts();

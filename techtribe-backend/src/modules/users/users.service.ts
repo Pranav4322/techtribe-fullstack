@@ -109,3 +109,22 @@ export async function getDashboardStats(userId: string) {
     unreadNotifications
   };
 }
+
+/**
+ * Real top-contributor leaderboard by XP, for the "Top Contributors"
+ * sidebar (replaces static placeholder data). Badge tier is derived from
+ * XP thresholds rather than a stored field.
+ */
+export async function getLeaderboard(limit = 3) {
+  const users = await prisma.user.findMany({
+    where: { isActive: true, isBanned: false },
+    orderBy: { xp: 'desc' },
+    take: limit,
+    select: { id: true, username: true, displayName: true, avatarUrl: true, xp: true, level: true }
+  });
+
+  return users.map((u: (typeof users)[number]) => ({
+    ...u,
+    badge: u.xp >= 4000 ? 'Expert' : u.xp >= 2000 ? 'Pro' : 'Builder'
+  }));
+}

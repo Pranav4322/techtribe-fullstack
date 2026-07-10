@@ -7,6 +7,7 @@ import { createPostSchema, updatePostSchema, createCommentSchema, reportSchema }
 const router = Router();
 
 router.get('/posts', optionalAuth, controller.listPosts);
+router.get('/tags/top', controller.topTags);
 router.post('/posts', requireAuth, validate({ body: createPostSchema }), controller.createPost);
 router.get('/posts/:id', optionalAuth, controller.getPost);
 router.put('/posts/:id', requireAuth, validate({ body: updatePostSchema }), controller.updatePost);

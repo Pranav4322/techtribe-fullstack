@@ -7,6 +7,7 @@ import { updateProfileSchema } from './users.validation';
 const router = Router();
 
 router.get('/dashboard', requireAuth, controller.dashboard);
+router.get('/leaderboard', controller.leaderboard);
 router.put('/me', requireAuth, validate({ body: updateProfileSchema }), controller.updateMyProfile);
 router.get('/:username', optionalAuth, controller.getProfile);
 router.post('/:username/follow', requireAuth, controller.follow);

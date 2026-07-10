@@ -26,3 +26,9 @@ export const dashboard = asyncHandler(async (req: Request, res: Response) => {
   const stats = await usersService.getDashboardStats(req.user!.id);
   res.status(200).json({ success: true, data: { stats } });
 });
+
+export const leaderboard = asyncHandler(async (req: Request, res: Response) => {
+  const limit = req.query.limit ? Number(req.query.limit) : 3;
+  const users = await usersService.getLeaderboard(limit);
+  res.status(200).json({ success: true, data: { users } });
+});

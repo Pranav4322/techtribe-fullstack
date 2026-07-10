@@ -256,6 +256,7 @@ model CommunityPost {
   title       String
   body        String   @db.Text
   tags        String[]
+  imageUrl    String?  @db.Text
   isPinned    Boolean  @default(false)
   isLocked    Boolean  @default(false)
   viewCount   Int      @default(0)
