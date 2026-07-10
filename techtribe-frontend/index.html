@@ -1288,34 +1288,40 @@ function setNewsStatus(text, isWarning) {
   }
 }
 
-// News refreshes on a fixed daily schedule (in the visitor's local time):
-// 12 AM, 7 AM, 12 PM, 6 PM. This mirrors the backend's own checkpoint-based
-// cache, so content updates 4x/day instead of on a rolling "24h since last
-// visit" window.
-const NEWS_CHECKPOINT_HOURS = [0, 7, 12, 18];
+// News refreshes on a fixed daily schedule anchored to IST (UTC+5:30):
+// 12 AM, 7 AM, 12 PM, 6 PM — same anchor the backend's cache uses, so every
+// visitor (regardless of their own timezone) sees the same refresh moments.
+const NEWS_CHECKPOINT_HOURS = [0, 7, 12, 18]; // IST wall-clock hours
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
 
 function lastNewsCheckpoint(now = new Date()) {
-  const d = new Date(now);
-  const hour = [...NEWS_CHECKPOINT_HOURS].reverse().find((h) => h <= now.getHours()) ?? NEWS_CHECKPOINT_HOURS[NEWS_CHECKPOINT_HOURS.length - 1];
-  d.setHours(hour, 0, 0, 0);
-  if (hour > now.getHours()) d.setDate(d.getDate() - 1); // wrapped past midnight
-  return d;
+  const istNow = new Date(now.getTime() + IST_OFFSET_MS); // read IST wall-clock via UTC getters
+  const hour = [...NEWS_CHECKPOINT_HOURS].reverse().find((h) => h <= istNow.getUTCHours()) ?? NEWS_CHECKPOINT_HOURS[NEWS_CHECKPOINT_HOURS.length - 1];
+  const istLast = new Date(istNow);
+  istLast.setUTCHours(hour, 0, 0, 0);
+  if (hour > istNow.getUTCHours()) istLast.setUTCDate(istLast.getUTCDate() - 1);
+  return new Date(istLast.getTime() - IST_OFFSET_MS);
 }
 
 function nextNewsCheckpoint(now = new Date()) {
-  const nextHour = NEWS_CHECKPOINT_HOURS.find((h) => h > now.getHours());
-  const d = new Date(now);
+  const istNow = new Date(now.getTime() + IST_OFFSET_MS);
+  const nextHour = NEWS_CHECKPOINT_HOURS.find((h) => h > istNow.getUTCHours());
+  const istNext = new Date(istNow);
   if (nextHour !== undefined) {
-    d.setHours(nextHour, 0, 0, 0);
+    istNext.setUTCHours(nextHour, 0, 0, 0);
   } else {
-    d.setDate(d.getDate() + 1);
-    d.setHours(NEWS_CHECKPOINT_HOURS[0], 0, 0, 0);
+    istNext.setUTCDate(istNext.getUTCDate() + 1);
+    istNext.setUTCHours(NEWS_CHECKPOINT_HOURS[0], 0, 0, 0);
   }
-  return d;
+  return new Date(istNext.getTime() - IST_OFFSET_MS);
 }
 
 function formatCheckpointTime(d) {
-  return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  try {
+    return d.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', timeZone: 'Asia/Kolkata' }) + ' IST';
+  } catch (e) {
+    return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  }
 }
 
 async function refreshNewsData(force = false) {
