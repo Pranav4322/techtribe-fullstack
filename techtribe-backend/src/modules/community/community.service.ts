@@ -239,12 +239,16 @@ export async function toggleCommentLike(userId: string, commentId: string) {
   if (!comment) throw ApiError.notFound('Comment not found');
 
   const existing = await prisma.like.findUnique({ where: { userId_commentId: { userId, commentId } } });
+  let liked: boolean;
   if (existing) {
     await prisma.like.delete({ where: { id: existing.id } });
-    return { liked: false };
+    liked = false;
+  } else {
+    await prisma.like.create({ data: { userId, commentId } });
+    liked = true;
   }
-  await prisma.like.create({ data: { userId, commentId } });
-  return { liked: true };
+  const likeCount = await prisma.like.count({ where: { commentId } });
+  return { liked, likeCount };
 }
 
 export async function togglePostBookmark(userId: string, postId: string) {

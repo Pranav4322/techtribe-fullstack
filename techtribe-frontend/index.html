@@ -119,6 +119,22 @@ input,select,textarea{font-family:var(--font)}
 .vote-btn:hover,.vote-btn.active{color:var(--accent);border-color:var(--accent);background:var(--accent-glow)}
 .vote-count{font-size:13px;font-weight:600;color:var(--text2)}
 .post-content{flex:1;min-width:0}
+.post-comment-toggle{cursor:pointer;user-select:none}
+.post-comment-toggle:hover{color:var(--accent)}
+.post-comments{margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:.75rem}
+.comment-input-row{display:flex;gap:8px;align-items:flex-start}
+.comment-input-row textarea{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);padding:8px 10px;font-family:inherit;font-size:13px;resize:vertical;min-height:38px}
+.comment-item{display:flex;gap:8px}
+.comment-body-wrap{flex:1;min-width:0}
+.comment-meta{font-size:12px}
+.comment-meta strong{color:var(--text)}
+.comment-text{font-size:13px;color:var(--text2);margin:2px 0 4px;white-space:pre-wrap;word-break:break-word}
+.comment-actions{display:flex;gap:12px;font-size:12px}
+.comment-action-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:0;font-size:12px;display:flex;align-items:center;gap:3px}
+.comment-action-btn:hover{color:var(--accent)}
+.comment-action-btn.active{color:var(--orange)}
+.comment-replies{margin-top:.5rem;padding-left:1rem;border-left:2px solid var(--border);display:flex;flex-direction:column;gap:.6rem}
+.reply-box{margin-top:.5rem}
 .post-image-thumb{display:block;max-width:100%;max-height:320px;width:auto;border-radius:var(--radius);margin:.5rem 0;cursor:zoom-in;object-fit:cover;border:1px solid var(--border)}
 .img-lightbox{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;z-index:9999;cursor:zoom-out;padding:2rem}
 .img-lightbox img{max-width:100%;max-height:100%;border-radius:var(--radius);box-shadow:0 20px 60px rgba(0,0,0,.5)}
@@ -1747,10 +1763,11 @@ function postCardHTML(post) {
       <div class="post-meta">
         <span class="community-badge">${escapeHtml(tag)}</span>
         <span><div class="avatar" style="background:${bg};color:${color}">${initials}</div> ${escapeHtml(author)}</span>
-        <span><i class="ti ti-message-circle"></i> ${post.commentCount ?? 0}</span>
+        <span class="post-comment-toggle" onclick="toggleComments('${post.id}')"><i class="ti ti-message-circle"></i> <span class="comment-count-label">${post.commentCount ?? 0}</span></span>
         <span>${timeAgoShort(post.createdAt)}</span>
         ${deleteBtnHTML}
       </div>
+      <div class="post-comments" id="comments-${post.id}" style="display:none"></div>
     </div>
   </div>`;
 }
@@ -1891,6 +1908,137 @@ function removePostImage() {
   document.getElementById('postImageInput').value = '';
   document.getElementById('postImagePreviewWrap').style.display = 'none';
   document.getElementById('postImagePickBtn').style.display = '';
+}
+
+// =============================================
+// COMMENTS — wired to /api/v1/community/posts/:id/comments and /comments/:id
+// =============================================
+function commentHTML(c, postId, isReply) {
+  const author = c.author?.displayName || c.author?.username || 'Unknown';
+  const initials = (c.author?.username || 'U').slice(0, 2).toUpperCase();
+  const [bg, color] = avatarColorFor(c.author?.username || 'u');
+  const canDelete = authState.user && (authState.user.id === c.author?.id || authState.user.role !== 'USER');
+  const repliesHTML = !isReply && c.replies && c.replies.length
+    ? `<div class="comment-replies">${c.replies.map(r => commentHTML(r, postId, true)).join('')}</div>`
+    : '';
+  return `<div class="comment-item" data-comment-id="${c.id}">
+    <div class="avatar" style="width:28px;height:28px;font-size:11px;flex-shrink:0;background:${bg};color:${color}">${initials}</div>
+    <div class="comment-body-wrap">
+      <div class="comment-meta"><strong>${escapeHtml(author)}</strong> <span class="text-muted">${timeAgoShort(c.createdAt)}</span></div>
+      <div class="comment-text">${escapeHtml(c.body)}</div>
+      <div class="comment-actions">
+        <button class="comment-action-btn ${c.isLiked ? 'active' : ''}" onclick="toggleCommentLike('${c.id}', this)"><i class="ti ti-heart"></i> ${c.likeCount ?? 0}</button>
+        ${!isReply ? `<button class="comment-action-btn" onclick="showReplyBox('${postId}','${c.id}')"><i class="ti ti-corner-down-right"></i> Reply</button>` : ''}
+        ${canDelete ? `<button class="comment-action-btn" onclick="deleteComment('${c.id}', this, '${postId}')"><i class="ti ti-trash"></i> Delete</button>` : ''}
+      </div>
+      <div class="reply-box" id="replyBox-${c.id}" style="display:none"></div>
+      ${repliesHTML}
+    </div>
+  </div>`;
+}
+
+function commentInputRowHTML(postId, parentCommentId) {
+  const boxId = parentCommentId ? `commentInput-${parentCommentId}` : `commentInput-${postId}`;
+  const submitCall = parentCommentId
+    ? `postComment('${postId}', '${boxId}', '${parentCommentId}')`
+    : `postComment('${postId}', '${boxId}')`;
+  return `<div class="comment-input-row">
+    <textarea id="${boxId}" rows="1" placeholder="${parentCommentId ? 'Write a reply...' : 'Write a comment...'}"></textarea>
+    <button class="btn-primary" style="padding:8px 14px" onclick="${submitCall}"><i class="ti ti-send"></i></button>
+  </div>`;
+}
+
+async function toggleComments(postId) {
+  const el = document.getElementById(`comments-${postId}`);
+  if (!el) return;
+  const isOpen = el.style.display !== 'none';
+  if (isOpen) { el.style.display = 'none'; return; }
+
+  el.style.display = 'flex';
+  if (el.dataset.loaded === 'true') return;
+
+  el.innerHTML = `<div class="text-muted text-xs">Loading comments…</div>`;
+  try {
+    const data = await apiFetch(`/community/posts/${postId}/comments`);
+    const comments = data.data.comments || [];
+    const inputHTML = authState.user
+      ? commentInputRowHTML(postId)
+      : `<div class="text-muted text-xs">Sign in to join the conversation.</div>`;
+    el.innerHTML = inputHTML + (comments.length
+      ? comments.map(c => commentHTML(c, postId, false)).join('')
+      : `<div class="text-muted text-xs">No comments yet — be the first to reply.</div>`);
+    el.dataset.loaded = 'true';
+  } catch (e) {
+    el.innerHTML = `<div class="notice notice-error"><i class="ti ti-alert-circle"></i><span>${escapeHtml(e.message || 'Could not load comments')}</span></div>`;
+  }
+}
+
+function showReplyBox(postId, commentId) {
+  if (!requireLogin('reply to comments')) return;
+  const box = document.getElementById(`replyBox-${commentId}`);
+  if (!box) return;
+  if (box.style.display !== 'none') { box.style.display = 'none'; return; }
+  box.innerHTML = commentInputRowHTML(postId, commentId);
+  box.style.display = 'block';
+}
+
+function bumpCommentCount(postId, delta) {
+  const label = document.querySelector(`.post-card[data-id="${postId}"] .comment-count-label`);
+  if (label) label.textContent = Math.max(0, parseInt(label.textContent || '0') + delta);
+}
+
+async function postComment(postId, textareaId, parentCommentId) {
+  if (!requireLogin('comment')) return;
+  const textarea = document.getElementById(textareaId);
+  const body = textarea.value.trim();
+  if (!body) return showToast('Write something first.', 'warn');
+  try {
+    const data = await apiFetch(`/community/posts/${postId}/comments`, {
+      method: 'POST',
+      body: parentCommentId ? { body, parentCommentId } : { body }
+    });
+    const comment = { ...data.data.comment, likeCount: 0, isLiked: false, replies: [] };
+    if (parentCommentId) {
+      const replyBox = document.getElementById(`replyBox-${parentCommentId}`);
+      const parentEl = document.querySelector(`.comment-item[data-comment-id="${parentCommentId}"] > .comment-body-wrap`);
+      let repliesEl = parentEl?.querySelector('.comment-replies');
+      if (!repliesEl && parentEl) {
+        parentEl.insertAdjacentHTML('beforeend', `<div class="comment-replies"></div>`);
+        repliesEl = parentEl.querySelector('.comment-replies');
+      }
+      repliesEl?.insertAdjacentHTML('beforeend', commentHTML(comment, postId, true));
+      if (replyBox) { replyBox.style.display = 'none'; replyBox.innerHTML = ''; }
+    } else {
+      document.getElementById(`comments-${postId}`).insertAdjacentHTML('beforeend', commentHTML(comment, postId, false));
+      textarea.value = '';
+    }
+    bumpCommentCount(postId, 1);
+  } catch (e) {
+    showToast(e.message || 'Could not post comment', 'error');
+  }
+}
+
+async function toggleCommentLike(commentId, btn) {
+  if (!requireLogin('like comments')) return;
+  try {
+    const data = await apiFetch(`/community/comments/${commentId}/like`, { method: 'POST', body: {} });
+    btn.classList.toggle('active', !!data.data.liked);
+    btn.innerHTML = `<i class="ti ti-heart"></i> ${data.data.likeCount}`;
+  } catch (e) {
+    showToast(e.message || 'Could not like comment', 'error');
+  }
+}
+
+async function deleteComment(commentId, btn, postId) {
+  if (!confirm('Delete this comment?')) return;
+  try {
+    await apiFetch(`/community/comments/${commentId}`, { method: 'DELETE' });
+    document.querySelector(`.comment-item[data-comment-id="${commentId}"]`)?.remove();
+    bumpCommentCount(postId, -1);
+    showToast('Comment deleted', 'success');
+  } catch (e) {
+    showToast(e.message || 'Could not delete comment', 'error');
+  }
 }
 
 async function deletePost(postId, btn) {
