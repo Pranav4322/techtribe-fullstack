@@ -237,6 +237,7 @@ code{font-family:var(--mono);color:var(--text)}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
 .tab-panel{display:none}
 .tab-panel.active{display:block}
+#page-news .tab-panel.active{display:flex;flex-direction:column;gap:1rem}
 
 .notice{background:var(--accent-glow);border:1px solid rgba(88,166,255,.3);border-radius:var(--radius);padding:10px 14px;font-size:13px;color:var(--text2);display:flex;gap:8px;align-items:flex-start}
 .notice i{flex-shrink:0;margin-top:2px}
@@ -1072,9 +1073,9 @@ function showToast(msg, type = 'info') {
 function switchNewsTab(el, targetId) {
   el.closest('.tabs').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
-  document.querySelectorAll('#page-news .tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#page-news .tab-panel').forEach(p => { p.classList.remove('active'); p.style.display = ''; });
   const t = document.getElementById(targetId);
-  if (t) { t.classList.add('active'); t.style.display = 'flex'; t.style.flexDirection = 'column'; t.style.gap = '1rem'; }
+  if (t) t.classList.add('active');
   applyNewsFilters();
 }
 
@@ -1206,19 +1207,6 @@ function newsCardHTML(article, info, compact) {
   </div>`;
 }
 
-function renderNewsPanel(panelId, articles, info) {
-  const el = document.getElementById(panelId);
-  if (!el) return;
-  el.style.display = 'flex';
-  el.style.flexDirection = 'column';
-  el.style.gap = '1rem';
-  if (!articles || !articles.length) {
-    el.innerHTML = `<div class="notice"><i class="ti ti-info-circle"></i> No fresh ${info.label} news right now. Try refreshing later.</div>`;
-    return;
-  }
-  el.innerHTML = articles.map(a => newsCardHTML(a, info, false)).join('');
-}
-
 let lastNewsAllData = [];
 
 let lastNewsByCategory = {};
@@ -1266,9 +1254,6 @@ function applyNewsFilters() {
     el.innerHTML = `<div class="notice"><i class="ti ti-info-circle"></i> No articles available right now. Try refreshing later.</div>`;
     return;
   }
-  el.style.display = 'flex';
-  el.style.flexDirection = 'column';
-  el.style.gap = '1rem';
   el.innerHTML = articles.map(a => newsCardHTML(a, NEWS_CATEGORIES[a.category] || config.info, false)).join('');
 }
 
