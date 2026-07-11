@@ -119,6 +119,10 @@ input,select,textarea{font-family:var(--font)}
 .vote-btn:hover,.vote-btn.active{color:var(--accent);border-color:var(--accent);background:var(--accent-glow)}
 .vote-count{font-size:13px;font-weight:600;color:var(--text2)}
 .post-content{flex:1;min-width:0}
+.post-image-thumb{display:block;max-width:100%;max-height:320px;width:auto;border-radius:var(--radius);margin:.5rem 0;cursor:zoom-in;object-fit:cover;border:1px solid var(--border)}
+.img-lightbox{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;z-index:9999;cursor:zoom-out;padding:2rem}
+.img-lightbox img{max-width:100%;max-height:100%;border-radius:var(--radius);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.img-lightbox .lightbox-close{position:absolute;top:20px;right:24px;background:rgba(255,255,255,.1);color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .post-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px;cursor:pointer}
 .post-title:hover{color:var(--accent)}
 .post-meta{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
@@ -1651,14 +1655,32 @@ function copyCode(btn) {
 // Community posts don't support signed up/down voting on the backend (only
 // a single like/unlike toggle), so both arrows trigger the same like toggle;
 // the arrow clicked is highlighted for visual feedback only.
+function openImageLightbox(url) {
+  closeImageLightbox();
+  const overlay = document.createElement('div');
+  overlay.className = 'img-lightbox';
+  overlay.id = 'imgLightboxOverlay';
+  overlay.onclick = closeImageLightbox;
+  overlay.innerHTML = `<button class="lightbox-close" onclick="event.stopPropagation();closeImageLightbox()"><i class="ti ti-x"></i></button><img src="${url}" alt="" onclick="event.stopPropagation()">`;
+  document.body.appendChild(overlay);
+  document.addEventListener('keydown', closeImageLightboxOnEsc);
+}
+
+function closeImageLightbox() {
+  document.getElementById('imgLightboxOverlay')?.remove();
+  document.removeEventListener('keydown', closeImageLightboxOnEsc);
+}
+
+function closeImageLightboxOnEsc(e) {
+  if (e.key === 'Escape') closeImageLightbox();
+}
+
 function vote(btn, dir) {
   const wrap = btn.parentElement;
   const postId = wrap.closest('.post-card')?.dataset.id;
   if (!postId) return;
   if (!requireLogin('vote on posts')) return;
-  wrap.querySelectorAll('.vote-btn').forEach(b => b.classList.remove('active'));
-  if (dir > 0) btn.classList.add('active');
-  togglePostLike(postId, wrap.querySelector('.vote-count'));
+  togglePostLike(postId, wrap);
 }
 
 // =============================================
@@ -1759,7 +1781,7 @@ function postCardHTML(post) {
   const initials = (post.author?.username || 'U').slice(0, 2).toUpperCase();
   const [bg, color] = avatarColorFor(post.author?.username || 'u');
   const tag = post.tags && post.tags[0] ? post.tags[0] : 'General';
-  const imageHTML = post.imageUrl ? `<img src="${post.imageUrl}" alt="" style="max-width:100%;border-radius:var(--radius);margin:.5rem 0;display:block">` : '';
+  const imageHTML = post.imageUrl ? `<img src="${post.imageUrl}" alt="" class="post-image-thumb" onclick="openImageLightbox('${post.imageUrl.replace(/'/g, "\\'")}')">` : '';
   return `<div class="card post-card" data-id="${post.id}">
     <div class="post-votes">
       <button class="vote-btn ${post.isLiked ? 'active' : ''}" onclick="vote(this,1)"><i class="ti ti-chevron-up"></i></button>
@@ -1856,10 +1878,13 @@ async function loadMoreCommunityPosts() {
   }
 }
 
-async function togglePostLike(postId, countEl) {
+async function togglePostLike(postId, wrapEl) {
+  const countEl = wrapEl.querySelector('.vote-count');
+  const upBtn = wrapEl.querySelector('.vote-btn');
   try {
     const data = await apiFetch(`/community/posts/${postId}/like`, { method: 'POST', body: {} });
-    if (countEl) countEl.textContent = data.data.likeCount ?? countEl.textContent;
+    if (countEl) countEl.textContent = data.data.likeCount;
+    if (upBtn) upBtn.classList.toggle('active', !!data.data.liked);
   } catch (e) {
     showToast(e.message || 'Could not like post', 'error');
   }

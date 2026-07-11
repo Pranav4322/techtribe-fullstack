@@ -213,21 +213,25 @@ export async function togglePostLike(userId: string, postId: string) {
   if (!post) throw ApiError.notFound('Post not found');
 
   const existing = await prisma.like.findUnique({ where: { userId_postId: { userId, postId } } });
+  let liked: boolean;
   if (existing) {
     await prisma.like.delete({ where: { id: existing.id } });
-    return { liked: false };
+    liked = false;
+  } else {
+    await prisma.like.create({ data: { userId, postId } });
+    liked = true;
+    if (post.authorId !== userId) {
+      await notifyUser({
+        recipientId: post.authorId,
+        actorId: userId,
+        type: 'LIKE',
+        message: 'liked your post',
+        link: `/community/posts/${postId}`
+      });
+    }
   }
-  await prisma.like.create({ data: { userId, postId } });
-  if (post.authorId !== userId) {
-    await notifyUser({
-      recipientId: post.authorId,
-      actorId: userId,
-      type: 'LIKE',
-      message: 'liked your post',
-      link: `/community/posts/${postId}`
-    });
-  }
-  return { liked: true };
+  const likeCount = await prisma.like.count({ where: { postId } });
+  return { liked, likeCount };
 }
 
 export async function toggleCommentLike(userId: string, commentId: string) {
