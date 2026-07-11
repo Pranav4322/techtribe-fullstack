@@ -1731,6 +1731,10 @@ function postCardHTML(post) {
   const [bg, color] = avatarColorFor(post.author?.username || 'u');
   const tag = post.tags && post.tags[0] ? post.tags[0] : 'General';
   const imageHTML = post.imageUrl ? `<img src="${post.imageUrl}" alt="" class="post-image-thumb" onclick="openImageLightbox('${post.imageUrl.replace(/'/g, "\\'")}')">` : '';
+  const canDelete = authState.user && (authState.user.id === post.author?.id || authState.user.role !== 'USER');
+  const deleteBtnHTML = canDelete
+    ? `<button class="icon-btn" style="margin-left:auto;color:var(--red,#f87171)" onclick="deletePost('${post.id}', this)" title="Delete post"><i class="ti ti-trash"></i></button>`
+    : '';
   return `<div class="card post-card" data-id="${post.id}">
     <div class="post-votes">
       <button class="vote-btn ${post.isLiked ? 'active' : ''}" onclick="vote(this,1)"><i class="ti ti-chevron-up"></i></button>
@@ -1745,6 +1749,7 @@ function postCardHTML(post) {
         <span><div class="avatar" style="background:${bg};color:${color}">${initials}</div> ${escapeHtml(author)}</span>
         <span><i class="ti ti-message-circle"></i> ${post.commentCount ?? 0}</span>
         <span>${timeAgoShort(post.createdAt)}</span>
+        ${deleteBtnHTML}
       </div>
     </div>
   </div>`;
@@ -1886,6 +1891,20 @@ function removePostImage() {
   document.getElementById('postImageInput').value = '';
   document.getElementById('postImagePreviewWrap').style.display = 'none';
   document.getElementById('postImagePickBtn').style.display = '';
+}
+
+async function deletePost(postId, btn) {
+  if (!confirm('Delete this post? This cannot be undone.')) return;
+  btn.disabled = true;
+  try {
+    await apiFetch(`/community/posts/${postId}`, { method: 'DELETE' });
+    document.querySelector(`.post-card[data-id="${postId}"]`)?.remove();
+    showToast('Post deleted', 'success');
+    loadCommunitySidebarWidgets();
+  } catch (e) {
+    showToast(e.message || 'Could not delete post', 'error');
+    btn.disabled = false;
+  }
 }
 
 async function submitPost() {
