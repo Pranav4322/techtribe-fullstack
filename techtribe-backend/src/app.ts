@@ -14,13 +14,21 @@ export function createApp(): Application {
   const app = express();
 
   const allowedOrigins = env.CLIENT_ORIGIN.split(',').map((o) => o.trim());
+  // Vercel generates extra URLs beyond the main production domain for every
+  // branch/preview build (e.g. techtribe-fullstack-git-master-<team>.vercel.app,
+  // or techtribe-fullstack-<hash>-<team>.vercel.app). Rather than needing to
+  // manually add every one of these to CLIENT_ORIGIN, allow any *.vercel.app
+  // origin that starts with "techtribe-fullstack" — this project's prefix.
+  const vercelPreviewPattern = /^https:\/\/techtribe-fullstack[a-z0-9-]*\.vercel\.app$/;
 
   app.set('trust proxy', 1);
   app.use(helmet());
   app.use(
     cors({
       origin(origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+        if (!origin || allowedOrigins.includes(origin) || vercelPreviewPattern.test(origin)) {
+          return callback(null, true);
+        }
         callback(new Error(`Origin ${origin} not allowed by CORS`));
       },
       credentials: true
