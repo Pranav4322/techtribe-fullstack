@@ -759,6 +759,8 @@ textarea.mono-f{font-family:var(--mono);font-size:13px}
           <a href="#" onclick="switchDash(this,'activity');return false"><i class="ti ti-history"></i> Activity</a>
           <a href="#" onclick="switchDash(this,'badges');return false"><i class="ti ti-medal"></i> Badges</a>
           <a href="#" onclick="switchDash(this,'settings');return false"><i class="ti ti-settings"></i> Settings</a>
+          <div style="height:1px;background:var(--border);margin:8px 0"></div>
+          <a href="#" onclick="confirmLogout();return false" style="color:var(--orange)"><i class="ti ti-logout"></i> Log Out</a>
         </nav>
       </div>
       <div id="dashContent">
@@ -922,10 +924,10 @@ function updateAuthUI() {
   const handleEl = document.querySelector('.user-handle');
 
   if (authState.user) {
-    if (btn) { btn.textContent = authState.user.displayName || authState.user.username; btn.onclick = confirmLogout; }
+    if (btn) { btn.textContent = authState.user.displayName || authState.user.username; btn.onclick = () => showPage('dashboard'); }
     if (mobileLink) {
-      mobileLink.innerHTML = `<i class="ti ti-logout"></i> Log Out (${authState.user.username})`;
-      mobileLink.onclick = (e) => { e.preventDefault(); toggleMenu(); doLogout(); };
+      mobileLink.innerHTML = `<i class="ti ti-layout-dashboard"></i> Dashboard (${authState.user.username})`;
+      mobileLink.onclick = (e) => { e.preventDefault(); toggleMenu(); showPage('dashboard'); };
     }
     if (nameEl) nameEl.textContent = authState.user.displayName || authState.user.username;
     if (handleEl) handleEl.textContent = `@${authState.user.username}`;
