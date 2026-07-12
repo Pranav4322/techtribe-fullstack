@@ -751,7 +751,7 @@ textarea.mono-f{font-family:var(--mono);font-size:13px}
   <div class="container" style="padding-top:2rem;padding-bottom:3rem">
     <div class="dash-layout">
       <div>
-        <div class="user-card"><div class="user-avatar">RK</div><div class="user-name">Rahul Kumar</div><div class="user-handle">@rahul_k · Joined Dec 2023</div><div class="user-stats"><div class="user-stat"><div class="n">142</div><div class="l">Posts</div></div><div class="user-stat"><div class="n">1.2k</div><div class="l">Points</div></div><div class="user-stat"><div class="n">7</div><div class="l">Streak</div></div></div></div>
+        <div class="user-card"><div class="user-avatar" id="dashAvatar">--</div><div class="user-name" id="dashUserName">--</div><div class="user-handle" id="dashUserHandle">--</div><div class="user-stats"><div class="user-stat"><div class="n" id="dashMiniPosts">—</div><div class="l">Posts</div></div><div class="user-stat"><div class="n" id="dashMiniXP">—</div><div class="l">XP</div></div><div class="user-stat"><div class="n" id="dashMiniStreak">—</div><div class="l">Streak</div></div></div></div>
         <nav class="dash-nav">
           <a href="#" class="active" onclick="switchDash(this,'overview');return false"><i class="ti ti-layout-dashboard"></i> Overview</a>
           <a href="#" onclick="switchDash(this,'progress');return false"><i class="ti ti-chart-line"></i> Progress</a>
@@ -773,14 +773,12 @@ textarea.mono-f{font-family:var(--mono);font-size:13px}
             <div class="card" style="text-align:center"><div id="statBookmarks" style="font-size:2rem;font-weight:700;color:var(--purple)">—</div><div class="text-muted text-sm">Saved Items</div></div>
           </div>
           <div class="xp-bar-wrap" style="margin-bottom:1.5rem"><div id="statLevelLabel" style="font-size:15px;font-weight:600;margin-bottom:.75rem">Level —</div><div class="xp-bar-label"><span id="statXPLabel" class="text-muted text-sm">— XP</span><span class="text-sm text-accent">&nbsp;</span></div><div class="xp-bar" style="height:12px"><div id="statXPBarFill" class="xp-bar-fill" style="width:0%"></div></div></div>
-          <div class="card"><div style="font-size:15px;font-weight:600;margin-bottom:1rem">Recent Activity</div><div style="display:flex;flex-direction:column;gap:.75rem"><div style="display:flex;gap:10px;align-items:flex-start"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);margin-top:6px;flex-shrink:0"></div><div><div class="text-sm">Completed Python — Functions chapter</div><div class="text-xs text-muted">2h ago · +50 XP</div></div></div><div style="display:flex;gap:10px;align-items:flex-start"><div style="width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:6px;flex-shrink:0"></div><div><div class="text-sm">Posted in r/Python — received 48 upvotes</div><div class="text-xs text-muted">Yesterday · +25 XP</div></div></div><div style="display:flex;gap:10px;align-items:flex-start"><div style="width:8px;height:8px;border-radius:50%;background:var(--purple);margin-top:6px;flex-shrink:0"></div><div><div class="text-sm">Earned "7-Day Streak" badge 🔥</div><div class="text-xs text-muted">Today · +100 XP</div></div></div></div></div>
+          <div class="card"><div style="font-size:15px;font-weight:600;margin-bottom:1rem">Recent Activity</div><div id="dashRecentActivity" style="display:flex;flex-direction:column;gap:.75rem"><div class="text-muted text-sm">Loading…</div></div></div>
         </div>
         <div id="dash-progress" class="tab-panel">
           <div class="section-title" style="margin-bottom:1.5rem">Learning Progress</div>
-          <div style="display:flex;flex-direction:column;gap:1rem">
-            <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem"><div style="font-size:15px;font-weight:600">🐍 Python</div><span class="badge-pill badge-green">In Progress</span></div><div style="display:flex;flex-direction:column;gap:.5rem"><div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span class="text-muted">Introduction</span><span class="text-green">✓ Done</span></div><div class="progress-bar"><div class="progress-bar-fill" style="width:100%"></div></div></div><div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span class="text-muted">Variables &amp; Types</span><span class="text-green">✓ Done</span></div><div class="progress-bar"><div class="progress-bar-fill" style="width:100%"></div></div></div><div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span class="text-muted">Functions</span><span class="text-accent">In progress</span></div><div class="progress-bar"><div class="progress-bar-fill" style="width:65%"></div></div></div><div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span class="text-muted">Classes &amp; OOP</span><span class="text-muted">Not started</span></div><div class="progress-bar"><div class="progress-bar-fill" style="width:0%"></div></div></div></div><div class="text-muted text-sm" style="margin-top:.75rem">Overall: 45% complete</div></div>
-            <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem"><div style="font-size:15px;font-weight:600">🟨 JavaScript</div><span class="badge-pill badge-blue">Started</span></div><div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span class="text-muted">Introduction</span><span class="text-green">✓ Done</span></div><div class="progress-bar"><div class="progress-bar-fill" style="width:100%"></div></div></div><div class="text-muted text-sm" style="margin-top:.75rem">Overall: 15% complete</div></div>
-            <button class="btn-secondary" onclick="showPage('languages')"><i class="ti ti-plus"></i> Start a new language</button>
+          <div id="dashProgressList" style="display:flex;flex-direction:column;gap:1rem">
+            <div class="text-muted text-sm">Loading…</div>
           </div>
         </div>
         <div id="dash-saved" class="tab-panel">
@@ -791,35 +789,27 @@ textarea.mono-f{font-family:var(--mono);font-size:13px}
         </div>
         <div id="dash-activity" class="tab-panel">
           <div class="section-title" style="margin-bottom:1.5rem">Activity History</div>
-          <div class="notice mb-4"><i class="ti ti-info-circle"></i> Showing last 30 days of activity.</div>
-          <div style="display:flex;flex-direction:column;gap:.5rem">
-            <div class="card text-sm" style="display:flex;justify-content:space-between;align-items:center"><span>Completed Python Functions quiz — 9/10</span><span class="text-accent text-xs">+50 XP</span></div>
-            <div class="card text-sm" style="display:flex;justify-content:space-between;align-items:center"><span>Replied to "async/await" thread in r/JavaScript</span><span class="text-accent text-xs">+10 XP</span></div>
-            <div class="card text-sm" style="display:flex;justify-content:space-between;align-items:center"><span>Read 5 news articles</span><span class="text-muted text-xs">Yesterday</span></div>
+          <div class="notice mb-4"><i class="ti ti-info-circle"></i> Real activity — likes, comments, and other notifications on your account.</div>
+          <div id="dashActivityList" style="display:flex;flex-direction:column;gap:.5rem">
+            <div class="text-muted text-sm">Loading…</div>
           </div>
         </div>
         <div id="dash-badges" class="tab-panel">
           <div class="section-title" style="margin-bottom:1.5rem">Your Badges</div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem">
-            <div class="card" style="text-align:center"><div style="font-size:2.5rem;margin-bottom:.5rem">🔥</div><div style="font-size:14px;font-weight:600">Week Warrior</div><div class="text-muted text-xs" style="margin-top:4px">7-day streak</div><div class="badge-pill badge-green" style="margin:.5rem auto 0;justify-content:center">Earned</div></div>
-            <div class="card" style="text-align:center"><div style="font-size:2.5rem;margin-bottom:.5rem">🐍</div><div style="font-size:14px;font-weight:600">Python Learner</div><div class="text-muted text-xs" style="margin-top:4px">Completed intro</div><div class="badge-pill badge-green" style="margin:.5rem auto 0;justify-content:center">Earned</div></div>
-            <div class="card" style="text-align:center"><div style="font-size:2.5rem;margin-bottom:.5rem">💬</div><div style="font-size:14px;font-weight:600">Contributor</div><div class="text-muted text-xs" style="margin-top:4px">10 posts</div><div class="badge-pill badge-blue" style="margin:.5rem auto 0;justify-content:center">Earned</div></div>
-            <div class="card" style="text-align:center;opacity:.55"><div style="font-size:2.5rem;margin-bottom:.5rem">🏆</div><div style="font-size:14px;font-weight:600">Top 100</div><div class="text-muted text-xs" style="margin-top:4px">Reach leaderboard</div><div class="badge-pill badge-orange" style="margin:.5rem auto 0;justify-content:center">Locked</div></div>
-            <div class="card" style="text-align:center;opacity:.55"><div style="font-size:2.5rem;margin-bottom:.5rem">📖</div><div style="font-size:14px;font-weight:600">Bookworm</div><div class="text-muted text-xs" style="margin-top:4px">Save 50 articles</div><div class="badge-pill badge-orange" style="margin:.5rem auto 0;justify-content:center">Locked</div></div>
+          <div id="dashBadgesList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem">
+            <div class="text-muted text-sm">Loading…</div>
           </div>
         </div>
         <div id="dash-settings" class="tab-panel">
           <div class="section-title" style="margin-bottom:1.5rem">Settings</div>
           <div class="card" style="max-width:520px">
             <div style="font-size:15px;font-weight:600;margin-bottom:1.25rem">Profile</div>
-            <div class="form-group"><label class="form-label">Display Name</label><input type="text" value="Rahul Kumar" class="form-input"></div>
-            <div class="form-group"><label class="form-label">Username</label><input type="text" value="@rahul_k" class="form-input"></div>
-            <div class="form-group"><label class="form-label">Email</label><input type="email" value="rahul@example.com" class="form-input"></div>
-            <div class="form-group"><label class="form-label">Bio</label><textarea class="form-input" rows="3">Full-stack developer learning AI/ML.</textarea></div>
-            <div class="divider"></div>
-            <div style="font-size:15px;font-weight:600;margin-bottom:1.25rem">Preferences</div>
-            <div class="form-group"><label class="form-label">Weekly Digest</label><select class="form-input"><option>Every Monday</option><option>Every Friday</option><option>Off</option></select></div>
-            <button class="btn-primary" onclick="this.textContent='✓ Saved!';setTimeout(()=>this.textContent='Save Changes',2000)" style="margin-top:.5rem">Save Changes</button>
+            <div class="form-group"><label class="form-label">Display Name</label><input type="text" id="settingsDisplayName" class="form-input"></div>
+            <div class="form-group"><label class="form-label">Username</label><input type="text" id="settingsUsername" class="form-input" disabled style="opacity:.6"></div>
+            <div class="form-group"><label class="form-label">Email</label><input type="email" id="settingsEmail" class="form-input" disabled style="opacity:.6"></div>
+            <div class="form-group"><label class="form-label">Bio</label><textarea id="settingsBio" class="form-input" rows="3" maxlength="280"></textarea></div>
+            <div class="text-muted text-xs" style="margin-top:-.5rem;margin-bottom:1rem">Username and email can't be changed here yet.</div>
+            <button class="btn-primary" id="settingsSaveBtn" onclick="saveProfileSettings()">Save Changes</button>
           </div>
         </div>
       </div>
@@ -2112,7 +2102,13 @@ function switchDash(el, panel) {
   const t = document.getElementById('dash-' + panel);
   if (t) t.classList.add('active');
   if (panel === 'saved') loadSavedBookmarks();
+  if (panel === 'progress') loadDashboardProgress();
+  if (panel === 'activity') loadDashboardActivity();
+  if (panel === 'badges') loadDashboardBadges();
+  if (panel === 'settings') loadDashboardSettings();
 }
+
+let dashboardStatsCache = null;
 
 async function loadDashboard() {
   if (!authState.user) {
@@ -2123,6 +2119,7 @@ async function loadDashboard() {
   try {
     const data = await apiFetch('/users/dashboard');
     const s = data.data.stats;
+    dashboardStatsCache = s;
     document.getElementById('statStreak').textContent = `🔥 ${s.streakCount}`;
     document.getElementById('statXP').textContent = s.xp;
     document.getElementById('statPosts').textContent = s.postCount;
@@ -2131,8 +2128,170 @@ async function loadDashboard() {
     document.getElementById('statXPLabel').textContent = `${s.xp} XP`;
     const pct = Math.min(100, Math.round(((s.xp % 1000) / 1000) * 100));
     document.getElementById('statXPBarFill').style.width = pct + '%';
+
+    // User card (avatar/name/handle/mini-stats) — real data from the logged-in session
+    const initials = (authState.user.username || 'U').slice(0, 2).toUpperCase();
+    document.getElementById('dashAvatar').textContent = initials;
+    document.getElementById('dashUserName').textContent = authState.user.displayName || authState.user.username;
+    document.getElementById('dashMiniPosts').textContent = s.postCount;
+    document.getElementById('dashMiniXP').textContent = s.xp >= 1000 ? (s.xp / 1000).toFixed(1) + 'k' : s.xp;
+    document.getElementById('dashMiniStreak').textContent = s.streakCount;
+
+    // Fetch join date from the public profile (not included in the dashboard stats endpoint)
+    apiFetch(`/users/${authState.user.username}`).then(profileData => {
+      const joined = new Date(profileData.data.profile?.createdAt);
+      const joinedLabel = joined.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
+      document.getElementById('dashUserHandle').textContent = `@${authState.user.username} · Joined ${joinedLabel}`;
+    }).catch(() => {
+      document.getElementById('dashUserHandle').textContent = `@${authState.user.username}`;
+    });
+
+    loadDashboardRecentActivity();
   } catch (e) {
     showToast(e.message || 'Could not load dashboard stats', 'error');
+  }
+}
+
+function notificationIconAndColor(type) {
+  const map = {
+    LIKE: ['ti-heart', 'var(--orange)'],
+    COMMENT: ['ti-message-circle', 'var(--accent)'],
+    REPLY: ['ti-message-circle', 'var(--accent)'],
+    FOLLOW: ['ti-user-plus', 'var(--purple)'],
+    MENTION: ['ti-at', 'var(--green)']
+  };
+  return map[type] || ['ti-bell', 'var(--text3)'];
+}
+
+function activityItemHTML(n) {
+  const [icon, color] = notificationIconAndColor(n.type);
+  const who = n.actor?.displayName || n.actor?.username;
+  return `<div style="display:flex;gap:10px;align-items:flex-start">
+    <div style="width:8px;height:8px;border-radius:50%;background:${color};margin-top:6px;flex-shrink:0"></div>
+    <div><div class="text-sm">${who ? `<strong>${escapeHtml(who)}</strong> ` : ''}${escapeHtml(n.message)}</div><div class="text-xs text-muted">${timeAgoShort(n.createdAt)}</div></div>
+  </div>`;
+}
+
+async function loadDashboardRecentActivity() {
+  const el = document.getElementById('dashRecentActivity');
+  try {
+    const data = await apiFetch('/notifications?limit=5');
+    const items = data.data.items || [];
+    el.innerHTML = items.length
+      ? items.map(activityItemHTML).join('')
+      : `<div class="text-muted text-sm">No recent activity yet — likes, comments, and other notifications will show up here.</div>`;
+  } catch (e) {
+    el.innerHTML = `<div class="text-muted text-sm">Could not load activity.</div>`;
+  }
+}
+
+async function loadDashboardActivity() {
+  const el = document.getElementById('dashActivityList');
+  el.innerHTML = `<div class="text-muted text-sm">Loading…</div>`;
+  try {
+    const data = await apiFetch('/notifications?limit=30');
+    const items = data.data.items || [];
+    el.innerHTML = items.length
+      ? items.map(n => {
+          const who = n.actor?.displayName || n.actor?.username;
+          return `<div class="card text-sm" style="display:flex;justify-content:space-between;align-items:center;gap:1rem"><span>${who ? `<strong>${escapeHtml(who)}</strong> ` : ''}${escapeHtml(n.message)}</span><span class="text-muted text-xs" style="white-space:nowrap">${timeAgoShort(n.createdAt)}</span></div>`;
+        }).join('')
+      : `<div class="text-muted text-sm">No activity yet.</div>`;
+  } catch (e) {
+    el.innerHTML = `<div class="notice notice-error"><i class="ti ti-alert-circle"></i><span>${escapeHtml(e.message || 'Could not load activity')}</span></div>`;
+  }
+}
+
+function roadmapProgressHTML(entry) {
+  const total = entry.roadmap.milestones.length;
+  const done = entry.milestoneProgress.filter(mp => mp.isComplete).length;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  const status = entry.completedAt ? 'Completed' : pct > 0 ? 'In Progress' : 'Started';
+  const badgeClass = entry.completedAt ? 'badge-green' : 'badge-blue';
+  return `<div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
+      <div style="font-size:15px;font-weight:600">${escapeHtml(entry.roadmap.title)}</div>
+      <span class="badge-pill ${badgeClass}">${status}</span>
+    </div>
+    <div class="progress-bar"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+    <div class="text-muted text-sm" style="margin-top:.75rem">${done}/${total} milestones · ${pct}% complete</div>
+  </div>`;
+}
+
+async function loadDashboardProgress() {
+  const el = document.getElementById('dashProgressList');
+  el.innerHTML = `<div class="text-muted text-sm">Loading…</div>`;
+  try {
+    const data = await apiFetch('/roadmaps/mine');
+    const items = data.data.roadmaps || data.data || [];
+    el.innerHTML = (items.length
+      ? items.map(roadmapProgressHTML).join('')
+      : `<div class="text-muted text-sm" style="margin-bottom:1rem">You haven't started a learning roadmap yet.</div>`)
+      + `<button class="btn-secondary" onclick="showPage('ai');openAIPanel('path')"><i class="ti ti-map"></i> Build a Learning Path</button>`;
+  } catch (e) {
+    el.innerHTML = `<div class="notice notice-error"><i class="ti ti-alert-circle"></i><span>${escapeHtml(e.message || 'Could not load progress')}</span></div>`;
+  }
+}
+
+// Badges are computed client-side from real, already-verified stats (streak,
+// posts, XP, bookmarks, leaderboard rank) rather than a separate fake badge
+// system — every badge shown reflects something genuinely true about the account.
+async function loadDashboardBadges() {
+  const el = document.getElementById('dashBadgesList');
+  el.innerHTML = `<div class="text-muted text-sm">Loading…</div>`;
+  const s = dashboardStatsCache;
+  if (!s) { el.innerHTML = `<div class="text-muted text-sm">Stats not loaded yet.</div>`; return; }
+
+  let inTopLeaderboard = false;
+  try {
+    const lb = await apiFetch('/users/leaderboard?limit=100');
+    inTopLeaderboard = (lb.data.users || []).some(u => u.id === authState.user.id);
+  } catch (e) { /* leaderboard badge just won't show as earned */ }
+
+  const badges = [
+    { emoji: '🔥', name: 'Week Warrior', desc: '7-day streak', earned: s.streakCount >= 7 },
+    { emoji: '💬', name: 'Contributor', desc: '10+ posts', earned: s.postCount >= 10 },
+    { emoji: '⭐', name: 'Rising Star', desc: '100+ XP', earned: s.xp >= 100 },
+    { emoji: '🏆', name: 'Top 100', desc: 'Reach the leaderboard', earned: inTopLeaderboard },
+    { emoji: '📖', name: 'Bookworm', desc: 'Save 50+ items', earned: s.bookmarkCount >= 50 }
+  ];
+
+  el.innerHTML = badges.map(b => `<div class="card" style="text-align:center;${b.earned ? '' : 'opacity:.55'}">
+    <div style="font-size:2.5rem;margin-bottom:.5rem">${b.emoji}</div>
+    <div style="font-size:14px;font-weight:600">${b.name}</div>
+    <div class="text-muted text-xs" style="margin-top:4px">${b.desc}</div>
+    <div class="badge-pill ${b.earned ? 'badge-green' : 'badge-orange'}" style="margin:.5rem auto 0;justify-content:center">${b.earned ? 'Earned' : 'Locked'}</div>
+  </div>`).join('');
+}
+
+async function loadDashboardSettings() {
+  document.getElementById('settingsUsername').value = authState.user.username;
+  document.getElementById('settingsEmail').value = authState.user.email || '';
+  document.getElementById('settingsDisplayName').value = authState.user.displayName || '';
+  try {
+    const data = await apiFetch(`/users/${authState.user.username}`);
+    document.getElementById('settingsBio').value = data.data.profile?.bio || '';
+  } catch (e) { /* non-critical, form still usable */ }
+}
+
+async function saveProfileSettings() {
+  const btn = document.getElementById('settingsSaveBtn');
+  const displayName = document.getElementById('settingsDisplayName').value.trim();
+  const bio = document.getElementById('settingsBio').value.trim();
+  if (!displayName) return showToast('Display name cannot be empty.', 'warn');
+  btn.disabled = true;
+  const original = btn.textContent;
+  try {
+    await apiFetch('/users/me', { method: 'PUT', body: { displayName, bio } });
+    authState.user.displayName = displayName;
+    saveAuthToStorage();
+    updateAuthUI();
+    document.getElementById('dashUserName').textContent = displayName;
+    btn.textContent = '✓ Saved!';
+    setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 2000);
+  } catch (e) {
+    showToast(e.message || 'Could not save changes', 'error');
+    btn.disabled = false;
   }
 }
 
