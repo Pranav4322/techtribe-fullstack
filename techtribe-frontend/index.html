@@ -751,7 +751,7 @@ textarea.mono-f{font-family:var(--mono);font-size:13px}
   <div class="container" style="padding-top:2rem;padding-bottom:3rem">
     <div class="dash-layout">
       <div>
-        <div class="user-card"><div class="user-avatar" id="dashAvatar">--</div><div class="user-name" id="dashUserName">--</div><div class="user-handle" id="dashUserHandle">--</div><div class="user-stats"><div class="user-stat"><div class="n" id="dashMiniPosts">—</div><div class="l">Posts</div></div><div class="user-stat"><div class="n" id="dashMiniXP">—</div><div class="l">XP</div></div><div class="user-stat"><div class="n" id="dashMiniStreak">—</div><div class="l">Streak</div></div></div></div>
+        <div class="user-card"><div style="position:relative;display:inline-block"><div class="user-avatar" id="dashAvatar">--</div><button type="button" onclick="document.getElementById('avatarInput').click()" title="Change profile photo" style="position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;background:var(--accent);border:2px solid var(--bg1,#0d1117);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="ti ti-camera" style="font-size:14px"></i></button><input type="file" id="avatarInput" accept="image/png,image/jpeg,image/gif,image/webp" style="display:none" onchange="handleAvatarSelect(this)"></div><div class="user-name" id="dashUserName">--</div><div class="user-handle" id="dashUserHandle">--</div><div class="user-stats"><div class="user-stat"><div class="n" id="dashMiniPosts">—</div><div class="l">Posts</div></div><div class="user-stat"><div class="n" id="dashMiniXP">—</div><div class="l">XP</div></div><div class="user-stat"><div class="n" id="dashMiniStreak">—</div><div class="l">Streak</div></div></div></div>
         <nav class="dash-nav">
           <a href="#" class="active" onclick="switchDash(this,'overview');return false"><i class="ti ti-layout-dashboard"></i> Overview</a>
           <a href="#" onclick="switchDash(this,'progress');return false"><i class="ti ti-chart-line"></i> Progress</a>
@@ -1733,10 +1733,23 @@ function avatarColorFor(seed) {
   return palette[Math.abs(h) % palette.length];
 }
 
+// Renders a real uploaded profile photo when the user has one, falling back
+// to colored initials otherwise — used everywhere an avatar appears (posts,
+// comments, leaderboard, dashboard).
+function avatarHTML(user, sizePx, extraStyle) {
+  const username = user?.username || 'u';
+  const size = sizePx || 32;
+  const style = extraStyle || '';
+  if (user?.avatarUrl) {
+    return `<img src="${user.avatarUrl}" alt="" class="avatar" style="width:${size}px;height:${size}px;object-fit:cover;padding:0;${style}">`;
+  }
+  const [bg, color] = avatarColorFor(username);
+  const initials = username.slice(0, 2).toUpperCase();
+  return `<div class="avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size * 0.4)}px;background:${bg};color:${color};${style}">${initials}</div>`;
+}
+
 function postCardHTML(post) {
   const author = post.author?.displayName || post.author?.username || 'Unknown';
-  const initials = (post.author?.username || 'U').slice(0, 2).toUpperCase();
-  const [bg, color] = avatarColorFor(post.author?.username || 'u');
   const tag = post.tags && post.tags[0] ? post.tags[0] : 'General';
   const imageHTML = post.imageUrl ? `<img src="${post.imageUrl}" alt="" class="post-image-thumb" onclick="openImageLightbox('${post.imageUrl.replace(/'/g, "\\'")}')">` : '';
   const canDelete = authState.user && (authState.user.id === post.author?.id || authState.user.role !== 'USER');
@@ -1754,7 +1767,7 @@ function postCardHTML(post) {
       ${imageHTML}
       <div class="post-meta">
         <span class="community-badge">${escapeHtml(tag)}</span>
-        <span><div class="avatar" style="background:${bg};color:${color}">${initials}</div> ${escapeHtml(author)}</span>
+        <span>${avatarHTML(post.author, 32)} ${escapeHtml(author)}</span>
         <span class="post-comment-toggle" onclick="toggleComments('${post.id}')"><i class="ti ti-message-circle"></i> <span class="comment-count-label">${post.commentCount ?? 0}</span></span>
         <span>${timeAgoShort(post.createdAt)}</span>
         ${deleteBtnHTML}
@@ -1805,9 +1818,7 @@ async function loadCommunitySidebarWidgets() {
     const badgeClass = { Expert: 'badge-green', Pro: 'badge-blue', Builder: 'badge-purple' };
     leaderboardEl.innerHTML = users.length
       ? users.map(u => {
-          const [bg, color] = avatarColorFor(u.username);
-          const initials = u.username.slice(0, 2).toUpperCase();
-          return `<div style="display:flex;align-items:center;gap:10px"><div class="avatar" style="width:32px;height:32px;font-size:13px;background:${bg};color:${color}">${initials}</div><div style="flex:1"><div style="font-size:13px;font-weight:500">${escapeHtml(u.username)}</div><div style="font-size:11px;color:var(--text3)">${u.xp.toLocaleString()} XP</div></div><span class="badge-pill ${badgeClass[u.badge] || 'badge-blue'}">${u.badge}</span></div>`;
+          return `<div style="display:flex;align-items:center;gap:10px">${avatarHTML(u, 32)}<div style="flex:1"><div style="font-size:13px;font-weight:500">${escapeHtml(u.username)}</div><div style="font-size:11px;color:var(--text3)">${u.xp.toLocaleString()} XP</div></div><span class="badge-pill ${badgeClass[u.badge] || 'badge-blue'}">${u.badge}</span></div>`;
         }).join('')
       : `<div class="text-muted text-xs">No contributors yet — be the first!</div>`;
   } catch (e) {
@@ -1907,14 +1918,12 @@ function removePostImage() {
 // =============================================
 function commentHTML(c, postId, isReply) {
   const author = c.author?.displayName || c.author?.username || 'Unknown';
-  const initials = (c.author?.username || 'U').slice(0, 2).toUpperCase();
-  const [bg, color] = avatarColorFor(c.author?.username || 'u');
   const canDelete = authState.user && (authState.user.id === c.author?.id || authState.user.role !== 'USER');
   const repliesHTML = !isReply && c.replies && c.replies.length
     ? `<div class="comment-replies">${c.replies.map(r => commentHTML(r, postId, true)).join('')}</div>`
     : '';
   return `<div class="comment-item" data-comment-id="${c.id}">
-    <div class="avatar" style="width:28px;height:28px;font-size:11px;flex-shrink:0;background:${bg};color:${color}">${initials}</div>
+    ${avatarHTML(c.author, 28, 'flex-shrink:0')}
     <div class="comment-body-wrap">
       <div class="comment-meta"><strong>${escapeHtml(author)}</strong> <span class="text-muted">${timeAgoShort(c.createdAt)}</span></div>
       <div class="comment-text">${escapeHtml(c.body)}</div>
@@ -2130,8 +2139,12 @@ async function loadDashboard() {
     document.getElementById('statXPBarFill').style.width = pct + '%';
 
     // User card (avatar/name/handle/mini-stats) — real data from the logged-in session
-    const initials = (authState.user.username || 'U').slice(0, 2).toUpperCase();
-    document.getElementById('dashAvatar').textContent = initials;
+    const dashAvatarEl = document.getElementById('dashAvatar');
+    if (authState.user.avatarUrl) {
+      dashAvatarEl.outerHTML = `<img id="dashAvatar" src="${authState.user.avatarUrl}" alt="" class="user-avatar" style="object-fit:cover">`;
+    } else {
+      dashAvatarEl.textContent = (authState.user.username || 'U').slice(0, 2).toUpperCase();
+    }
     document.getElementById('dashUserName').textContent = authState.user.displayName || authState.user.username;
     document.getElementById('dashMiniPosts').textContent = s.postCount;
     document.getElementById('dashMiniXP').textContent = s.xp >= 1000 ? (s.xp / 1000).toFixed(1) + 'k' : s.xp;
@@ -2272,6 +2285,56 @@ async function loadDashboardSettings() {
     const data = await apiFetch(`/users/${authState.user.username}`);
     document.getElementById('settingsBio').value = data.data.profile?.bio || '';
   } catch (e) { /* non-critical, form still usable */ }
+}
+
+// =============================================
+// PROFILE PHOTO UPLOAD — downscale/crop-to-square/compress client-side,
+// same pattern as post images, then auto-save via PUT /users/me
+// =============================================
+function handleAvatarSelect(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) return showToast('Please select an image file.', 'warn');
+  if (file.size > 12 * 1024 * 1024) return showToast('Image is too large (max 12MB before compression).', 'warn');
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = async () => {
+      const size = 320;
+      // Center-crop to a square before resizing, so avatars aren't stretched
+      const srcSize = Math.min(img.width, img.height);
+      const sx = (img.width - srcSize) / 2;
+      const sy = (img.height - srcSize) / 2;
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      canvas.getContext('2d').drawImage(img, sx, sy, srcSize, srcSize, 0, 0, size, size);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+      if (dataUrl.length > 1_600_000) {
+        showToast('Image is still too large after compression — try a different photo.', 'warn');
+        return;
+      }
+      await saveAvatarPhoto(dataUrl);
+      input.value = '';
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function saveAvatarPhoto(dataUrl) {
+  showToast('Uploading photo…', 'info');
+  try {
+    await apiFetch('/users/me', { method: 'PUT', body: { avatarUrl: dataUrl } });
+    authState.user.avatarUrl = dataUrl;
+    saveAuthToStorage();
+    const dashAvatarEl = document.getElementById('dashAvatar');
+    if (dashAvatarEl) dashAvatarEl.outerHTML = `<img id="dashAvatar" src="${dataUrl}" alt="" class="user-avatar" style="object-fit:cover">`;
+    showToast('Profile photo updated ✓', 'success');
+  } catch (e) {
+    showToast(e.message || 'Could not upload photo', 'error');
+  }
 }
 
 async function saveProfileSettings() {
