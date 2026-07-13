@@ -471,28 +471,8 @@ textarea.mono-f{font-family:var(--mono);font-size:13px}
             <div class="section-title"><i class="ti ti-messages"></i> Hot Discussions</div>
             <a href="#" class="section-link" onclick="showPage('community');return false">Community <i class="ti ti-arrow-right"></i></a>
           </div>
-          <div style="display:flex;flex-direction:column;gap:.75rem">
-            <div class="card post-card">
-              <div class="post-votes"><button class="vote-btn" onclick="vote(this,1)"><i class="ti ti-chevron-up"></i></button><span class="vote-count">248</span><button class="vote-btn" onclick="vote(this,-1)"><i class="ti ti-chevron-down"></i></button></div>
-              <div class="post-content">
-                <div class="post-title">How do I efficiently handle 10 million database records in Python without running out of memory?</div>
-                <div class="post-meta"><span class="community-badge">r/Python</span><span><div class="avatar" style="background:rgba(88,166,255,.2);color:var(--accent)">RK</div> ravi_k</span><span><i class="ti ti-message-circle"></i> 47</span><span>2h ago</span></div>
-              </div>
-            </div>
-            <div class="card post-card">
-              <div class="post-votes"><button class="vote-btn" onclick="vote(this,1)"><i class="ti ti-chevron-up"></i></button><span class="vote-count">189</span><button class="vote-btn" onclick="vote(this,-1)"><i class="ti ti-chevron-down"></i></button></div>
-              <div class="post-content">
-                <div class="post-title">Just shipped my first open source CLI tool in Rust — here's what I learned</div>
-                <div class="post-meta"><span class="community-badge">r/OpenSource</span><span><div class="avatar" style="background:rgba(247,129,102,.2);color:var(--orange)">AM</div> a_mehta</span><span><i class="ti ti-message-circle"></i> 31</span><span>5h ago</span></div>
-              </div>
-            </div>
-            <div class="card post-card">
-              <div class="post-votes"><button class="vote-btn" onclick="vote(this,1)"><i class="ti ti-chevron-up"></i></button><span class="vote-count">134</span><button class="vote-btn" onclick="vote(this,-1)"><i class="ti ti-chevron-down"></i></button></div>
-              <div class="post-content">
-                <div class="post-title">Is React still the best choice for new projects in 2025, or should I look at alternatives?</div>
-                <div class="post-meta"><span class="community-badge">r/WebDev</span><span><div class="avatar" style="background:rgba(63,185,80,.2);color:var(--green)">SJ</div> sara_j</span><span><i class="ti ti-message-circle"></i> 89</span><span>Yesterday</span></div>
-              </div>
-            </div>
+          <div id="home-hot-discussions" style="display:flex;flex-direction:column;gap:.75rem">
+            <div class="text-muted text-sm" style="padding:1rem;text-align:center">Loading discussions…</div>
           </div>
         </section>
       </div>
@@ -501,30 +481,20 @@ textarea.mono-f{font-family:var(--mono);font-size:13px}
       <div>
         <div class="card mb-4">
           <div class="section-title" style="font-size:15px;margin-bottom:1rem"><i class="ti ti-trending-up"></i> Trending Today</div>
-          <div class="trending-item"><div class="trending-num">01</div><div><div class="trending-title" onclick="showPage('news')">GPT-5 Technical Report Released</div><div class="trending-meta">AI · 4.2k views</div></div></div>
-          <div class="trending-item"><div class="trending-num">02</div><div><div class="trending-title" onclick="openLang('python')">Python 3.13 Release Notes</div><div class="trending-meta">Python · 3.1k views</div></div></div>
-          <div class="trending-item"><div class="trending-num">03</div><div><div class="trending-title" onclick="showPage('news')">GitHub Copilot Goes Free</div><div class="trending-meta">Dev Tools · 2.9k views</div></div></div>
-          <div class="trending-item"><div class="trending-num">04</div><div><div class="trending-title" onclick="openLang('javascript')">Deno 2.0 Production Ready</div><div class="trending-meta">JavaScript · 2.1k views</div></div></div>
+          <div id="home-trending" style="display:flex;flex-direction:column;gap:.5rem">
+            <div class="text-muted text-sm">Loading…</div>
+          </div>
         </div>
 
-        <div class="newsletter">
-          <h3>📬 Weekly Digest</h3>
-          <p>Top 10 AI &amp; dev stories every Monday morning.</p>
-          <div class="nl-form"><input type="email" placeholder="your@email.com" id="nlEmail"><button onclick="subscribe()">Subscribe</button></div>
-          <div id="nl-success" style="display:none;color:var(--green);font-size:13px;margin-top:.5rem"><i class="ti ti-check"></i> You're in!</div>
+        <div class="card">
+          <div class="section-title" style="font-size:15px;margin-bottom:1rem"><i class="ti ti-user-plus"></i> Join TechTribe</div>
+          <p class="text-muted text-sm" style="margin-bottom:.75rem">Create a free account to post, comment, save articles, and use AI tools.</p>
+          <button class="btn-primary" style="width:100%;justify-content:center" onclick="openModal('auth-modal')"><i class="ti ti-user-plus"></i> Create Free Account</button>
         </div>
 
-        <div class="card" style="margin-top:1rem">
+        <div class="card" style="margin-top:1rem" id="home-streak-card">
           <div class="section-title" style="font-size:15px;margin-bottom:1rem"><i class="ti ti-flame"></i> Your Streak</div>
-          <div style="text-align:center;padding:.5rem 0">
-            <div style="font-size:3rem">🔥</div>
-            <div style="font-size:2rem;font-weight:700;color:var(--orange)">7</div>
-            <div class="text-muted text-sm">day streak</div>
-          </div>
-          <div style="background:var(--bg3);border-radius:var(--radius);padding:.75rem;margin-top:.75rem">
-            <div class="xp-bar-label"><span class="text-sm text-muted">Level 5</span><span class="text-sm text-accent">1240 / 2000 XP</span></div>
-            <div class="xp-bar"><div class="xp-bar-fill" style="width:62%"></div></div>
-          </div>
+          <div class="text-muted text-sm">Loading…</div>
         </div>
 
         <!-- Quick AI Ask -->
@@ -532,7 +502,7 @@ textarea.mono-f{font-family:var(--mono);font-size:13px}
           <div class="section-title" style="font-size:14px;margin-bottom:.75rem"><i class="ti ti-sparkles" style="color:var(--purple)"></i> Quick AI Ask</div>
           <input type="text" class="form-input" placeholder="Ask any coding question..." id="quickAskInput" onkeyup="if(event.key==='Enter')quickAsk()" style="font-size:13px">
           <button class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem;font-size:13px" onclick="quickAsk()"><i class="ti ti-robot"></i> Ask AI</button>
-          <p style="font-size:11px;color:var(--text3);margin-top:.5rem;text-align:center">⬇ Download file &amp; open locally to use AI</p>
+          <p style="font-size:11px;color:var(--text3);margin-top:.5rem;text-align:center">Sign in free to ask — answers come from TechTribe's AI</p>
           <div id="quickAskResult"></div>
         </div>
       </div>
@@ -962,6 +932,7 @@ function showPage(name, linkEl) {
   // Lazy-load real backend data the first time a page is shown
   if (name === 'community') loadCommunityPosts();
   if (name === 'dashboard') loadDashboard();
+  if (name === 'home') loadHomeWidgets();
 }
 
 function toggleMenu() {
@@ -1021,6 +992,7 @@ async function doSignIn() {
     showToast(`Welcome back, ${authState.user.displayName || authState.user.username}! 👋`, 'success');
     if (document.getElementById('page-dashboard').classList.contains('active')) loadDashboard();
     if (document.getElementById('page-community').classList.contains('active')) loadCommunityPosts();
+    if (document.getElementById('page-home').classList.contains('active')) { homeWidgetsLoaded = false; loadHomeWidgets(); }
   } catch (e) {
     showToast(e.message || 'Login failed', 'error');
   } finally {
@@ -1048,6 +1020,7 @@ async function doSignUp() {
     closeModal('auth-modal');
     showToast('Account created! Welcome to TechTribe 🎉', 'success');
     if (document.getElementById('page-dashboard').classList.contains('active')) loadDashboard();
+    if (document.getElementById('page-home').classList.contains('active')) { homeWidgetsLoaded = false; loadHomeWidgets(); }
   } catch (e) {
     showToast(e.message || 'Sign up failed', 'error');
   } finally {
@@ -1058,6 +1031,7 @@ async function doSignUp() {
 async function doLogout() {
   try { await apiFetch('/auth/logout', { method: 'POST', body: {} }); } catch (e) { /* ignore */ }
   clearAuth();
+  homeWidgetsLoaded = false;
   showToast('Logged out. See you soon!', 'info');
   showPage('home');
 }
@@ -1367,6 +1341,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
   loadAuthFromStorage();
   updateAuthUI();
+  loadHomeWidgets();
 });
 
 // =============================================
@@ -2090,20 +2065,72 @@ function sortPosts(el, type) {
 // =============================================
 // NEWSLETTER
 // =============================================
-function subscribe() {
-  const el = document.getElementById('nlEmail');
-  if (el && el.value.includes('@')) {
-    document.getElementById('nl-success').style.display = 'block';
-    el.value = '';
-    showToast('Subscribed! See you Monday. 📬', 'success');
-  } else {
-    showToast('Please enter a valid email address.', 'warn');
-  }
-}
+
 
 // =============================================
 // DASHBOARD
 // =============================================
+// =============================================
+// HOME PAGE WIDGETS — real data (hot posts, trending news, personal streak)
+// =============================================
+let homeWidgetsLoaded = false;
+
+async function loadHomeWidgets() {
+  if (homeWidgetsLoaded) return; // static-ish content, no need to reload every nav click
+  homeWidgetsLoaded = true;
+
+  // Hot Discussions — real top posts by popularity
+  const hotEl = document.getElementById('home-hot-discussions');
+  try {
+    const data = await apiFetch('/community/posts?page=1&limit=3&sort=popular');
+    const posts = data.data.items || [];
+    hotEl.innerHTML = posts.length
+      ? posts.map(postCardHTML).join('')
+      : `<div class="text-muted text-sm" style="padding:1rem;text-align:center">No discussions yet — be the first to post in the Community!</div>`;
+  } catch (e) {
+    hotEl.innerHTML = `<div class="text-muted text-sm" style="padding:1rem;text-align:center">Could not load discussions.</div>`;
+  }
+
+  // Trending Today — real recent news, no fake view counts
+  const trendEl = document.getElementById('home-trending');
+  try {
+    const data = await apiFetch('/news?limit=4');
+    const items = data.data.items || [];
+    trendEl.innerHTML = items.length
+      ? items.map((a, i) => {
+          const cat = NEWS_CATEGORIES[a.category] || NEWS_ALL_INFO;
+          return `<div class="trending-item"><div class="trending-num">0${i + 1}</div><div><div class="trending-title" onclick="openExternal('${a.url}')">${escapeHtml(a.title)}</div><div class="trending-meta">${cat.emoji} ${cat.label} · ${a.readingTimeMinutes || 3} min read</div></div></div>`;
+        }).join('')
+      : `<div class="text-muted text-sm">No news available right now.</div>`;
+  } catch (e) {
+    trendEl.innerHTML = `<div class="text-muted text-sm">Could not load trending news.</div>`;
+  }
+
+  // Your Streak — real personal stats if signed in, honest CTA if not
+  const streakEl = document.getElementById('home-streak-card');
+  if (!authState.user) {
+    streakEl.innerHTML = `<div class="section-title" style="font-size:15px;margin-bottom:1rem"><i class="ti ti-flame"></i> Your Streak</div><p class="text-muted text-sm" style="margin-bottom:.75rem">Sign in to track your streak and XP.</p><button class="btn-secondary" style="width:100%;justify-content:center" onclick="openModal('auth-modal')"><i class="ti ti-login"></i> Sign In</button>`;
+    return;
+  }
+  try {
+    const data = await apiFetch('/users/dashboard');
+    const s = data.data.stats;
+    const pct = Math.min(100, Math.round(((s.xp % 1000) / 1000) * 100));
+    streakEl.innerHTML = `<div class="section-title" style="font-size:15px;margin-bottom:1rem"><i class="ti ti-flame"></i> Your Streak</div>
+      <div style="text-align:center;padding:.5rem 0">
+        <div style="font-size:3rem">🔥</div>
+        <div style="font-size:2rem;font-weight:700;color:var(--orange)">${s.streakCount}</div>
+        <div class="text-muted text-sm">day streak</div>
+      </div>
+      <div style="background:var(--bg3);border-radius:var(--radius);padding:.75rem;margin-top:.75rem">
+        <div class="xp-bar-label"><span class="text-sm text-muted">Level ${s.level}</span><span class="text-sm text-accent">${s.xp} XP</span></div>
+        <div class="xp-bar"><div class="xp-bar-fill" style="width:${pct}%"></div></div>
+      </div>`;
+  } catch (e) {
+    streakEl.innerHTML = `<div class="section-title" style="font-size:15px;margin-bottom:1rem"><i class="ti ti-flame"></i> Your Streak</div><div class="text-muted text-sm">Could not load your stats.</div>`;
+  }
+}
+
 function switchDash(el, panel) {
   document.querySelectorAll('.dash-nav a').forEach(a => a.classList.remove('active'));
   el.classList.add('active');
