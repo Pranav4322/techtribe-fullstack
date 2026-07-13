@@ -1711,6 +1711,20 @@ function avatarColorFor(seed) {
 // Renders a real uploaded profile photo when the user has one, falling back
 // to colored initials otherwise — used everywhere an avatar appears (posts,
 // comments, leaderboard, dashboard).
+// Derives avatar initials from the display name when possible (e.g. "pranav
+// more" -> "PM"), falling back to the username for single-word names or
+// when no display name is set.
+function getInitials(user) {
+  const name = (user?.displayName || '').trim();
+  if (name) {
+    const parts = name.split(/\s+/).filter(Boolean);
+    if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+    if (parts.length === 1 && parts[0].length >= 2) return parts[0].slice(0, 2).toUpperCase();
+    if (parts.length === 1) return parts[0].slice(0, 1).toUpperCase();
+  }
+  return (user?.username || 'U').slice(0, 2).toUpperCase();
+}
+
 function avatarHTML(user, sizePx, extraStyle) {
   const username = user?.username || 'u';
   const size = sizePx || 32;
@@ -1719,7 +1733,7 @@ function avatarHTML(user, sizePx, extraStyle) {
     return `<img src="${user.avatarUrl}" alt="" class="avatar" style="width:${size}px;height:${size}px;object-fit:cover;padding:0;${style}">`;
   }
   const [bg, color] = avatarColorFor(username);
-  const initials = username.slice(0, 2).toUpperCase();
+  const initials = getInitials(user);
   return `<div class="avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size * 0.4)}px;background:${bg};color:${color};${style}">${initials}</div>`;
 }
 
@@ -2170,7 +2184,7 @@ async function loadDashboard() {
     if (authState.user.avatarUrl) {
       dashAvatarEl.outerHTML = `<img id="dashAvatar" src="${authState.user.avatarUrl}" alt="" class="user-avatar" style="object-fit:cover">`;
     } else {
-      dashAvatarEl.textContent = (authState.user.username || 'U').slice(0, 2).toUpperCase();
+      dashAvatarEl.textContent = getInitials(authState.user);
     }
     document.getElementById('dashUserName').textContent = authState.user.displayName || authState.user.username;
     document.getElementById('dashMiniPosts').textContent = s.postCount;
