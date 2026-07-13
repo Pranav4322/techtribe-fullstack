@@ -16,7 +16,7 @@ const envSchema = z.object({
   JWT_REFRESH_EXPIRES_IN: z.string().default('30d'),
 
   OPENROUTER_API_KEY: z.string().min(1, 'OPENROUTER_API_KEY is required for AI features'),
-  OPENROUTER_MODEL: z.string().default('meta-llama/llama-3.3-70b-instruct:free'),
+  OPENROUTER_MODEL: z.string().default('openrouter/free'),
   // Optional automatic fallback if OpenRouter is rate-limited or unavailable
   OPENAI_API_KEY: z.string().optional().default(''),
   OPENAI_MODEL: z.string().default('gpt-4o-mini'),
