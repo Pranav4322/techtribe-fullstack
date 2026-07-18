@@ -11,7 +11,10 @@ function setRefreshCookie(res: Response, token: string) {
   res.cookie(REFRESH_COOKIE, token, {
     httpOnly: true,
     secure: isProduction,
-    sameSite: 'lax',
+    // 'strict' is safe here because the frontend always reaches this API
+    // through Vercel's same-origin rewrite proxy in production — the
+    // browser never needs to send this cookie cross-site.
+    sameSite: 'strict',
     maxAge: durationToMs(env.JWT_REFRESH_EXPIRES_IN),
     path: '/api/v1/auth'
   });

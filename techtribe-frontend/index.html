@@ -1148,12 +1148,37 @@ function escapeHtml(str) {
   return String(str || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+// For embedding untrusted data inside an inline onclick="func('...')" handler.
+// HTML-escaping alone is NOT enough here: the browser HTML-decodes the
+// attribute value BEFORE parsing it as JS, so an HTML-escaped quote (&#39;)
+// decodes right back into a real quote that can break out of the JS string.
+// This escapes for the JS-string context first (so it survives HTML
+// decoding intact), then HTML-escapes the result for the surrounding
+// double-quoted attribute.
+function jsAttrEscape(str) {
+  const jsEscaped = String(str || '')
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '');
+  return jsEscaped.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 // Opens article links robustly: tries a real new tab first, and if the
 // browser/embedded viewer blocks popups (common in sandboxed previews),
 // falls back to navigating the current tab instead of silently failing.
 function openExternal(url, evt) {
   if (evt) evt.preventDefault();
   if (!url) return false;
+  // Defense-in-depth: only ever navigate to http(s) links, regardless of
+  // where the URL came from (external news APIs, user content, etc.) —
+  // blocks javascript:/data: URL schemes from executing.
+  try {
+    const parsed = new URL(url, location.href);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return false;
+  } catch (e) {
+    return false;
+  }
   const win = window.open(url, '_blank', 'noopener,noreferrer');
   if (!win) location.href = url;
   return false;
@@ -1795,7 +1820,7 @@ async function loadCommunitySidebarWidgets() {
     const data = await apiFetch('/community/tags/top?limit=6');
     const tags = data.data.tags || [];
     communitiesEl.innerHTML = tags.length
-      ? tags.map(t => `<div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius);cursor:pointer" onclick="filterCommunityByTag('${escapeHtml(t.tag)}')"><span>${escapeHtml(t.tag)}</span><span class="text-muted text-xs">${t.count}</span></div>`).join('')
+      ? tags.map(t => `<div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius);cursor:pointer" onclick="filterCommunityByTag('${jsAttrEscape(t.tag)}')"><span>${escapeHtml(t.tag)}</span><span class="text-muted text-xs">${t.count}</span></div>`).join('')
       : `<div class="text-muted text-xs" style="padding:7px 8px">No posts yet — communities will appear here once people start posting.</div>`;
   } catch (e) {
     communitiesEl.innerHTML = `<div class="text-muted text-xs" style="padding:7px 8px">Could not load communities.</div>`;
@@ -2113,7 +2138,7 @@ async function loadHomeWidgets() {
     trendEl.innerHTML = items.length
       ? items.map((a, i) => {
           const cat = NEWS_CATEGORIES[a.category] || NEWS_ALL_INFO;
-          return `<div class="trending-item"><div class="trending-num">0${i + 1}</div><div><div class="trending-title" onclick="openExternal('${a.url}')">${escapeHtml(a.title)}</div><div class="trending-meta">${cat.emoji} ${cat.label} · ${a.readingTimeMinutes || 3} min read</div></div></div>`;
+          return `<div class="trending-item"><div class="trending-num">0${i + 1}</div><div><div class="trending-title" onclick="openExternal('${jsAttrEscape(a.url)}')">${escapeHtml(a.title)}</div><div class="trending-meta">${cat.emoji} ${cat.label} · ${a.readingTimeMinutes || 3} min read</div></div></div>`;
         }).join('')
       : `<div class="text-muted text-sm">No news available right now.</div>`;
   } catch (e) {
@@ -2706,9 +2731,9 @@ function showQ() {
   const q = questions[current];
   container.innerHTML = `<div class="card" style="margin-top:.75rem">
     <div style="font-size:12px;color:var(--text3);margin-bottom:.5rem">Question ${current+1} of ${questions.length} — Score: ${score}</div>
-    <div style="font-size:15px;font-weight:500;margin-bottom:1rem">${q.q}</div>
+    <div style="font-size:15px;font-weight:500;margin-bottom:1rem">${escapeHtml(q.q)}</div>
     <div style="display:flex;flex-direction:column;gap:.5rem">
-      ${q.options.map((o,i)=>`<button class="btn-secondary" style="text-align:left;justify-content:flex-start" onclick="answerQ(${i},this)">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+      ${q.options.map((o,i)=>`<button class="btn-secondary" style="text-align:left;justify-content:flex-start" onclick="answerQ(${i},this)">${String.fromCharCode(65+i)}. ${escapeHtml(o)}</button>`).join('')}
     </div>
   </div>`;
 }
@@ -2725,7 +2750,7 @@ function answerQ(i, btn) {
   const exp = document.createElement('div');
   exp.className = `notice ${correct ? '' : 'notice-warn'}`;
   exp.style.marginTop = '.75rem';
-  exp.innerHTML = `<i class="ti ti-${correct?'check':'x'}" style="color:var(--${correct?'green':'orange'})"></i> <span>${q.explanation || (correct?'Correct!':'Incorrect.')}</span>`;
+  exp.innerHTML = `<i class="ti ti-${correct?'check':'x'}" style="color:var(--${correct?'green':'orange'})"></i> <span>${escapeHtml(q.explanation || (correct?'Correct!':'Incorrect.'))}</span>`;
   btn.closest('.card').appendChild(exp);
   setTimeout(() => { quizState.current++; showQ(); }, 2200);
 }
