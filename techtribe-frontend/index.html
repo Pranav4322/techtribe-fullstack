@@ -1148,6 +1148,17 @@ function escapeHtml(str) {
   return String(str || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+// Validates a URL's scheme before it's ever placed in the DOM as a real
+// href, so a plain <a href> link can never carry a javascript:/data: URL.
+function safeUrl(url) {
+  try {
+    const parsed = new URL(url, location.href);
+    return (parsed.protocol === 'http:' || parsed.protocol === 'https:') ? url : '#';
+  } catch (e) {
+    return '#';
+  }
+}
+
 // For embedding untrusted data inside an inline onclick="func('...')" handler.
 // HTML-escaping alone is NOT enough here: the browser HTML-decodes the
 // attribute value BEFORE parsing it as JS, so an HTML-escaped quote (&#39;)
@@ -1191,7 +1202,7 @@ function newsCardHTML(article, info, compact) {
   const readMin = article.readingTimeMinutes || 3;
   const likes = article.externalReactionCount ?? 0;
   const comments = article.externalCommentCount ?? 0;
-  const url = escapeHtml(article.url || '#');
+  const url = escapeHtml(safeUrl(article.url || '#'));
   const badgeLabel = article.isSample ? 'Sample' : (compact ? info.short || info.label : info.label);
   const tags = (article.tagList || []).slice(0, 3).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
   const isRealArticle = !article.isSample && typeof article.id === 'string';
@@ -1202,7 +1213,7 @@ function newsCardHTML(article, info, compact) {
       <span class="news-cat" style="color:${info.color}">${info.emoji} ${badgeLabel}</span>
       <div class="news-meta"><i class="ti ti-clock"></i> ${readMin} min ${compact ? '' : `&nbsp;<i class="ti ti-calendar"></i> ${newsTimeAgo(article.publishedAt)}`}</div>
     </div>
-    <a href="${url}" target="_blank" rel="noopener noreferrer" class="news-title" onclick="return openExternal(this.getAttribute('href'), event)">${title}</a>
+    <a href="${url}" target="_blank" rel="noopener noreferrer" class="news-title">${title}</a>
     <div class="news-summary">${summary}</div>
     ${compact ? '' : `<div class="tag-list mb-4">${tags}</div>`}
     <div class="news-actions">
