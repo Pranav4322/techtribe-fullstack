@@ -3,6 +3,7 @@ import { prisma } from '../../config/prisma';
 import { ApiError } from '../../utils/ApiError';
 import { parsePagination, buildPaginatedResult } from '../../utils/pagination';
 import { notifyUser } from '../notifications/notifications.service';
+import { cacheGet, cacheSet } from '../../config/redis';
 
 const AUTHOR_SELECT = {
   id: true,
@@ -289,6 +290,10 @@ export async function reportContent(
  * placeholder numbers.
  */
 export async function getTopTags(limit = 6) {
+  const cacheKey = `community:top-tags:${limit}`;
+  const cached = await cacheGet<{ tag: string; count: number }[]>(cacheKey);
+  if (cached) return cached;
+
   const rows = await prisma.$queryRaw<{ tag: string; count: bigint }[]>`
     SELECT unnest(tags) AS tag, COUNT(*) AS count
     FROM "CommunityPost"
@@ -296,5 +301,7 @@ export async function getTopTags(limit = 6) {
     ORDER BY count DESC
     LIMIT ${limit}
   `;
-  return rows.map((r: { tag: string; count: bigint }) => ({ tag: r.tag, count: Number(r.count) }));
+  const result = rows.map((r: { tag: string; count: bigint }) => ({ tag: r.tag, count: Number(r.count) }));
+  await cacheSet(cacheKey, result, 60); // 1 min — top tags don't need to be second-by-second fresh
+  return result;
 }

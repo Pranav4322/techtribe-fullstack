@@ -1,5 +1,6 @@
 import { prisma } from '../../config/prisma';
 import { ApiError } from '../../utils/ApiError';
+import { cacheGet, cacheSet } from '../../config/redis';
 
 const PUBLIC_SELECT = {
   id: true,
@@ -116,6 +117,10 @@ export async function getDashboardStats(userId: string) {
  * XP thresholds rather than a stored field.
  */
 export async function getLeaderboard(limit = 3) {
+  const cacheKey = `users:leaderboard:${limit}`;
+  const cached = await cacheGet<ReturnType<typeof mapLeaderboardUser>[]>(cacheKey);
+  if (cached) return cached;
+
   const users = await prisma.user.findMany({
     where: { isActive: true, isBanned: false },
     orderBy: { xp: 'desc' },
@@ -123,8 +128,14 @@ export async function getLeaderboard(limit = 3) {
     select: { id: true, username: true, displayName: true, avatarUrl: true, xp: true, level: true }
   });
 
-  return users.map((u: (typeof users)[number]) => ({
+  const result = users.map((u: (typeof users)[number]) => mapLeaderboardUser(u));
+  await cacheSet(cacheKey, result, 60); // 1 min — leaderboard doesn't need to be second-by-second fresh
+  return result;
+}
+
+function mapLeaderboardUser(u: { xp: number; [key: string]: unknown }) {
+  return {
     ...u,
     badge: u.xp >= 4000 ? 'Expert' : u.xp >= 2000 ? 'Pro' : 'Builder'
-  }));
+  };
 }
