@@ -615,7 +615,7 @@ textarea.mono-f{font-family:var(--mono);font-size:13px}
     </div>
     <div id="newsStatusBar" style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:1rem;font-size:12px;color:var(--text3);flex-wrap:wrap">
       <span id="newsLastUpdated"><i class="ti ti-refresh"></i> Loading latest news…</span>
-      <button class="icon-btn" onclick="refreshNewsData(true)"><i class="ti ti-refresh"></i> Refresh now</button>
+      <button class="icon-btn" onclick="refreshCurrentNewsView()"><i class="ti ti-refresh"></i> Refresh now</button>
     </div>
     <div class="news-layout">
       <div>
@@ -1059,6 +1059,8 @@ function switchNewsTab(el, targetId) {
   const t = document.getElementById(targetId);
   if (t) t.classList.add('active');
   applyNewsFilters();
+  const key = targetId.replace('news-', '');
+  if (key !== 'all' && !lastNewsByCategory[key]) loadNewsCategory(key);
 }
 
 // =============================================
@@ -1105,31 +1107,6 @@ async function fetchCategoryFromBackend(category, limit, force) {
   const qs = category ? `category=${encodeURIComponent(category)}&limit=${limit}` : `limit=${limit}`;
   const data = await apiFetch(`/news?${qs}${force ? '&force=true' : ''}`);
   return data.data.items || [];
-}
-
-async function fetchAllSectionNews(force = false) {
-  const keys = Object.keys(NEWS_CATEGORIES);
-  const [allResult, ...catResults] = await Promise.allSettled([
-    fetchCategoryFromBackend(undefined, 12, force),
-    ...keys.map((k) => fetchCategoryFromBackend(k, 20, force))
-  ]);
-
-  const data = {};
-  keys.forEach((key, i) => {
-    const r = catResults[i];
-    data[key] = r.status === 'fulfilled' ? r.value : [];
-  });
-  data.all = allResult.status === 'fulfilled' ? allResult.value : [];
-
-  // If every request failed (backend unreachable), fall back to samples so
-  // the page is never left blank.
-  const totalLive = keys.reduce((n, k) => n + data[k].length, 0) + data.all.length;
-  if (totalLive === 0) {
-    keys.forEach((key) => { data[key] = newsSampleFor(key, NEWS_CATEGORIES[key]); });
-    data.all = newsSampleFor('all', NEWS_ALL_INFO);
-    data._offline = true;
-  }
-  return data;
 }
 
 function newsTimeAgo(dateStr) {
@@ -1226,21 +1203,23 @@ function newsCardHTML(article, info, compact) {
 }
 
 let lastNewsAllData = [];
-
 let lastNewsByCategory = {};
 let newsDataLoaded = false;
 
-function applyNewsData(data) {
-  lastNewsAllData = data.all || [];
-  lastNewsByCategory = {};
-  Object.keys(NEWS_CATEGORIES).forEach(key => {
-    lastNewsByCategory[key] = data[key] || [];
-  });
-  newsDataLoaded = true;
-  applyNewsFilters();
+function loadNewsCacheFromStorage() {
+  try { return JSON.parse(localStorage.getItem(NEWS_CACHE_KEY) || 'null') || {}; } catch (e) { return {}; }
+}
+function saveNewsCacheToStorage(cache) {
+  try { localStorage.setItem(NEWS_CACHE_KEY, JSON.stringify(cache)); } catch (e) { /* storage full/unavailable, non-fatal */ }
+}
+function isBucketFresh(bucket) {
+  return !!bucket && bucket.ts >= lastNewsCheckpoint().getTime();
+}
+
+function updateHomeNewsPreview() {
   const preview = document.getElementById('home-news-preview');
-  if (preview && data.all && data.all.length) {
-    preview.innerHTML = data.all.slice(0, 3).map(a => {
+  if (preview && lastNewsAllData.length) {
+    preview.innerHTML = lastNewsAllData.slice(0, 3).map(a => {
       const cat = NEWS_CATEGORIES[a.category] || NEWS_ALL_INFO;
       return newsCardHTML(a, cat, true);
     }).join('');
@@ -1319,25 +1298,35 @@ function formatCheckpointTime(d) {
   }
 }
 
-async function refreshNewsData(force = false) {
-  let cache = null;
-  try { cache = JSON.parse(localStorage.getItem(NEWS_CACHE_KEY) || 'null'); } catch (e) { cache = null; }
-  const isFresh = cache && cache.timestamp >= lastNewsCheckpoint().getTime();
-
-  if (isFresh && !force) {
-    applyNewsData(cache.data);
-    const label = cache.data._offline ? 'Offline sample shown' : 'Updated ' + newsTimeAgo(new Date(cache.timestamp).toISOString());
-    setNewsStatus(label + ' · next refresh at ' + formatCheckpointTime(nextNewsCheckpoint()), !!cache.data._offline);
+// Loads just the "All" bucket (12 articles) — used for the home page preview
+// and the News page's default tab. Individual categories are NOT fetched
+// here; they load lazily the first time their tab is actually clicked (see
+// loadNewsCategory), so opening the News page doesn't trigger 7 backend
+// requests when the visitor is only looking at "All".
+async function loadNewsAll(force = false) {
+  const cache = loadNewsCacheFromStorage();
+  if (!force && isBucketFresh(cache.all)) {
+    lastNewsAllData = cache.all.data;
+    newsDataLoaded = true;
+    applyNewsFilters();
+    updateHomeNewsPreview();
+    const label = cache.all.offline ? 'Offline sample shown' : 'Updated ' + newsTimeAgo(new Date(cache.all.ts).toISOString());
+    setNewsStatus(label + ' · next refresh at ' + formatCheckpointTime(nextNewsCheckpoint()), !!cache.all.offline);
     return;
   }
 
   setNewsStatus(force ? 'Force-refreshing from live sources…' : 'Fetching latest stories…');
   try {
-    const data = await fetchAllSectionNews(force);
-    const timestamp = Date.now();
-    localStorage.setItem(NEWS_CACHE_KEY, JSON.stringify({ timestamp, data }));
-    applyNewsData(data);
-    if (data._offline) {
+    const items = await fetchCategoryFromBackend(undefined, 12, force);
+    const offline = items.length === 0;
+    const data = offline ? newsSampleFor('all', NEWS_ALL_INFO) : items;
+    lastNewsAllData = data;
+    newsDataLoaded = true;
+    cache.all = { ts: Date.now(), data, offline };
+    saveNewsCacheToStorage(cache);
+    applyNewsFilters();
+    updateHomeNewsPreview();
+    if (offline) {
       setNewsStatus('Could not reach the TechTribe API — showing a sample. Check your connection and hit Refresh.', true);
       if (force) showToast('Live news unavailable, showing a sample', 'warn');
     } else {
@@ -1346,30 +1335,87 @@ async function refreshNewsData(force = false) {
     }
   } catch (e) {
     console.error('News refresh failed', e);
-    if (cache) {
-      applyNewsData(cache.data);
-      setNewsStatus('Showing cached news (refresh failed) · last updated ' + newsTimeAgo(new Date(cache.timestamp).toISOString()), true);
+    if (cache.all) {
+      lastNewsAllData = cache.all.data;
+      newsDataLoaded = true;
+      applyNewsFilters();
+      updateHomeNewsPreview();
+      setNewsStatus('Showing cached news (refresh failed) · last updated ' + newsTimeAgo(new Date(cache.all.ts).toISOString()), true);
     } else {
+      lastNewsAllData = newsSampleFor('all', NEWS_ALL_INFO);
+      newsDataLoaded = true;
+      applyNewsFilters();
       setNewsStatus('Could not load live news. Check your connection and hit Refresh.', true);
     }
     if (force) showToast('Could not refresh news right now', 'error');
   }
 }
 
+// Loads a single category on demand — called the first time its tab is
+// opened, or on manual refresh while that tab is active.
+async function loadNewsCategory(key, force = false) {
+  const info = NEWS_CATEGORIES[key];
+  if (!info) return;
+  const cache = loadNewsCacheFromStorage();
+
+  if (!force && isBucketFresh(cache[key])) {
+    lastNewsByCategory[key] = cache[key].data;
+    applyNewsFilters();
+    return;
+  }
+
+  const el = document.getElementById('news-' + key);
+  if (el && !lastNewsByCategory[key]) {
+    el.innerHTML = `<div class="text-muted text-sm" style="padding:1rem;text-align:center">Loading…</div>`;
+  }
+
+  try {
+    const items = await fetchCategoryFromBackend(key, 20, force);
+    const offline = items.length === 0;
+    const data = offline ? newsSampleFor(key, info) : items;
+    lastNewsByCategory[key] = data;
+    cache[key] = { ts: Date.now(), data, offline };
+    saveNewsCacheToStorage(cache);
+    applyNewsFilters();
+    if (force) showToast(offline ? `Live ${info.label} news unavailable` : `${info.label} refreshed ✓`, offline ? 'warn' : 'success');
+  } catch (e) {
+    console.error(`News category "${key}" failed`, e);
+    if (cache[key]) {
+      lastNewsByCategory[key] = cache[key].data;
+      applyNewsFilters();
+    } else if (el) {
+      el.innerHTML = `<div class="notice notice-error"><i class="ti ti-alert-circle"></i><span>Could not load ${escapeHtml(info.label)} news.</span></div>`;
+    }
+    if (force) showToast(`Could not refresh ${info.label} right now`, 'error');
+  }
+}
+
+// Refreshes whichever tab is currently visible — used by the "Refresh now"
+// button, so it doesn't force-refetch all 7 buckets just to update the one
+// the visitor is actually looking at.
+function refreshCurrentNewsView() {
+  const activePanel = document.querySelector('#page-news .tab-panel.active');
+  const panelId = activePanel ? activePanel.id : 'news-all';
+  if (panelId === 'news-all') loadNewsAll(true);
+  else loadNewsCategory(panelId.replace('news-', ''), true);
+}
+
 // Loads on page open, then schedules a timer to fire exactly at the next
 // checkpoint (12am/7am/12pm/6pm local time) rather than polling hourly —
 // and reschedules itself after each firing so it keeps working for as long
-// as the tab stays open.
+// as the tab stays open. Only refreshes the "All" bucket automatically;
+// categories the visitor hasn't opened simply refetch next time they click
+// that tab, per isBucketFresh().
 function scheduleNextNewsCheckpoint() {
   const msUntilNext = nextNewsCheckpoint().getTime() - Date.now();
   setTimeout(() => {
-    refreshNewsData(false);
+    loadNewsAll(false);
     scheduleNextNewsCheckpoint();
   }, msUntilNext + 2000); // +2s safety margin past the boundary
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  refreshNewsData(false);
+  loadNewsAll(false);
   scheduleNextNewsCheckpoint();
 });
 
@@ -1807,6 +1853,7 @@ async function loadCommunityPosts(sort) {
   communityState.page = 1;
   const listEl = document.getElementById('postList');
   listEl.innerHTML = `<div class="text-muted text-sm" style="padding:1rem;text-align:center">Loading posts…</div>`;
+  loadCommunitySidebarWidgets(); // independent of the post list — starts immediately, not after
   try {
     const data = await apiFetch(`/community/posts?page=1&limit=20&sort=${communityState.sort}`);
     const posts = data.data.items || [];
@@ -1817,7 +1864,6 @@ async function loadCommunityPosts(sort) {
   } catch (e) {
     communityErrorState(e.message || 'Could not load community posts.');
   }
-  loadCommunitySidebarWidgets();
 }
 
 // =============================================
@@ -1827,26 +1873,29 @@ async function loadCommunitySidebarWidgets() {
   const communitiesEl = document.getElementById('communitiesWidget');
   const leaderboardEl = document.getElementById('leaderboardWidget');
 
-  try {
-    const data = await apiFetch('/community/tags/top?limit=6');
-    const tags = data.data.tags || [];
+  const [tagsResult, leaderboardResult] = await Promise.allSettled([
+    apiFetch('/community/tags/top?limit=6'),
+    apiFetch('/users/leaderboard?limit=3')
+  ]);
+
+  if (tagsResult.status === 'fulfilled') {
+    const tags = tagsResult.value.data.tags || [];
     communitiesEl.innerHTML = tags.length
       ? tags.map(t => `<div class="filter-item" style="justify-content:space-between;padding:7px 8px;border-radius:var(--radius);cursor:pointer" onclick="filterCommunityByTag('${jsAttrEscape(t.tag)}')"><span>${escapeHtml(t.tag)}</span><span class="text-muted text-xs">${t.count}</span></div>`).join('')
       : `<div class="text-muted text-xs" style="padding:7px 8px">No posts yet — communities will appear here once people start posting.</div>`;
-  } catch (e) {
+  } else {
     communitiesEl.innerHTML = `<div class="text-muted text-xs" style="padding:7px 8px">Could not load communities.</div>`;
   }
 
-  try {
-    const data = await apiFetch('/users/leaderboard?limit=3');
-    const users = data.data.users || [];
+  if (leaderboardResult.status === 'fulfilled') {
+    const users = leaderboardResult.value.data.users || [];
     const badgeClass = { Expert: 'badge-green', Pro: 'badge-blue', Builder: 'badge-purple' };
     leaderboardEl.innerHTML = users.length
       ? users.map(u => {
           return `<div style="display:flex;align-items:center;gap:10px">${avatarHTML(u, 32)}<div style="flex:1"><div style="font-size:13px;font-weight:500">${escapeHtml(u.username)}</div><div style="font-size:11px;color:var(--text3)">${u.xp.toLocaleString()} XP</div></div><span class="badge-pill ${badgeClass[u.badge] || 'badge-blue'}">${u.badge}</span></div>`;
         }).join('')
       : `<div class="text-muted text-xs">No contributors yet — be the first!</div>`;
-  } catch (e) {
+  } else {
     leaderboardEl.innerHTML = `<div class="text-muted text-xs">Could not load leaderboard.</div>`;
   }
 }

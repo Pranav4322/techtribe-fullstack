@@ -115,14 +115,29 @@ async function refreshCategory(categoryKey: string): Promise<void> {
   );
 }
 
+// Tracks in-progress refreshes so concurrent requests for the same category
+// (e.g. the "All" tab's batch refresh racing with that category's own tab
+// pre-fetching in parallel) share one actual refresh instead of each firing
+// their own redundant calls out to Dev.to/HN at the same time.
+const inFlightRefreshes = new Map<string, Promise<void>>();
+
 async function ensureCategoryFresh(categoryKey: string, force = false): Promise<void> {
   const cacheKey = `news:fresh:${categoryKey}`;
   if (!force) {
     const isFresh = await cacheGet<boolean>(cacheKey);
     if (isFresh) return;
   }
-  await refreshCategory(categoryKey);
-  await cacheSet(cacheKey, true, secondsUntilNextNewsCheckpoint());
+
+  const existing = inFlightRefreshes.get(categoryKey);
+  if (existing) return existing;
+
+  const refreshPromise = (async () => {
+    await refreshCategory(categoryKey);
+    await cacheSet(cacheKey, true, secondsUntilNextNewsCheckpoint());
+  })().finally(() => inFlightRefreshes.delete(categoryKey));
+
+  inFlightRefreshes.set(categoryKey, refreshPromise);
+  return refreshPromise;
 }
 
 export async function listNews(params: {
